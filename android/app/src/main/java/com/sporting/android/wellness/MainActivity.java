@@ -1,4 +1,4 @@
-package com.example.sporting_performance;
+package com.sporting.android.wellness;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
