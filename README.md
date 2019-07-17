@@ -6,4 +6,4 @@ This project is a starting point for an investigation for Sporting Clube de Port
 
 17/07/2019
 
-![alt text](https://raw.githubusercontent.com/marcojoao/SportingPerformance/master/resources/ruben_notes.jpg)
+![Alt text](/resources/ruben_notes.jpg?raw=true "Ruben notes")
