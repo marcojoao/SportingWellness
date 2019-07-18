@@ -1,17 +1,19 @@
 #https://medium.com/@yegorj/building-flutter-apks-and-ipas-on-travis-98d84d8e9b4
 matrix:
+  branches:
+    only:
+      - master
   env:
         - BUILD_TIME=$(date +'%Y%m%d%H%M%S')
         - APK_NAME="Wellness_${BUILD_TIME}.apk"
         - IPA_NAME="Wellness_${BUILD_TIME}.app"
+
   include:
     - os: linux
       language: android
       sudo: false
       jdk: oraclejdk8
-      branches:
-        only:
-          - master
+      
       licenses:
         - android-sdk-preview-license-.+
         - android-sdk-license-.+
@@ -41,7 +43,7 @@ matrix:
         - mv build/app/outputs/apk/release/app-release.apk $APK_NAME
         - echo "Build time:" "$BUILD_TIME"
         - echo "Apk name" "$APK_NAME"
-
+#========================================================================================
     - os: osx
       language: generic
       osx_image: xcode10.2
@@ -63,7 +65,8 @@ matrix:
         - flutter packages get
         - flutter analyze --no-pub --no-current-package lib/ test/
         - flutter test --no-pub test/
-        - flutter build ios --release
+        - flutter build ios --no-codesign
+        #- flutter build ios --release
         - mv build/app/outputs/ios/iphoneos/Runner.app $IPA_NAME
         - echo "Build time:" "$BUILD_TIME"
         - echo "IPA name" "$IPA_NAME"
