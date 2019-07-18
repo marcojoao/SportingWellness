@@ -41,6 +41,16 @@ matrix:
         - echo "Build time:" "$BUILD_TIME"
         - echo "Apk name" "$APK_NAME"
       
+      deploy:
+        provider: releases
+        on:
+          branch: master
+        api_key:
+          secure: "f6fe6be867e736938833f970aeeb6f86dc88ff66"
+        file: $APK_NAME
+        overwrite: true
+        skip_cleanup: true
+
     - os: osx
       language: generic
       osx_image: xcode10.2
