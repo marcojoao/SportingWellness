@@ -3,23 +3,18 @@ matrix:
   include:
     - os: linux
       language: android
-
+      sudo: false
+      jdk: oraclejdk8
       licenses:
         - android-sdk-preview-license-.+
         - android-sdk-license-.+
         - google-gdk-license-.+
-
       android:
         components:
           - tools
           - platform-tools
           - build-tools-28.0.3
           - android-28 # match your targetVersion
-
-      jdk: oraclejdk8
-
-      sudo: false
-
       addons:
         apt:
           sources:
@@ -27,17 +22,13 @@ matrix:
           packages:
             - libstdc++6
             - fonts-droid
-      cache:
-        directories:
-          - "$HOME/.pub-cache"
       install:
         - git clone https://github.com/flutter/flutter.git -b stable --depth 1
         - export PATH=./flutter/bin:$PATH
         - flutter doctor
-
       script:
         - flutter build apk
-
+        
     - os: osx
       language: generic
       osx_image: xcode10.2
@@ -53,10 +44,8 @@ matrix:
         - brew install ideviceinstaller
         - brew install ios-deploy
         - git clone https://github.com/flutter/flutter.git -b stable --depth 1
-        - flutter doctor -v
       script:
         - ./flutter/bin/flutter -v build ios --no-codesign
-
-      cache:
-        directories:
-          - $HOME/.pub-cache
+  cache:
+    directories:
+      - $HOME/.pub-cache
