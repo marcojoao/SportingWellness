@@ -31,6 +31,24 @@ matrix:
         - flutter analyze --no-pub --no-current-package lib/ test/
         - flutter test --no-pub test/
         - flutter -v build apk
+      env:
+        - BUILD_TIME=$(date +'%Y%m%d%H%M%S') APK_NAME="${TRAVIS_TAG}_${BUILD_TIME}_Wellness.apk"
+      
+      before_deploy:
+        - mv build/app/outputs/apk/release/app-release.apk $APK_NAME
+      
+      deploy:
+        provider: releases
+        api_key:
+          secure: $github_deploy_api_key
+        file: $APK_NAME
+        skip_cleanup: true
+        overwrite: true
+        on:
+          repo: marcojoao / SportingWellness
+          branch: master
+          condition: $TRAVIS_TAG =~ /^release-v\d+\.\d+\.\d+/ # when tag match release-vx.x.x, then push a relase and upload apk.
+
 
     - os: osx
       language: generic
