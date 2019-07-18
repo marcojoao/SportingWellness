@@ -25,6 +25,10 @@ matrix:
           packages:
             - libstdc++6
             - fonts-droid
+
+      env:
+        - BUILD_TIME=$(date +'%Y%m%d%H%M%S') APK_NAME="${TRAVIS_TAG}_${BUILD_TIME}_Wellness.apk"
+
       install:
         - git clone https://github.com/flutter/flutter.git -b stable --depth 1
         - export PATH=./flutter/bin:$PATH
@@ -34,9 +38,8 @@ matrix:
         - flutter analyze --no-pub --no-current-package lib/ test/
         - flutter test --no-pub test/
         - flutter -v build apk
-        - "echo Build time: $BUILD_TIME"
-        - "echo Apk name: $APK_NAME"
-        
+        - echo "Build time:" "$BUILD_TIME"
+        - echo "Apk name" "$APK_NAME"
       
     - os: osx
       language: generic
