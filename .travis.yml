@@ -2,7 +2,24 @@
 matrix:
   include:
     - os: linux
+      language: android
+
+      licenses:
+        - android-sdk-preview-license-.+
+        - android-sdk-license-.+
+        - google-gdk-license-.+
+
+      android:
+        components:
+          - tools
+          - platform-tools
+          - build-tools-28.0.3
+          - android-28 # match your targetVersion
+
+      jdk: oraclejdk8
+
       sudo: false
+
       addons:
         apt:
           sources:
@@ -10,17 +27,16 @@ matrix:
           packages:
             - libstdc++6
             - fonts-droid
-      matrix:
-        allow_failures:
-          - env: FLUTTER_VERSION=beta
-      before_script:
-        - git clone https://github.com/flutter/flutter.git -b stable --depth 1
-        - ./flutter/bin/flutter doctor
-      script:
-        - ./flutter/bin/flutter build apk
       cache:
         directories:
-          - $HOME/shared/.pub-cache
+          - "$HOME/.pub-cache"
+      install:
+        - git clone https://github.com/flutter/flutter.git -b stable --depth 1
+        - export PATH=./flutter/bin:$PATH
+        - flutter doctor
+
+      script:
+        - flutter build apk
 
     - os: osx
       language: generic
