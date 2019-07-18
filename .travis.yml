@@ -1,5 +1,9 @@
 #https://medium.com/@yegorj/building-flutter-apks-and-ipas-on-travis-98d84d8e9b4
 matrix:
+  env:
+        - BUILD_TIME=$(date +'%Y%m%d%H%M%S')
+        - APK_NAME="Wellness_${BUILD_TIME}.apk"
+        - IPA_NAME="Wellness_${BUILD_TIME}.app"
   include:
     - os: linux
       language: android
@@ -25,10 +29,6 @@ matrix:
           packages:
             - libstdc++6
             - fonts-droid
-
-      env:
-        - BUILD_TIME=$(date +'%Y%m%d%H%M%S') APK_NAME="${TRAVIS_TAG}_${BUILD_TIME}_Wellness.apk"
-
       install:
         - git clone https://github.com/flutter/flutter.git -b stable --depth 1
         - export PATH=./flutter/bin:$PATH
@@ -37,20 +37,10 @@ matrix:
         - flutter packages get
         - flutter analyze --no-pub --no-current-package lib/ test/
         - flutter test --no-pub test/
-        - flutter -v build apk
+        - flutter build apk --release
         - mv build/app/outputs/apk/release/app-release.apk $APK_NAME
         - echo "Build time:" "$BUILD_TIME"
         - echo "Apk name" "$APK_NAME"
-      
-      deploy:
-        provider: releases
-        on:
-          branch: master
-        api_key:
-          secure: "f6fe6be867e736938833f970aeeb6f86dc88ff66"
-        file: $APK_NAME
-        overwrite: true
-        skip_cleanup: true
 
     - os: osx
       language: generic
@@ -73,7 +63,23 @@ matrix:
         - flutter packages get
         - flutter analyze --no-pub --no-current-package lib/ test/
         - flutter test --no-pub test/
-        - flutter -v build ios --no-codesign
+        - flutter build ios --release
+        - mv build/app/outputs/ios/iphoneos/Runner.app $IPA_NAME
+        - echo "Build time:" "$BUILD_TIME"
+        - echo "IPA name" "$IPA_NAME"
+
+  deploy:
+    provider: releases
+    on:
+      branch: master
+    api_key:
+      secure: "f6fe6be867e736938833f970aeeb6f86dc88ff66"
+    file: 
+      - $APK_NAME
+      - $IPA_NAME
+    overwrite: true
+    skip_cleanup: true
+
   cache:
     directories:
       - $HOME/.pub-cache
