@@ -2,39 +2,52 @@
 matrix:
   include:
     - os: linux
-      language: android
-      licenses:
-        - 'android-sdk-preview-license-.+'
-        - 'android-sdk-license-.+'
-        - 'google-gdk-license-.+'
-      android:
-        components:
-          - tools
-          - platform-tools
-          - build-tools-25.0.3
-          - android-25
-          - sys-img-armeabi-v7a-google_apis-25
-          - extra-android-m2repository
-          - extra-google-m2repository
-          - extra-google-android-support
+      dist: trusty
       jdk: oraclejdk8
-      sudo: false
+      language: node_js
+      node_js:
+        - "12"
+
+      env:
+        global:
+          - ANDROID_SDK_ROOT=/opt/android
+
+      sudo: required
+
       addons:
         apt:
-          # Flutter depends on /usr/lib/x86_64-linux-gnu/libstdc++.so.6 version GLIBCXX_3.4.18
           sources:
             - ubuntu-toolchain-r-test # if we don't specify this, the libstdc++6 we get is the wrong version
           packages:
+            - lib32stdc++6
             - libstdc++6
-            - fonts-droid
+            - curl
       before_script:
-        - wget http://services.gradle.org/distributions/gradle-3.5-bin.zip
-        - unzip -qq gradle-3.5-bin.zip
-        - export GRADLE_HOME=$PWD/gradle-3.5
-        - export PATH=$GRADLE_HOME/bin:$PATH
-        - git clone https://github.com/flutter/flutter.git -b beta --depth 1
+          - wget https://services.gradle.org/distributions/gradle-4.10.3-bin.zip
+          - unzip -qq gradle-4.10.3-bin.zip
+          - export GRADLE_HOME=`pwd`/gradle-4.10.3
+          - export PATH=$GRADLE_HOME/bin:$PATH
+
+          - mkdir -p /home/travis/.android
+          - echo 'count=0' > /home/travis/.android/repositories.cfg
+
+          - wget https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
+          - mkdir android-sdk-tools
+          - unzip -qq sdk-tools-linux-4333796.zip -d android-sdk-tools
+          - export PATH=`pwd`/android-sdk-tools/tools/bin:$PATH
+          - mkdir -p $ANDROID_SDK_ROOT
+
+          - yes | sdkmanager --sdk_root=$ANDROID_SDK_ROOT "tools" "build-tools;28.0.3" "extras;android;m2repository" > /dev/null
+          - export PATH=${ANDROID_SDK_ROOT}/tools/bin:$PATH
+
+          - sdkmanager --list
+
+          - git clone https://github.com/flutter/flutter.git -b beta --depth 1
+          
+          - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
       script:
-        - ./flutter/bin/flutter -v build apk
+          - flutter doctor -v
+          - ./flutter/bin/flutter build apk
 
     - os: osx
       language: generic
@@ -46,6 +59,9 @@ matrix:
       before_script:
         - pip install six
         - brew update
+        - brew uninstall --ignore-dependencies libimobiledevice
+        - brew uninstall --ignore-dependencies usbmuxd
+        - brew install --HEAD usbmuxd
         - brew install --HEAD libimobiledevice
         - brew install ideviceinstaller
         - brew install ios-deploy
@@ -56,3 +72,4 @@ matrix:
 cache:
   directories:
     - $HOME/.pub-cache
+    - node_modules
