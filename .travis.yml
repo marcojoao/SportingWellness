@@ -1,19 +1,32 @@
-os:
-  - linux
-sudo: false
-addons:
-  apt:
-    # Flutter depends on /usr/lib/x86_64-linux-gnu/libstdc++.so.6 version GLIBCXX_3.4.18
-    sources:
-      - ubuntu-toolchain-r-test # if we don't specify this, the libstdc++6 we get is the wrong version
-    packages:
-      - libstdc++6
-      - fonts-droid
-before_script:
-  - git clone https://github.com/flutter/flutter.git -b beta
-  - ./flutter/bin/flutter doctor
-script:
-  - ./flutter/bin/flutter test
-cache:
-  directories:
-    - $HOME/.pub-cache
+matrix:
+  include:
+  - os: linux
+    language: android
+    licenses:
+      - 'android-sdk-preview-license-.+'
+      - 'android-sdk-license-.+'
+      - 'google-gdk-license-.+'
+    android:
+      components:
+        - tools
+        - platform-tools
+        - build-tools-28.0.3
+        - android-27
+        - extra-android-m2repository
+        - extra-google-m2repository
+        - extra-google-android-support
+    install:
+    - cd android
+    - bundle install
+    script:
+    - echo "flutter.sdk=../../flutter/" >> local.properties
+    - bundle exec fastlane beta
+before_install:
+- openssl aes-256-cbc -K $encrypted_94197833ced1_key -iv $encrypted_94197833ced1_iv
+  -in secrets.tar.enc -out secrets.tar -d
+- tar xvf secrets.tar
+- gem install bundler
+- git clone https://github.com/flutter/flutter.git -b beta --depth 1
+- ./flutter/bin/flutter doctor
+- ./flutter/bin/flutter packages get
+- yes | sdkmanager "platforms;android-27"
