@@ -22,8 +22,6 @@ matrix:
         directories:
           - $HOME/shared/.pub-cache
 
-branches:
-  only: [master]
     - os: osx
       language: generic
       osx_image: xcode10.2
