@@ -27,8 +27,11 @@ matrix:
         - export PATH=./flutter/bin:$PATH
         - flutter doctor
       script:
-        - flutter build apk
-        
+        - flutter packages get
+        - flutter analyze --no-pub --no-current-package lib/ test/
+        - flutter test --no-pub test/
+        - flutter -v build apk
+
     - os: osx
       language: generic
       osx_image: xcode10.2
@@ -36,7 +39,7 @@ matrix:
         homebrew:
           update: true
           packages: python3
-      before_script:
+      install:
         - pip install six
         - brew update
         - brew install --HEAD usbmuxd
@@ -44,8 +47,13 @@ matrix:
         - brew install ideviceinstaller
         - brew install ios-deploy
         - git clone https://github.com/flutter/flutter.git -b stable --depth 1
+        - export PATH=./flutter/bin:$PATH
+        - flutter doctor
       script:
-        - ./flutter/bin/flutter -v build ios --no-codesign
+        - flutter packages get
+        - flutter analyze --no-pub --no-current-package lib/ test/
+        - flutter test --no-pub test/
+        - flutter -v build ios --no-codesign
   cache:
     directories:
       - $HOME/.pub-cache
