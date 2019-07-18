@@ -5,6 +5,9 @@ matrix:
       language: android
       sudo: false
       jdk: oraclejdk8
+      branches:
+        only:
+          - master
       licenses:
         - android-sdk-preview-license-.+
         - android-sdk-license-.+
@@ -37,22 +40,25 @@ matrix:
       before_deploy:
         - "echo Build time: $BUILD_TIME"
         - "echo Apk name: $APK_NAME"
+        - export TRAVIS_TAG="1.0.$TRAVIS_BUILD_NUMBER"
+        - echo "$TRAVIS_TAG" "$TRAVIS_COMMIT"
+        - git tag "$TRAVIS_TAG" "$TRAVIS_COMMIT"
         - flutter -v build apk
         - mv build/app/outputs/apk/release/app-release.apk $APK_NAME
-      
-      branches:
-        only:
-        - master
-        - /v\d+\.\d+[a-z]/
 
       deploy:
-        - provider: releases
-          api_key: f6fe6be867e736938833f970aeeb6f86dc88ff66
+        provider: releases
+        tag_name: $TRAVIS_TAG
+        target_commitish: $TRAVIS_COMMIT
+        name: $TRAVIS_TAG
+        overwrite: true
+        skip_cleanup: true
+        api_key: f6fe6be867e736938833f970aeeb6f86dc88ff66
+        file_glob: true
           file: $APK_NAME
-          skip_cleanup: true
           on:
             branch: master
-            tags: true
+            repo: marcojoao/SportingWellness
 
     - os: osx
       language: generic
