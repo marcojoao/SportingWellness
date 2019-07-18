@@ -39,12 +39,9 @@ matrix:
       language: generic
       osx_image: xcode8.3
       addons:
-        apt:
-          sources:
-            - deadsnakes # source required so it finds the package definition below
-          packages:
-            - python3.4
-            - python3.4-dev
+        homebrew:
+          update: true
+          packages: python3
       before_script:
         - pip install six
         - brew update
