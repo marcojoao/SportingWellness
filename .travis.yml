@@ -45,7 +45,7 @@ matrix:
         - mkdir android-sdk-tools
         - unzip -qq sdk-tools-linux-4333796.zip -d android-sdk-tools
         - export PATH=`pwd`/android-sdk-tools/tools/bin:$PATH
-        - mkdir -p "$ANDROID_SDK_ROOT"
+        - mkdir -p /opt/android
         
         # This will install the Android SDK 28 using the previously installed SDK tools.
         - yes | sdkmanager --sdk_root=$ANDROID_SDK_ROOT "tools" "build-tools;28.0.3" "extras;android;m2repository" > /dev/null
