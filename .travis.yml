@@ -4,16 +4,16 @@ matrix:
     only:
       - master
   env:
-        - APK_NAME="Wellness_android.apk"
-        - IPA_NAME="Wellness_ios.app"
+    global:
+      - APK_NAME="Wellness_android.apk"
+      - IPA_NAME="Wellness_ios.app"
 
   include:
     - os: linux
       language: android
       sudo: false
       jdk: oraclejdk8
-      env:
-      - APK_NAME="Wellness_android.apk"
+      env: APK_NAME="Wellness_android.apk"
       licenses:
         - android-sdk-preview-license-.+
         - android-sdk-license-.+
@@ -46,8 +46,7 @@ matrix:
     - os: osx
       language: generic
       osx_image: xcode10.2
-      env:
-      - IPA_NAME="Wellness_ios.app"
+      env: IPA_NAME="Wellness_ios.app"
       addons:
         homebrew:
           update: true
@@ -68,7 +67,7 @@ matrix:
         - flutter test --no-pub test/
         - flutter build ios --no-codesign
         #- flutter build ios --release
-        - mv build/app/outputs/ios/iphoneos/Runner.app $IPA_NAME
+        - mv build/ios/iphoneos/Runner.app $IPA_NAME
         - echo "IPA name" "$IPA_NAME"
 
   deploy:
