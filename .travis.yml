@@ -1,3 +1,4 @@
+#https://medium.com/@yegorj/building-flutter-apks-and-ipas-on-travis-98d84d8e9b4
 matrix:
   include:
     - os: linux
@@ -37,7 +38,7 @@ matrix:
 
     - os: osx
       language: generic
-      osx_image: xcode8.3
+      osx_image: xcode10.2
       addons:
         homebrew:
           update: true
