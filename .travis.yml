@@ -67,7 +67,7 @@ matrix:
       osx_image: xcode10.2
       env:
         - IPA_NAME="Wellness_ios.app"
-        - TRAVIS_TAG="Android_Release"
+        - TRAVIS_TAG="IOS_Release"
       addons:
         homebrew:
           update: true
