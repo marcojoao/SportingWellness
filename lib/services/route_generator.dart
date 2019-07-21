@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sporting_performance/model/player.dart';
 import 'package:sporting_performance/widgets/my_homepage.dart';
 
 class RouteGenerator {
@@ -8,16 +9,19 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => MyHomePage());
+        return MaterialPageRoute(
+            builder: (_) => MyHomePage(
+                  title: 'player',
+                ));
 
-        // case '/addlistplayerstatus': //TODO: new player list / edit form
-        //   if (args is Player) {
-        //     return MaterialPageRoute(
-        //       builder: (_) => SecondPage(
-        //         data: args.name,
-        //       ),
-        //     );
-        //   }
+      case '/addlistplayerstatus': //TODO: new player list / edit form
+        if (args is Player) {
+          return MaterialPageRoute(
+            builder: (_) => MyHomePage(
+              title: 'Secondpage',
+            ),
+          );
+        }
 
         return _errorRoute();
 
