@@ -16,9 +16,16 @@ void main() {
         avatarPath: 'ww',
         birtDate: DateTime.now());
 
+    expect(_player, isNotNull);
     expect(_player, isA<Player>());
   });
 
+  // test('create instance Record', () {
+  //   final record = Record();
+
+  //   expect(record, isNotNull);
+  //   expect(record, isA<Record>());
+  // });
   test('getdatabse creation', () async {
     Future<Database> dbFuture = AppDatabase.instance.database;
     var db = await dbFuture;
@@ -38,3 +45,21 @@ void main() {
     expect(res, isNotNull);
   });
 }
+
+class DatabaseTestContext {
+  DatabaseFactory factory;
+
+  // String dbPath;
+
+  // Delete the existing and open the database
+  // ignore: always_require_non_null_named_parameters
+  Future<Database> open(String dbPath, {int version}) async {
+    assert(dbPath != null, 'dbPath cannot be null');
+    // this.dbPath = dbPath;
+
+    await factory.deleteDatabase(dbPath);
+    return await factory.openDatabase(dbPath, version: version);
+  }
+}
+
+void unused(dynamic value) {}

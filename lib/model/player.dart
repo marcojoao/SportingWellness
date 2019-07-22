@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:sporting_performance/model/report.dart';
 
 class Player {
   int id;
@@ -8,13 +9,19 @@ class Player {
   final DateTime birtDate;
   final String avatarPath;
   final EscalaoType escalao;
+  final List<Report> reports;
 
   Player(
       {@required this.name,
       @required this.age,
       @required this.birtDate,
       @required this.escalao,
-      this.avatarPath});
+      this.avatarPath,
+      this.reports});
+
+  Future insertRecord(Report rec) async {
+    this.reports.add(rec);
+  }
 
   Map<String, dynamic> toMap() {
     return {
@@ -22,7 +29,8 @@ class Player {
       'age': age,
       'birt_date': birtDate,
       'escalao': escalao,
-      'avatarPath': avatarPath
+      'avatarPath': avatarPath,
+      'records': reports
     };
   }
 
@@ -32,7 +40,8 @@ class Player {
         age: map['age'],
         birtDate: map['birtDate'],
         escalao: map['escalao'],
-        avatarPath: map['avatar_path']);
+        avatarPath: map['avatar_path'],
+        reports: map['records']);
   }
 }
 
