@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sporting_performance/model/player.dart';
 import 'package:sporting_performance/widgets/my_homepage.dart';
+import 'package:sporting_performance/widgets/splash_page.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -9,9 +10,11 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/':
+        return MaterialPageRoute(builder: (_) => SplashPage());
+      case '/myhomepage':
         return MaterialPageRoute(
             builder: (_) => MyHomePage(
-                  title: 'player',
+                  title: "Wellness",
                 ));
 
       case '/addlistplayerstatus': //TODO: new player list / edit form
