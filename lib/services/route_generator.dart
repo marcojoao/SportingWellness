@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sporting_performance/model/player.dart';
 import 'package:sporting_performance/widgets/my_homepage.dart';
+import 'package:sporting_performance/widgets/players/player_detail_container.dart';
 import 'package:sporting_performance/widgets/splash_page.dart';
 
 class RouteGenerator {
@@ -12,7 +13,7 @@ class RouteGenerator {
       case '/':
         return MaterialPageRoute(
             builder: (_) =>
-                SplashPage(nextPage: '/myhomepage', introDuration: 2));
+                SplashPage(nextPage: '/playerdetail', introDuration: 2));
       case '/myhomepage':
         return MaterialPageRoute(
             builder: (_) => MyHomePage(
@@ -29,6 +30,9 @@ class RouteGenerator {
         }
 
         return _errorRoute();
+
+      case '/playerdetail':
+        return _getPageRoute(PlayerDetailContainer());
 
       case '/newplayer': //TODO: new player form
         return _errorRoute();
@@ -50,5 +54,9 @@ class RouteGenerator {
         ),
       );
     });
+  }
+
+  static MaterialPageRoute<dynamic> _getPageRoute(Widget pageWidget) {
+    return MaterialPageRoute(builder: (_) => pageWidget);
   }
 }
