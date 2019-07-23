@@ -6,6 +6,7 @@ class Player {
 
   final String name;
   final int age;
+  final double higth;
   final DateTime birtDate;
   final String avatarPath;
   final EscalaoType escalao;
@@ -16,6 +17,7 @@ class Player {
       @required this.age,
       @required this.birtDate,
       @required this.escalao,
+      @required this.higth,
       this.avatarPath,
       this.reports});
 
@@ -29,6 +31,7 @@ class Player {
       'age': age,
       'birt_date': birtDate,
       'escalao': escalao,
+      'higth':higth,
       'avatarPath': avatarPath,
       'records': reports
     };
@@ -40,6 +43,7 @@ class Player {
         age: map['age'],
         birtDate: map['birtDate'],
         escalao: map['escalao'],
+        higth: map['higth'],
         avatarPath: map['avatar_path'],
         reports: map['records']);
   }

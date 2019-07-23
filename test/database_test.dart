@@ -13,6 +13,7 @@ void main() {
         name: 'andy',
         age: 22,
         escalao: EscalaoType.juniors,
+        higth: 190,
         avatarPath: 'ww',
         birtDate: DateTime.now());
 
@@ -38,6 +39,7 @@ void main() {
         name: 'andy',
         age: 22,
         escalao: EscalaoType.juniors,
+        higth: 190,
         avatarPath: 'ww',
         birtDate: DateTime.now()));
 

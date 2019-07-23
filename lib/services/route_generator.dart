@@ -10,7 +10,9 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => SplashPage());
+        return MaterialPageRoute(
+            builder: (_) =>
+                SplashPage(nextPage: '/myhomepage', introDuration: 2));
       case '/myhomepage':
         return MaterialPageRoute(
             builder: (_) => MyHomePage(
