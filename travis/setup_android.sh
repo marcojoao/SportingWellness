@@ -4,8 +4,8 @@ androidPlatformVerion="android-28"
 echo "===> Executing: brew update"
 brew update
 
-echo "===> Executing: brew cask install adoptopenjdk/openjdk/adoptopenjdk8"
-brew cask install adoptopenjdk/openjdk/adoptopenjdk8
+echo "===> Executing: brew cask install homebrew/cask-versions/java8"
+brew cask install homebrew/cask-versions/java8
 echo "===> Executing: export JAVA_HOME=$(/usr/libexec/java_home)"
 export JAVA_HOME=$(/usr/libexec/java_home)
 
