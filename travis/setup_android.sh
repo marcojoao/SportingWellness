@@ -1,12 +1,15 @@
+echo "::::::::::::::::::[SETUP ANDROID]::::::::::::::::::"
+
 androidBuildToolsVersion="28.0.3"
 androidPlatformVerion="android-28"
 
-echo "===> Executing: brew update"
 brew update
 
-echo "===> Executing: brew cask install homebrew/cask-versions/java8"
-brew cask install homebrew/cask-versions/java8
-echo "===> Executing: export JAVA_HOME=$(/usr/libexec/java_home)"
+echo "@ ===> Setup Java 8"
+brew cask uninstall java
+brew tap caskroom/versions
+brew cask install java8
+touch ~/.android/repositories.cfg
 export JAVA_HOME=$(/usr/libexec/java_home)
 
 echo "===> Executing: brew cask install android-sdk"
