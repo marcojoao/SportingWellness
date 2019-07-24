@@ -1,4 +1,6 @@
-language: objective-c
+os: osx
+language: generic
+osx_image: xcode10.2
 before_install:
-  - chmod +x travis/before_script.sh
+    - 'chmod +x travis/before_script.sh'
 before_script: travis/before_script.sh
