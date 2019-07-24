@@ -1,8 +1,10 @@
-
-language: go
+language: objective-c
+os: osx
+rvm:
+  - 2.4.1
 
 deploy:
   provider: script
-  script: scripts/install.sh
+  script: ./scripts/install.sh
   on:
     branch: master
