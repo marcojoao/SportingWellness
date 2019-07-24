@@ -3,4 +3,5 @@ os: osx
 rvm:
 - 2.1.2
 install:
-- "./Travis/install.sh"
+  provider: script
+  script: bash Travis/install.sh
