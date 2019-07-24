@@ -1,5 +1,7 @@
 language: objective-c
 os: osx
+rvm:
+- 2.4.1
 install:
   provider: script
   script: bash Travis/install.sh
