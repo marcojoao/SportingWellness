@@ -1,11 +1,22 @@
 --- 
-language: generic
 os: osx
+language: android
+jdk: oraclejdk8
+licenses:
+  - android-sdk-preview-license-.+
+  - android-sdk-license-.+
+  - google-gdk-license-.+
+android:
+  components:
+    - tools
+    - platform-tools
+    - build-tools-28.0.3
+    - android-28
 osx_image: xcode10.2
 before_install: 
   - "chmod +x travis/*"
 before_script: 
-  - travis/setup_android.sh
+  #- travis/setup_android.sh
   - "flutter doctor"
 install: 
   - "git clone https://github.com/flutter/flutter.git -b stable --depth 1"
