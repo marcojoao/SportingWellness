@@ -10,9 +10,7 @@ echo "@ ===> Brew update"
 brew update
 
 echo "@ ===> Installing Java 8"
-brew tap caskroom/versions
-brew cask info java8
-brew cask install java8
+brew cask install caskroom/versions/java8
 export JAVA_HOME=$(/usr/libexec/java_home)
 
 echo "@ ===> Installing Android SDK"
