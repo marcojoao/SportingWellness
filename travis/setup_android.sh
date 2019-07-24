@@ -3,22 +3,29 @@ echo "::::::::::::::::::[SETUP ANDROID]::::::::::::::::::"
 androidBuildToolsVersion="28.0.3"
 androidPlatformVerion="android-28"
 
+echo "@ ===> Brew Doctor"
+brew doctor
+
+echo "@ ===> Brew update"
 brew update
 
-echo "@ ===> Setup Java 8"
-brew cask install caskroom/versions/java8
-touch ~/.android/repositories.cfg
-set JAVA_OPTS=-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee
+echo "@ ===> Installing Java 8"
+brew tap caskroom/versions
+brew cask info java8
+brew cask install java8
 export JAVA_HOME=$(/usr/libexec/java_home)
 
-echo "@ ===> Setup Android SDK"
+echo "@ ===> Installing Android SDK"
 brew cask install android-sdk
-export ANDROID_SDK_ROOT="/usr/local/share/android-sdk"
+#export ANDROID_SDK_ROOT="/usr/local/share/android-sdk"
+export ANDROID_HOME="/usr/local/opt/android-sdk"
 
-echo "@ ===> Setup Android NDK"
+
+echo "@ ===> Installing Android NDK"
 brew cask install android-ndk
-export ANDROID_NDK_HOME="/usr/local/share/android-ndk"
+#export ANDROID_NDK_HOME="/usr/local/share/android-ndk"
+export ANDROID_NDK_HOME="/usr/local/opt/android-ndk"
 
-echo "===> Execute SDK Manager"
-yes y | ${ANDROID_SDK_ROOT}/tools/bin/sdkmanager --update
-${ANDROID_SDK_ROOT}/tools/bin/sdkmanager "build-tools;${androidBuildToolsVersion}" "platform-tools" "platforms;${androidPlatformVerion}"
+echo "===> Executing SDK Manager"
+yes y | ${ANDROID_HOME}/tools/bin/sdkmanager --update
+${ANDROID_HOME}/tools/bin/sdkmanager "build-tools;${androidBuildToolsVersion}" "platform-tools" "platforms;${androidPlatformVerion}"
