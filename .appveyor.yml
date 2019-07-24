@@ -1,0 +1,12 @@
+image: Visual Studio 2017
+
+platform: x64
+
+install:
+  - git clone -b master https://github.com/flutter/flutter.git %APPVEYOR_BUILD_FOLDER%\..\flutter
+
+build_script:
+  - set "PATH=%APPVEYOR_BUILD_FOLDER%\..\flutter\bin;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\;%PATH%"
+  - set "ENABLE_FLUTTER_DESKTOP=true"
+  - flutter doctor
+  - flutter packages get
