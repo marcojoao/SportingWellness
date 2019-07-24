@@ -22,13 +22,13 @@ brew cask install android-sdk
 export ANDROID_SDK_ROOT="/usr/local/share/android-sdk"
 mkdir -p "$ANDROID_SDK_ROOT/licenses"
 
-echo "==> [INSTALLING ANDROID NDK]"
-brew cask install android-ndk
-export ANDROID_NDK_HOME="/usr/local/share/android-ndk"
+#echo "==> [INSTALLING ANDROID NDK]"
+#brew cask install android-ndk
+#export ANDROID_NDK_HOME="/usr/local/share/android-ndk"
 
 echo "==> [SDK-MANAGER LIST]"
 export SDKMANAGER_OPTS="--add-modules java.se.ee"
-sdkmanager --list
+${ANDROID_SDK_ROOT}/tools/bin/sdkmanager --list
 
 echo "==> [SDK-MANAGER UPDATE]"
 yes y | ${ANDROID_SDK_ROOT}/tools/bin/sdkmanager --update
