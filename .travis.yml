@@ -1,2 +1,4 @@
 language: objective-c
+before_install:
+  - chmod +x travis/before_script.sh
 before_script: travis/before_script.sh
