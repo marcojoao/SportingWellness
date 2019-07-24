@@ -4,4 +4,7 @@ rvm:
 - 2.4.1
 
 install:
-- "./Travis/install.sh"
+  provider: script
+  script: bash "./Travis/install.sh"
+  on:
+    branch: master
