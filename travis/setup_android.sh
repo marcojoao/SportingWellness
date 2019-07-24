@@ -9,8 +9,11 @@ echo "==> [BREW UPDATE]"
 brew update
 
 echo "==> [INSTALLING JAVA 8]"
-brew cask install homebrew/cask-versions/java8
-export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+brew tap AdoptOpenJDK/openjdk
+echo "==> [DEBUG 0]"
+brew cask install adoptopenjdk8
+echo "==> [DEBUG 1]"
+export JAVA_HOME=$(/usr/libexec/java_home)
 
 echo "==> [INSTALLING ANDROID SDK]"
 brew cask install android-sdk
