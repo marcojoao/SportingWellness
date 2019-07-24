@@ -9,10 +9,13 @@ echo "==> [BREW UPDATE]"
 brew update
 
 echo "==> [INSTALLING JAVA 8]"
-brew tap AdoptOpenJDK/openjdk
-brew cask install adoptopenjdk8
+curl -O "https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u222-b10/OpenJDK8U-jdk_x64_mac_hotspot_8u222b10.tar.gz"
+tar -xf "OpenJDK8U-jdk_x64_mac_hotspot_8u222b10.tar.gz"
+ls -la
+export PATH=$PWD/jdk8u222-b10/Contents/Home/bin:$PATH
 java -version
-export JAVA_HOME=$(/usr/bin/java)
+export JAVA_HOME=$(/Library/Java/JavaVirtualMachines/jdk8u222-b10/Contents/Home)
+#export JAVA_HOME=$(/usr/bin/java)
 
 echo "==> [INSTALLING ANDROID SDK]"
 brew cask install android-sdk
