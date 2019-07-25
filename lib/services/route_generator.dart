@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sporting_performance/model/player.dart';
 import 'package:sporting_performance/widgets/my_homepage.dart';
+import 'package:sporting_performance/widgets/players/player_detail.dart';
 import 'package:sporting_performance/widgets/players/player_detail_container.dart';
 import 'package:sporting_performance/widgets/splash_page.dart';
 
@@ -13,10 +14,10 @@ class RouteGenerator {
       case '/':
         return MaterialPageRoute(
             builder: (_) =>
-                SplashPage(nextPage: '/playerdetail', introDuration: 2));
+                SplashPage(nextPage: '/myhomepage', introDuration: 10));
       case '/myhomepage':
         return MaterialPageRoute(
-            builder: (_) => MyHomePage(
+            builder: (_) => PlayerHome(
                   title: "Wellness",
                 ));
 

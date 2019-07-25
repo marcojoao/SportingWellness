@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 
 class Report {
   int id;
+  int playerId;
   SleepState sleepState;
   double recovery;
   bool sorroness;
@@ -13,7 +14,8 @@ class Report {
   int painNumber;
 
   Report(
-      {@required this.sleepState,
+      {@required this.playerId,
+      @required this.sleepState,
       @required this.recovery,
       @required this.sorroness,
       this.soronessLocation,
@@ -25,6 +27,7 @@ class Report {
 
   Map<String, dynamic> toMap() {
     return {
+      'playerId': playerId,
       'sleepState': sleepState,
       'recovery': recovery,
       'sorroness': sorroness,
@@ -39,6 +42,7 @@ class Report {
 
   static Report fromMap(Map<String, dynamic> map) {
     return Report(
+        playerId: map['playerId'],
         sleepState: map['sleepState'],
         recovery: map['recovery'],
         sorroness: map['sorroness'],
@@ -51,6 +55,28 @@ class Report {
   }
 }
 
-enum SleepState { good, medium, bad }
-enum BodyLocation { legs, arms }
+enum SleepState { good, noInfo, notAtAll, bad }
+enum BodyLocation {
+  upperBack,
+  abdomen,
+  ankle,
+  arm,
+  calf,
+  chest,
+  elbow,
+  foot,
+  forerm,
+  hamstring,
+  hand,
+  head,
+  lowerBack,
+  neck,
+  quadriceps,
+  shoulder,
+  wrist,
+  knee,
+  adductor,
+  lowerBody,
+  allBody
+}
 enum BodySide { left, right, both }

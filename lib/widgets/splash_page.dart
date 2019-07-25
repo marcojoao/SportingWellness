@@ -29,6 +29,12 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
+    TextStyle _splashLabelTextStyle = TextStyle(
+      fontFamily: 'Roboto',
+      color: Colors.black,
+      fontSize: 20.0,
+      fontWeight: FontWeight.w200,
+    );
     return Container(
       decoration: new BoxDecoration(color: Colors.white),
       child: Center(
@@ -42,7 +48,7 @@ class _SplashPageState extends State<SplashPage> {
           ),
           Text(
             "Sporting Wellness",
-            style: TextStyle(color: Colors.cyan, fontSize: 20),
+            style: _splashLabelTextStyle,
           )
         ],
       )),

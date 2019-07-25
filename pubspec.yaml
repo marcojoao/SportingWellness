@@ -14,6 +14,7 @@ dependencies:
   path_provider: ^1.1.2
   equatable: ^0.3.0
   flutter_bloc: ^0.19.1
+  enum_to_string: ^1.0.7
 
   cupertino_icons: ^0.1.2
 
@@ -34,3 +35,17 @@ flutter:
   assets: 
     - assets/
   uses-material-design: true
+
+fonts:
+    - family: Spectral
+      fonts:
+        - asset: assets/fonts/Spectral-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Spectral-Medium.ttf
+          weight: 500
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Light.ttf
+          weight: 200
+        - asset: assets/fonts/Roboto-Bold.ttf
+          weight: 700
