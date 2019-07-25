@@ -1,7 +1,6 @@
 # Sporting Wellness App [![Build Status](https://app.bitrise.io/app/a2aa166eecbc90f8/status.svg?token=lWwwlp7xODozAHNbKI8tWg)](https://app.bitrise.io/app/a2aa166eecbc90f8)
 
-
-![Alt text](/android/app/src/main/res/mipmap-xhdpi/launcher_icon.png?raw=true "App Icon")   
+![](/resources/Sporting_Wellness.png?raw=true )   
   
 This project is a starting point for an investigation for Sporting Clube de Portugal 
 

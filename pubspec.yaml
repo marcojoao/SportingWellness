@@ -15,7 +15,6 @@ dependencies:
   equatable: ^0.3.0
   flutter_bloc: ^0.19.1
   built_collection: ^4.2.2
-
   cupertino_icons: ^0.1.2
 
 dev_dependencies:
@@ -24,8 +23,6 @@ dev_dependencies:
     sdk: flutter
   build_runner: ^1.6.1
   built_value_generator: ^6.7.0
-
-
 
 flutter_icons: 
   android: "launcher_icon" 
@@ -36,4 +33,5 @@ flutter:
 
   uses-material-design: true
 
-  
+  assets:
+    - resources/
