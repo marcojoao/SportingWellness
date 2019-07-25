@@ -1,6 +1,6 @@
 import 'package:sembast/sembast.dart';
-import 'package:sporting_performance/data/app_database.dart';
-import 'package:sporting_performance/model/player.dart';
+import 'package:Wellness/data/app_database.dart';
+import 'package:Wellness/model/player.dart';
 
 class PlayersDAO {
   static const String PLAYER_STORE_NAME = 'players';

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sporting_performance/widgets/my_homepage.dart';
+import 'package:Wellness/model/player.dart';
+import 'package:Wellness/widgets/my_homepage.dart';
+import 'package:Wellness/widgets/players/player_detail_container.dart';
+import 'package:Wellness/widgets/splash_page.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -8,18 +11,28 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => MyHomePage());
+        return MaterialPageRoute(
+            builder: (_) =>
+                SplashPage(nextPage: '/playerdetail', introDuration: 2));
+      case '/myhomepage':
+        return MaterialPageRoute(
+            builder: (_) => MyHomePage(
+                  title: "Wellness",
+                ));
 
-        // case '/addlistplayerstatus': //TODO: new player list / edit form
-        //   if (args is Player) {
-        //     return MaterialPageRoute(
-        //       builder: (_) => SecondPage(
-        //         data: args.name,
-        //       ),
-        //     );
-        //   }
+      case '/addlistplayerstatus': //TODO: new player list / edit form
+        if (args is Player) {
+          return MaterialPageRoute(
+            builder: (_) => MyHomePage(
+              title: 'Secondpage',
+            ),
+          );
+        }
 
         return _errorRoute();
+
+      case '/playerdetail':
+        return _getPageRoute(PlayerDetailContainer());
 
       case '/newplayer': //TODO: new player form
         return _errorRoute();
@@ -41,5 +54,9 @@ class RouteGenerator {
         ),
       );
     });
+  }
+
+  static MaterialPageRoute<dynamic> _getPageRoute(Widget pageWidget) {
+    return MaterialPageRoute(builder: (_) => pageWidget);
   }
 }

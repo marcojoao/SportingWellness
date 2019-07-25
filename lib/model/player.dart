@@ -1,39 +1,52 @@
 import 'package:flutter/widgets.dart';
+import 'package:Wellness/model/report.dart';
 
 class Player {
   int id;
 
   final String name;
-  final int age;
-  final DateTime birtDate;
+  final double height;
+  final double weight;
+  final DateTime birthDate;
   final String avatarPath;
-  final EscalaoType escalao;
+  final TeamType team;
+  final List<Report> reports;
 
   Player(
       {@required this.name,
-      @required this.age,
-      @required this.birtDate,
-      @required this.escalao,
-      this.avatarPath});
+      @required this.birthDate,
+      @required this.team,
+      @required this.height,
+      @required this.weight,
+      this.avatarPath,
+      this.reports});
+
+  Future insertRecord(Report rec) async {
+    this.reports.add(rec);
+  }
 
   Map<String, dynamic> toMap() {
     return {
       'name': name,
-      'age': age,
-      'birt_date': birtDate,
-      'escalao': escalao,
-      'avatarPath': avatarPath
+      'birth_date': birthDate,
+      'team': team,
+      'height': height,
+      'weight': weight,
+      'avatarPath': avatarPath,
+      'records': reports
     };
   }
 
   static Player fromMap(Map<String, dynamic> map) {
     return Player(
         name: map['name'],
-        age: map['age'],
-        birtDate: map['birtDate'],
-        escalao: map['escalao'],
-        avatarPath: map['avatar_path']);
+        birthDate: map['birthDate'],
+        team: map['team'],
+        height: map['height'],
+        weight: map['weight'],
+        avatarPath: map['avatar_path'],
+        reports: map['records']);
   }
 }
 
-enum EscalaoType { iniciados, juvenis, juniors }
+enum TeamType { u_17, u_19, u_23, woman }
