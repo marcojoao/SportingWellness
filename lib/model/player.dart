@@ -10,6 +10,7 @@ class Player {
   final DateTime birthDate;
   final String avatarPath;
   final TeamType team;
+  final BodySide dominantMember;
   final List<Report> reports;
 
   Player(
@@ -18,6 +19,7 @@ class Player {
       @required this.team,
       @required this.height,
       @required this.weight,
+      @required this.dominantMember,
       this.avatarPath,
       this.reports});
 
@@ -28,11 +30,12 @@ class Player {
   Map<String, dynamic> toMap() {
     return {
       'name': name,
-      'birth_date': birthDate,
-      'team': team,
-      'height': height,
-      'weight': weight,
+      'age': age,
+      'birt_date': birtDate,
+      'escalao': escalao,
+      'higth': higth,
       'avatarPath': avatarPath,
+      'dominantMember': dominantMember,
       'records': reports
     };
   }
@@ -45,6 +48,7 @@ class Player {
         height: map['height'],
         weight: map['weight'],
         avatarPath: map['avatar_path'],
+        dominantMember: map['dominantMember'],
         reports: map['records']);
   }
 }

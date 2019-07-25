@@ -29,6 +29,7 @@ class AppDatabase {
     final dbPath = join(appdocumentDir.path, APP_DATABASE_NAME);
     final database = createDatabaseFactoryIo().openDatabase(dbPath);
 
+
     _dbOpenCompleter.complete(database);
   }
 }
