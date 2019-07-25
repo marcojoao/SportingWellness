@@ -10,12 +10,13 @@ import 'package:Wellness/model/player_dao.dart';
 void main() {
   test('create instance player', () {
     final _player = Player(
-      name: 'Marco',
-      team: TeamType.u_23,
-      height: 190,
-      weight: 80,
-      avatarPath: 'ww',
-      birthDate: DateTime.now());
+        name: 'Marco',
+        team: TeamType.u_23,
+        height: 190,
+        weight: 80,
+        avatarPath: 'ww',
+        birthDate: DateTime.now(),
+        dominantMember: null);
 
     expect(_player, isNotNull);
     expect(_player, isA<Player>());
@@ -36,12 +37,13 @@ void main() {
   test("insert player into db", () async {
     PlayersDAO _playersDao = PlayersDAO();
     var res = await _playersDao.insert(Player(
-      name: 'Andy',
-      team: TeamType.u_23,
-      height: 190,
-      weight: 80,
-      avatarPath: 'ww',
-      birthDate: DateTime.now()));
+        name: 'Andy',
+        team: TeamType.u_23,
+        height: 190,
+        weight: 80,
+        avatarPath: 'ww',
+        birthDate: DateTime.now(),
+        dominantMember: null));
 
     print(res);
     expect(res, isNotNull);

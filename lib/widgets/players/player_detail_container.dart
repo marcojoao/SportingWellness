@@ -5,13 +5,11 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as ipath;
 import 'package:path_provider/path_provider.dart';
-
-import 'package:sporting_performance/model/player.dart';
-import 'package:sporting_performance/widgets/camera_controller/camera_controller.dart';
-import 'package:sporting_performance/widgets/players/player_detail.dart';
-import 'package:sporting_performance/widgets/players/player_listing.dart';
-
-import 'package:sporting_performance/widgets/players/players_mock_list.dart';
+import 'package:Wellness/model/player.dart';
+import 'package:Wellness/widgets/players/player_listing.dart';
+import 'package:Wellness/widgets/players/player_detail.dart';
+import 'package:Wellness/widgets/camera_controller/camera_controller.dart';
+import 'package:Wellness/widgets/players/players_mock_list.dart';
 
 class PlayerDetailContainer extends StatefulWidget {
   Player player;
@@ -200,10 +198,10 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
       children: <Widget>[
         _buildStatItem('Name', player.name.toString()),
         _buildStatItem('Birth Date',
-            '${player.birtDate.day} / ${player.birtDate.month} /${player.birtDate.year}'),
+            '${player.birthDate.day} / ${player.birthDate.month} /${player.birthDate.year}'),
         _buildStatItem('Dominant member',
             EnumToString.parseCamelCase(player.dominantMember)),
-        _buildStatItem('Heigth', player.higth.toString()),
+        _buildStatItem('Heigth', player.height.toString()),
         _buildStatItem(
             'Weigth', EnumToString.parseCamelCase(player.dominantMember)),
       ],

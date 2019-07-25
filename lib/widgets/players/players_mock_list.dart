@@ -1,16 +1,16 @@
 import 'package:meta/meta.dart';
 import 'package:Wellness/model/player.dart';
-import 'package:sporting_performance/model/report.dart';
+import 'package:Wellness/model/report.dart';
 
 final List<Player> players = <Player>[
   Player(
       name: 'anderson',
-      age: 220,
-      escalao: EscalaoType.juniors,
+      team: TeamType.u_17,
       dominantMember: BodySide.left,
-      higth: 190,
+      height: 190,
       avatarPath: 'ww',
-      birthDate: DateTime.now()),
+      birthDate: DateTime.now(),
+      weight: 60),
   Player(
       name: 'Marco',
       team: TeamType.u_23,
@@ -26,5 +26,5 @@ final List<Player> players = <Player>[
       weight: 80,
       avatarPath: 'ww',
       dominantMember: BodySide.left,
-      birtDate: DateTime.now())
+      birthDate: DateTime.now())
 ];

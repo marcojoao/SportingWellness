@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sporting_performance/model/player.dart';
-import 'package:sporting_performance/widgets/my_homepage.dart';
-import 'package:sporting_performance/widgets/players/player_detail.dart';
-import 'package:sporting_performance/widgets/players/player_detail_container.dart';
-import 'package:sporting_performance/widgets/splash_page.dart';
+import 'package:Wellness/widgets/players/player_detail_container.dart';
+import 'package:Wellness/widgets/splash_page.dart';
+import 'package:Wellness/model/player.dart';
+import 'package:Wellness/widgets/my_homepage.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {

@@ -30,10 +30,10 @@ class Player {
   Map<String, dynamic> toMap() {
     return {
       'name': name,
-      'age': age,
-      'birt_date': birtDate,
-      'escalao': escalao,
-      'higth': higth,
+      'birt_date': birthDate,
+      'team': team,
+      'height': height,
+      'weight': weight,
       'avatarPath': avatarPath,
       'dominantMember': dominantMember,
       'records': reports

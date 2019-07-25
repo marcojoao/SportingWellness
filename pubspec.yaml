@@ -36,7 +36,7 @@ flutter_icons:
 flutter:
   assets: 
     - assets/
-  uses-material-design: true
+uses-material-design: true
 
 fonts:
     - family: Spectral
@@ -51,4 +51,3 @@ fonts:
           weight: 200
         - asset: assets/fonts/Roboto-Bold.ttf
           weight: 700
-  uses-material-design: true

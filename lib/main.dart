@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sporting_performance/services/route_generator.dart';
+import 'package:Wellness/services/route_generator.dart';
 
 void main() {
   //set device orientation,
