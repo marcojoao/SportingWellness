@@ -7,19 +7,15 @@ import 'package:sporting_performance/widgets/splash_page.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    // Getting arguments passed in while calling Navigator.pushNamed
     final args = settings.arguments;
 
     switch (settings.name) {
       case '/':
         return MaterialPageRoute(
             builder: (_) =>
-                SplashPage(nextPage: '/myhomepage', introDuration: 10));
+                SplashPage(nextPage: '/playerdetail', introDuration: 3));
       case '/myhomepage':
-        return MaterialPageRoute(
-            builder: (_) => PlayerHome(
-                  title: "Wellness",
-                ));
+        return MaterialPageRoute(builder: (_) => PlayerDetailContainer());
 
       case '/addlistplayerstatus': //TODO: new player list / edit form
         if (args is Player) {
@@ -29,11 +25,11 @@ class RouteGenerator {
             ),
           );
         }
-
         return _errorRoute();
 
       case '/playerdetail':
         return _getPageRoute(PlayerDetailContainer());
+      //return _getPageRoute(HomeScreen());
 
       case '/newplayer': //TODO: new player form
         return _errorRoute();

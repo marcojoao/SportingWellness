@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  camera: ^0.5.2+2
+  path:
   
   sembast: ^2.0.0+1
   path_provider: ^1.1.2

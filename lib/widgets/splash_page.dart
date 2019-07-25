@@ -46,9 +46,12 @@ class _SplashPageState extends State<SplashPage> {
             'assets/scp.png',
             scale: 2,
           ),
-          Text(
-            "Sporting Wellness",
-            style: _splashLabelTextStyle,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Sporting Wellness",
+              style: _splashLabelTextStyle,
+            ),
           )
         ],
       )),

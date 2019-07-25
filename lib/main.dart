@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sporting_performance/services/route_generator.dart';
@@ -5,7 +8,20 @@ import 'package:sporting_performance/services/route_generator.dart';
 void main() {
   //set device orientation,
   SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
+  _setTargetPlatformForDesktop();
   return runApp(MyApp());
+}
+
+void _setTargetPlatformForDesktop() {
+  TargetPlatform targetPlatform;
+  if (Platform.isMacOS) {
+    targetPlatform = TargetPlatform.iOS;
+  } else if (Platform.isLinux || Platform.isWindows) {
+    targetPlatform = TargetPlatform.android;
+  }
+  if (targetPlatform != null) {
+    debugDefaultTargetPlatformOverride = targetPlatform;
+  }
 }
 
 class MyApp extends StatelessWidget {

@@ -10,6 +10,7 @@ class Player {
   final DateTime birtDate;
   final String avatarPath;
   final EscalaoType escalao;
+  final BodySide dominantMember;
   final List<Report> reports;
 
   Player(
@@ -18,6 +19,7 @@ class Player {
       @required this.birtDate,
       @required this.escalao,
       @required this.higth,
+      @required this.dominantMember,
       this.avatarPath,
       this.reports});
 
@@ -31,8 +33,9 @@ class Player {
       'age': age,
       'birt_date': birtDate,
       'escalao': escalao,
-      'higth':higth,
+      'higth': higth,
       'avatarPath': avatarPath,
+      'dominantMember': dominantMember,
       'records': reports
     };
   }
@@ -45,6 +48,7 @@ class Player {
         escalao: map['escalao'],
         higth: map['higth'],
         avatarPath: map['avatar_path'],
+        dominantMember: map['dominantMember'],
         reports: map['records']);
   }
 }
