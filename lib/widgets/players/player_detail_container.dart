@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:camera/camera.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -50,6 +49,43 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
     );
   }
 
+  Future<void> editAvatarDialogBox() {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: new SingleChildScrollView(
+              child: new ListBody(
+                children: <Widget>[
+                  GestureDetector(
+                    child: new Row(children: <Widget>[
+                      new Icon(Icons.camera_alt),
+                      new Text('   Take Photo'),
+                    ]),
+                    onTap: () async {
+                      await getImage(ImageSource.camera);
+                    },
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(15.0),
+                  ),
+                  GestureDetector(
+                    child: new Row(children: <Widget>[
+                      new Icon(Icons.photo),
+                      new Text('   Select Image From Gallery'),
+                    ]),
+                    onTap: () async {
+                      await getImage(ImageSource.gallery);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
   Future getImage(ImageSource imgSource) async {
     var image = await ImagePicker.pickImage(source: imgSource);
 
@@ -64,24 +100,10 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
         children: <Widget>[
           RawMaterialButton(
             onPressed: () async {
-              getImage(ImageSource.camera);
+              editAvatarDialogBox();
             },
             child: Icon(
-              FontAwesomeIcons.camera,
-              color: Colors.blue,
-              size: 35.0,
-            ),
-            shape: new CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.white,
-            padding: const EdgeInsets.all(15.0),
-          ),
-          RawMaterialButton(
-            onPressed: () async {
-              getImage(ImageSource.gallery);
-            },
-            child: Icon(
-              FontAwesomeIcons.images,
+              Icons.edit,
               color: Colors.blue,
               size: 35.0,
             ),
