@@ -1,5 +1,5 @@
 name: Wellness
-description: A new Flutter project.
+description: Sporting Wellness App.
 
 version: 1.0.0+1
 
@@ -31,7 +31,7 @@ dev_dependencies:
 flutter_icons: 
   android: "launcher_icon" 
   ios: true
-  image_path: "assets/icon/ic_launcher.png"
+  image_path: "assets/icons/ic_launcher.png"
 
 flutter:
   assets: 
