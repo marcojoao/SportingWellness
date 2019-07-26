@@ -8,13 +8,7 @@ Demo: [ [Android Tablet](https://appetize.io/embed/a8t74cc7xxgvh44eh694xdw4f8?de
 
 ---
 
-## Project daily report
-22/07/2019
+## Screenshots
 
-![Alt text](/resources/anderson_notes.jpg?raw=true)
 
----
-
-17/07/2019
-
-![Alt text](/resources/ruben_notes.jpg?raw=true)
+![Alt text](/resources/Screens/iPad_1.jpg?raw=true)
