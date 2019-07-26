@@ -1,14 +1,13 @@
-import 'dart:math';
+import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart' as ipath;
-import 'package:path_provider/path_provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:Wellness/model/player.dart';
 import 'package:Wellness/widgets/players/player_listing.dart';
 import 'package:Wellness/widgets/players/player_detail.dart';
-import 'package:Wellness/widgets/camera_controller/camera_controller.dart';
 import 'package:Wellness/widgets/players/players_mock_list.dart';
 
 class PlayerDetailContainer extends StatefulWidget {
@@ -20,26 +19,16 @@ class PlayerDetailContainer extends StatefulWidget {
 
 class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
   static const int kTabletBreakpoint = 600;
+  File _image;
 
   Player _selectedItem;
-  CameraDescription cams;
 
   @override
   void initState() {
     super.initState();
     setState(() {
       _selectedItem = widget.player ?? players[0];
-      initCamera();
     });
-  }
-
-  void initCamera() async {
-    var camList = await availableCameras();
-    for (var item in camList) {
-      if (item.lensDirection == CameraLensDirection.front) {
-        this.cams = item;
-      }
-    }
   }
 
   Widget _buildMobileLayout() {
@@ -61,29 +50,38 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
     );
   }
 
+  Future getImage(ImageSource imgSource) async {
+    var image = await ImagePicker.pickImage(source: imgSource);
+
+    setState(() {
+      _image = image;
+    });
+  }
+
   Widget _buildButtons() {
     return Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           RawMaterialButton(
             onPressed: () async {
-              try {
-                final path = ipath.join(
-                  (await getTemporaryDirectory()).path,
-                  '${DateTime.now()}.png',
-                );
-
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => TakePictureScreen(camera: cams)),
-                );
-              } catch (e) {
-                print(e);
-              }
+              getImage(ImageSource.camera);
             },
             child: Icon(
-              Icons.camera_alt,
+              FontAwesomeIcons.camera,
+              color: Colors.blue,
+              size: 35.0,
+            ),
+            shape: new CircleBorder(),
+            elevation: 2.0,
+            fillColor: Colors.white,
+            padding: const EdgeInsets.all(15.0),
+          ),
+          RawMaterialButton(
+            onPressed: () async {
+              getImage(ImageSource.gallery);
+            },
+            child: Icon(
+              FontAwesomeIcons.images,
               color: Colors.blue,
               size: 35.0,
             ),
@@ -95,7 +93,7 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
           RawMaterialButton(
             onPressed: () {},
             child: Icon(
-              Icons.edit,
+              FontAwesomeIcons.userEdit,
               color: Colors.blue,
               size: 35.0,
             ),
@@ -167,7 +165,9 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
         height: 140.0,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/avatar.png'),
+            image: _image == null
+                ? AssetImage('assets/avatar.png')
+                : Image.file(_image),
             fit: BoxFit.cover,
           ),
           borderRadius: BorderRadius.circular(80.0),
