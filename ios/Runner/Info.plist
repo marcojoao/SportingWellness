@@ -10,6 +10,12 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Used to choose a photo for the avatar</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Used to take a photo for the avatar</string>
+	<key>NSMicrophoneUsageDescription </key>
+	<string>Used for report notes</string>
 	<key>CFBundleName</key>
 	<string>Wellness</string>
 	<key>CFBundlePackageType</key>
