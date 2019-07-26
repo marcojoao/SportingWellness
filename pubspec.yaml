@@ -36,7 +36,7 @@ flutter_icons:
 flutter:
   assets: 
     - assets/
-uses-material-design: true
+  uses-material-design: true
 
 fonts:
     - family: Spectral
