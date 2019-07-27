@@ -12,8 +12,9 @@ dependencies:
   camera: ^0.5.2+2
   path:
   
+  avatar_glow: ^1.0.0
   sembast: ^2.0.0+1
-  path_provider: ^1.1.2
+  path_provider: ^1.2.0
   equatable: ^0.3.0
   flutter_bloc: ^0.19.1
   enum_to_string: ^1.0.7

@@ -1,8 +1,9 @@
 import 'dart:io';
 
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:enum_to_string/enum_to_string.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:Wellness/model/player.dart';
 import 'package:Wellness/widgets/players/player_listing.dart';
@@ -85,46 +86,84 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
     });
   }
 
-  Widget _buildButtons() {
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          OutlineButton(
-            onPressed: () async {
-              editAvatarDialogBox();
-            },
-            child: Icon(Icons.edit),
-            shape: new CircleBorder(),
-          ),
-        ]);
-  }
-
   Widget _buildTabletLayout(BuildContext context) {
     return Row(
       children: <Widget>[
         Flexible(
           flex: 1,
           child: Material(
-              elevation: 4.0,
-              child: Column(
-                children: <Widget>[
-                  Stack(
-                    children: <Widget>[
-                      SafeArea(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: <Widget>[
-                              _buildProfileImage(),
-                              _buildButtons(),
-                              _buildPlayerInfo(_selectedItem)
-                            ],
-                          ),
+            elevation: 4.0,
+            child: Container(
+              alignment: Alignment.topCenter,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      width: double.infinity,
+                      height: 230,
+                      color: Colors.green,
+                      child: SafeArea(
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: <Widget>[
+                            Container(
+                              width: double.infinity,
+                              alignment: Alignment.topLeft,
+                              child: FlatButton(
+                                  child: Icon(Icons.edit, color: Colors.white),
+                                  color: Colors.redAccent,
+                                  shape: CircleBorder(),
+                                  onPressed: editAvatarDialogBox),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Padding(padding: EdgeInsets.all(15.0)),
+                                Container(
+                                  height: 100,
+                                  width: 100,
+                                  margin: const EdgeInsets.all(5),
+                                  decoration: new BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: new DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: AssetImage(_image == null
+                                          ? 'assets/avatar.png'
+                                          : _image.path),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text(
+                                    _selectedItem.name,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 24.0, color: Colors.white),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                      )
-                    ],
-                  ),
-                ],
-              )),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 16.0,
+                    ),
+                    Container(
+                      //mainAxisSize: MainAxisSize.min,
+                      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      margin: const EdgeInsets.only(left: 10, right: 10),
+
+                      child: _buildPlayerInfo(_selectedItem),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ),
         Flexible(
           flex: 3,
@@ -137,49 +176,25 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
     );
   }
 
-  Widget _buildCoverImage(Size screenSize) {
-    return Container(
-      height: screenSize.height / 4.0,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/background.jpg'),
-          fit: BoxFit.cover,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildProfileImage() {
-    return Center(
-      child: Container(
-        width: 140.0,
-        height: 140.0,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image:
-                AssetImage(_image == null ? 'assets/avatar.png' : _image.path),
-            fit: BoxFit.cover,
-          ),
-          borderRadius: BorderRadius.circular(80.0),
-          border: Border.all(
-            color: Colors.white,
-            width: 10.0,
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildPlayerInfo(Player player) {
     return Column(
       children: <Widget>[
-        _buildStatItem('Name', player.name),
-        _buildStatItem('Birth Date',
-            '${player.birthDate.day} / ${player.birthDate.month} /${player.birthDate.year}'),
-        _buildStatItem('Dominant member',
-            EnumToString.parseCamelCase(player.dominantMember)),
-        _buildStatItem('Heigth', player.height.toString()),
-        _buildStatItem('Weigth', player.weight.toString()),
+        Row(children: <Widget>[
+          Icon(Icons.cake),
+          Text(
+              '  ${player.birthDate.day} / ${player.birthDate.month} /${player.birthDate.year}')
+        ]),
+        Padding(padding: EdgeInsets.all(2.0)),
+        Row(children: <Widget>[
+          Icon(Icons.accessibility_new),
+          Text(EnumToString.parseCamelCase(player.dominantMember))
+        ]),
+        Padding(padding: EdgeInsets.all(2.0)),
+        Row(children: <Widget>[ Icon(Icons.ac_unit),Text('  ${player.height}')
+        ]),
+        Padding(padding: EdgeInsets.all(2.0)),
+        Row(children: <Widget>[Icon(Icons.ac_unit), Text('  ${player.weight}')
+        ]),
       ],
     );
   }
