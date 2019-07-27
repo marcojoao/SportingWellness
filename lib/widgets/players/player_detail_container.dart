@@ -54,34 +54,25 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
         context: context,
         barrierDismissible: true,
         builder: (BuildContext context) {
-          return AlertDialog(
-            content: new SingleChildScrollView(
-              child: new ListBody(
-                children: <Widget>[
-                  GestureDetector(
-                    child: new Row(children: <Widget>[
-                      new Icon(Icons.camera_alt),
-                      new Text('   Take Photo'),
-                    ]),
-                    onTap: () async {
-                      await getImage(ImageSource.camera);
-                    },
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(15.0),
-                  ),
-                  GestureDetector(
-                    child: new Row(children: <Widget>[
-                      new Icon(Icons.photo),
-                      new Text('   Select Image From Gallery'),
-                    ]),
-                    onTap: () async {
-                      await getImage(ImageSource.gallery);
-                    },
-                  ),
-                ],
+          return SimpleDialog(
+            children: <Widget>[
+              ListTile(
+                leading: new Icon(Icons.photo_camera),
+                title: new Text('Take a picture'),
+                onTap: () async {
+                  await getImage(ImageSource.camera);
+                  Navigator.pop(context, null);
+                },
               ),
-            ),
+              ListTile(
+                leading: new Icon(Icons.photo),
+                title: new Text('Choose a picture'),
+                onTap: () async {
+                  await getImage(ImageSource.gallery);
+                  Navigator.pop(context, null);
+                },
+              ),
+            ],
           );
         });
   }
@@ -98,37 +89,17 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
     return Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          RawMaterialButton(
+          OutlineButton(
             onPressed: () async {
               editAvatarDialogBox();
             },
-            child: Icon(
-              Icons.edit,
-              color: Colors.blue,
-              size: 35.0,
-            ),
+            child: Icon(Icons.edit),
             shape: new CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.white,
-            padding: const EdgeInsets.all(15.0),
-          ),
-          RawMaterialButton(
-            onPressed: () {},
-            child: Icon(
-              FontAwesomeIcons.userEdit,
-              color: Colors.blue,
-              size: 35.0,
-            ),
-            shape: new CircleBorder(),
-            elevation: 2.0,
-            fillColor: Colors.white,
-            padding: const EdgeInsets.all(15.0),
           ),
         ]);
   }
 
   Widget _buildTabletLayout(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
     return Row(
       children: <Widget>[
         Flexible(
@@ -139,21 +110,19 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
                 children: <Widget>[
                   Stack(
                     children: <Widget>[
-                      _buildCoverImage(screenSize),
                       SafeArea(
                         child: SingleChildScrollView(
                           child: Column(
                             children: <Widget>[
-                              SizedBox(height: screenSize.height / 9),
                               _buildProfileImage(),
+                              _buildButtons(),
+                              _buildPlayerInfo(_selectedItem)
                             ],
                           ),
                         ),
                       )
                     ],
                   ),
-                  _buildButtons(),
-                  _buildPlayerInfo(_selectedItem)
                 ],
               )),
         ),
@@ -187,9 +156,8 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
         height: 140.0,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: _image == null
-                ? AssetImage('assets/avatar.png')
-                : Image.file(_image),
+            image:
+                AssetImage(_image == null ? 'assets/avatar.png' : _image.path),
             fit: BoxFit.cover,
           ),
           borderRadius: BorderRadius.circular(80.0),
@@ -203,32 +171,24 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
   }
 
   Widget _buildPlayerInfo(Player player) {
-    TextStyle _statLabelTextStyle = TextStyle(
-      fontFamily: 'Roboto',
-      color: Colors.black,
-      fontSize: 22,
-      fontWeight: FontWeight.w200,
-    );
-
-    TextStyle _statCountTextStyle = TextStyle(
-      color: Colors.black54,
-      fontSize: 24.0,
-      fontWeight: FontWeight.bold,
-    );
-
     return Column(
       children: <Widget>[
-        _buildStatItem('Name', player.name.toString()),
+        _buildStatItem('Name', player.name),
         _buildStatItem('Birth Date',
             '${player.birthDate.day} / ${player.birthDate.month} /${player.birthDate.year}'),
         _buildStatItem('Dominant member',
             EnumToString.parseCamelCase(player.dominantMember)),
         _buildStatItem('Heigth', player.height.toString()),
-        _buildStatItem(
-            'Weigth', EnumToString.parseCamelCase(player.dominantMember)),
+        _buildStatItem('Weigth', player.weight.toString()),
       ],
     );
   }
+
+  TextStyle _statCountTextStyle = TextStyle(
+    color: Colors.black54,
+    fontSize: 24.0,
+    fontWeight: FontWeight.w400,
+  );
 
   Widget _buildStatItem(String label, String val) {
     TextStyle _statLabelTextStyle = TextStyle(
@@ -236,12 +196,6 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
       color: Colors.black,
       fontSize: 20,
       fontWeight: FontWeight.w200,
-    );
-
-    TextStyle _statCountTextStyle = TextStyle(
-      color: Colors.black54,
-      fontSize: 24.0,
-      fontWeight: FontWeight.w400,
     );
 
     return Padding(
@@ -293,9 +247,6 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Sport'),
-      ),
       body: content,
     );
   }
