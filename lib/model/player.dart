@@ -4,14 +4,14 @@ import 'package:Wellness/model/report.dart';
 class Player {
   int id;
 
-  final String name;
-  final double height;
-  final double weight;
-  final DateTime birthDate;
-  final String avatarPath;
-  final TeamType team;
-  final BodySide dominantMember;
-  final List<Report> reports;
+   String name;
+   double height;
+   double weight;
+   DateTime birthDate;
+   String avatarPath;
+   TeamType team;
+   BodySide dominantMember;
+   List<Report> reports;
 
   Player(
       {@required this.name,

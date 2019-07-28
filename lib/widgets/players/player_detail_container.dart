@@ -1,9 +1,13 @@
+import 'dart:core' as prefix0;
+import 'dart:core';
 import 'dart:io';
 
-import 'package:avatar_glow/avatar_glow.dart';
+import 'package:Wellness/model/report.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:Wellness/model/player.dart';
 import 'package:Wellness/widgets/players/player_listing.dart';
@@ -20,7 +24,6 @@ class PlayerDetailContainer extends StatefulWidget {
 class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
   static const int kTabletBreakpoint = 600;
   File _image;
-
   Player _selectedItem;
 
   @override
@@ -50,7 +53,99 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
     );
   }
 
-  Future<void> editAvatarDialogBox() {
+  Future<void> _editPlayerInfo() {
+    final GlobalKey<FormBuilderState> _formKey =
+        new GlobalKey<FormBuilderState>();
+    return showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.all(10),
+              child: FormBuilder(
+                key: _formKey,
+                autovalidate: true,
+                child: Column(
+                  children: <Widget>[
+                    Text('Edit player information'),
+                    Padding(padding: EdgeInsets.only(top: 2, bottom: 2)),
+                    GestureDetector(
+                        onTap: _editAvatarDialogBox, child: _getPlayerAvatar()),
+                    Padding(padding: EdgeInsets.only(top: 2, bottom: 2)),
+                    FormBuilderTextField(
+                        attribute: 'name',
+                        decoration: InputDecoration(labelText: "Name"),
+                        initialValue: _selectedItem.name),
+                    FormBuilderDropdown(
+                      attribute: "dominantMember",
+                      decoration: InputDecoration(labelText: "Dominant Member"),
+                      initialValue: _selectedItem.dominantMember,
+                      hint: Text('Select Dominant Member'),
+                      validators: [FormBuilderValidators.required()],
+                      items: BodySide.values
+                          .map((side) => DropdownMenuItem(
+                              value: side,
+                              child: Text(EnumToString.parseCamelCase(side))))
+                          .toList(),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        OutlineButton(
+                          borderSide: BorderSide(
+                            color: Colors.green, //Color of the border
+                            style: BorderStyle.solid, //Style of the border
+                            width: 0.8, //width of the border
+                          ),
+                          highlightedBorderColor: Colors.green,
+                          child: Text("Apply"),
+                          onPressed: () {
+                            
+                          },
+                        ),
+                        Padding(padding: EdgeInsets.all(10)),
+                        OutlineButton(
+                          borderSide: BorderSide(
+                            color: Colors.red, //Color of the border
+                            style: BorderStyle.solid, //Style of the border
+                            width: 0.8, //width of the border
+                          ),
+                          highlightedBorderColor: Colors.red,
+                          child: Text("Cancel"),
+                          onPressed: () {
+                            
+                          },
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _getPlayerAvatar() {
+    return Container(
+      height: 100,
+      width: 100,
+      margin: const EdgeInsets.all(5),
+      decoration: new BoxDecoration(
+        shape: BoxShape.circle,
+        image: new DecorationImage(
+          fit: BoxFit.fill,
+          image: AssetImage(_image == null ? 'assets/avatar.png' : _image.path),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _editAvatarDialogBox() {
     return showDialog(
         context: context,
         barrierDismissible: true,
@@ -95,72 +190,56 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
             elevation: 4.0,
             child: Container(
               alignment: Alignment.topCenter,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      width: double.infinity,
-                      height: 230,
-                      color: Colors.green,
-                      child: SafeArea(
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: <Widget>[
-                            Container(
-                              width: double.infinity,
-                              alignment: Alignment.topLeft,
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    width: double.infinity,
+                    height: 210,
+                    color: Colors.green,
+                    child: SafeArea(
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: <Widget>[
+                          Container(
+                            width: double.infinity,
+                            alignment: Alignment.topLeft,
+                            child: ButtonTheme(
+                              minWidth: 30.0,
+                              height: 30.0,
                               child: FlatButton(
-                                  child: Icon(Icons.edit, color: Colors.white),
-                                  color: Colors.redAccent,
-                                  shape: CircleBorder(),
-                                  onPressed: editAvatarDialogBox),
+                                shape: CircleBorder(),
+                                onPressed: _editPlayerInfo,
+                                child: Icon(Icons.edit, color: Colors.white),
+                              ),
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Padding(padding: EdgeInsets.all(15.0)),
-                                Container(
-                                  height: 100,
-                                  width: 100,
-                                  margin: const EdgeInsets.all(5),
-                                  decoration: new BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: new DecorationImage(
-                                      fit: BoxFit.fill,
-                                      image: AssetImage(_image == null
-                                          ? 'assets/avatar.png'
-                                          : _image.path),
-                                    ),
-                                  ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Padding(
+                                  padding: EdgeInsets.only(
+                                      top: 0, bottom: 10, left: 10, right: 10)),
+                              _getPlayerAvatar(),
+                              Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  _selectedItem.name,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 24.0, color: Colors.white),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Text(
-                                    _selectedItem.name,
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 24.0, color: Colors.white),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                    SizedBox(
-                      height: 16.0,
-                    ),
-                    Container(
-                      //mainAxisSize: MainAxisSize.min,
-                      //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      margin: const EdgeInsets.only(left: 10, right: 10),
-
-                      child: _buildPlayerInfo(_selectedItem),
-                    ),
-                  ],
-                ),
+                  ),
+                  SingleChildScrollView(
+                    child: _buildPlayerInfo(_selectedItem),
+                  ),
+                ],
               ),
             ),
           ),
@@ -177,26 +256,63 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
   }
 
   Widget _buildPlayerInfo(Player player) {
-    return Column(
-      children: <Widget>[
-        Row(children: <Widget>[
-          Icon(Icons.cake),
-          Text(
-              '  ${player.birthDate.day} / ${player.birthDate.month} /${player.birthDate.year}')
-        ]),
-        Padding(padding: EdgeInsets.all(2.0)),
-        Row(children: <Widget>[
-          Icon(Icons.accessibility_new),
-          Text(EnumToString.parseCamelCase(player.dominantMember))
-        ]),
-        Padding(padding: EdgeInsets.all(2.0)),
-        Row(children: <Widget>[ Icon(Icons.ac_unit),Text('  ${player.height}')
-        ]),
-        Padding(padding: EdgeInsets.all(2.0)),
-        Row(children: <Widget>[Icon(Icons.ac_unit), Text('  ${player.weight}')
-        ]),
-      ],
-    );
+    return Container(
+        margin: const EdgeInsets.all(10),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+                alignment: Alignment.centerLeft,
+                child: TextField(
+                    enabled: false,
+                    keyboardType: TextInputType.datetime,
+                    controller: TextEditingController.fromValue(TextEditingValue(
+                        text:
+                            '${player.birthDate.day}/${player.birthDate.month}/${player.birthDate.year}')),
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        labelText: "Birth Date",
+                        contentPadding: const EdgeInsets.all(5.0)))),
+            Container(
+                alignment: Alignment.centerLeft,
+                child: TextField(
+                  enabled: false,
+                  keyboardType: TextInputType.number,
+                  controller: TextEditingController.fromValue(TextEditingValue(
+                      text:
+                          EnumToString.parseCamelCase(player.dominantMember))),
+                  decoration: InputDecoration(
+                      border: InputBorder.none,
+                      labelText: "Dominant Member",
+                      contentPadding: const EdgeInsets.all(5.0)),
+                )),
+            Row(children: <Widget>[
+              Container(
+                  width: 60,
+                  child: TextField(
+                      enabled: false,
+                      keyboardType: TextInputType.number,
+                      controller: TextEditingController.fromValue(
+                          TextEditingValue(text: player.height.toString())),
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          labelText: "Height",
+                          contentPadding: const EdgeInsets.all(5.0)))),
+              Container(
+                  width: 60,
+                  child: TextField(
+                      enabled: false,
+                      keyboardType: TextInputType.number,
+                      controller: TextEditingController.fromValue(
+                          TextEditingValue(text: player.weight.toString())),
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          labelText: "Weight",
+                          contentPadding: const EdgeInsets.all(5.0)))),
+            ]),
+          ],
+        ));
   }
 
   TextStyle _statCountTextStyle = TextStyle(
