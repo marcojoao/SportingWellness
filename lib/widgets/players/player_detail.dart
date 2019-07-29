@@ -34,9 +34,7 @@ class ItemDetails extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(heading,
-                        style: TextStyle(
-                            color: Color.fromRGBO(255, 255, 255, 255),
-                            fontSize: 20.0)),
+                        style: TextStyle(color: Colors.black, fontSize: 20.0)),
                   ),
                 ),
                 Material(
@@ -53,15 +51,7 @@ class ItemDetails extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    FloatingActionButton(
-                      child: Icon(Icons.add),
-                      mini: true,
-                      onPressed: () {
-                        print('ADD REPORT');
-                      },
-                    )
-                  ],
+                  children: <Widget>[_addReportButton()],
                 )
               ],
             ),
@@ -69,6 +59,15 @@ class ItemDetails extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _addReportButton() {
+    return Container(
+        width: 80.0,
+        height: 80.0,
+        child: FittedBox(
+          child: FloatingActionButton(child: Icon(Icons.add), onPressed: () {}),
+        ));
   }
 
   Widget _buildReportListHeader() {
@@ -104,23 +103,24 @@ class ItemDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
+    final _sizeHeigth = MediaQuery.of(context).size.height;
+
     final Widget content = StaggeredGridView.count(
       crossAxisCount: 2,
       crossAxisSpacing: 12.0,
       mainAxisSpacing: 12.0,
       padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       children: <Widget>[
-        _chartITem('Soroness', Colors.black, 10, 100),
-        _chartITem('Pain', Colors.black, 10, 100),
+        _chartITem('Soroness', Colors.black, 100, 100),
+        _chartITem('Pain', Colors.black, 100, 100),
         _buildReportListHeader(),
-        _listReports(Icons.graphic_eq, "TotalViews", 0xffed22b),
+        _listReports(Icons.graphic_eq, "Total Reports", 0xffed22b),
       ],
       staggeredTiles: [
-        StaggeredTile.extent(1, 200.0),
-        StaggeredTile.extent(1, 200.0),
-        StaggeredTile.extent(2, 80.0),
-        StaggeredTile.extent(2, 400.0),
+        StaggeredTile.extent(1, _sizeHeigth * 0.25),
+        StaggeredTile.extent(1, _sizeHeigth * 0.25),
+        StaggeredTile.extent(2, _sizeHeigth * 0.1),
+        StaggeredTile.extent(2, _sizeHeigth * 0.57),
       ],
     );
     // Column(
