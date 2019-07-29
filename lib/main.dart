@@ -7,7 +7,8 @@ import 'package:Wellness/services/route_generator.dart';
 
 void main() {
   //set device orientation,
-  //SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
   _setTargetPlatformForDesktop();
   return runApp(MyApp());
 }
