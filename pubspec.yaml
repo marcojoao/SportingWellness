@@ -9,12 +9,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
   camera: ^0.5.2+2
-  path:
   flutter_staggered_grid_view: ^0.3.0
   bezier_chart: "^1.0.10"
   date_utils: ^0.1.0+2
-  
   flutter_form_builder: ^3.2.9
   sembast: ^2.0.0+1
   path_provider: ^1.2.0

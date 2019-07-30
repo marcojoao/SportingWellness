@@ -289,7 +289,7 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
                 )),
             Row(children: <Widget>[
               Container(
-                  width: 60,
+                  width: 80,
                   child: TextField(
                       enabled: false,
                       keyboardType: TextInputType.number,
@@ -300,7 +300,7 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
                           labelText: "Height",
                           contentPadding: const EdgeInsets.all(5.0)))),
               Container(
-                  width: 60,
+                  width: 80,
                   child: TextField(
                       enabled: false,
                       keyboardType: TextInputType.number,
