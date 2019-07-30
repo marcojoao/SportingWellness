@@ -94,12 +94,18 @@ class ItemDetails extends StatelessWidget {
   }
 
   Widget _chartITem(String heading, Color color, double height, double width) {
-    return Center(
-        child: Material(
-            color: Colors.white,
-            elevation: 8,
-            shadowColor: Color.fromARGB(243, 128, 33, 150),
-            child: LineChartPlayer()));
+    return Material(
+        color: Colors.white,
+        elevation: 8,
+        shadowColor: Color.fromARGB(243, 128, 33, 150),
+        child: InkWell(
+          onTap: () {
+            print("WEWE");
+          },
+          child: LineChartPlayer(
+            isMonth: false,
+          ),
+        ));
   }
 
   @override
@@ -112,7 +118,7 @@ class ItemDetails extends StatelessWidget {
       mainAxisSpacing: 12.0,
       padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       children: <Widget>[
-        _chartITem('Soroness', Colors.black, 100, 100),
+        _chartITem('Soroness', Colors.black, 10, 10),
         _chartITem('Pain', Colors.black, 100, 100),
         _buildReportListHeader(),
         _listReports(Icons.graphic_eq, "Total Reports", 0xffed22b, context),
@@ -139,7 +145,7 @@ class ItemDetails extends StatelessWidget {
     // );
 
     if (isInTabletLayout) {
-      return Center(child: content);
+      return content;
     }
 
     return Scaffold(
