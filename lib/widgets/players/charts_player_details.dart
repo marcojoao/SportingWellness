@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:Wellness/model/report.dart';
 import 'package:bezier_chart/bezier_chart.dart';
 import 'package:flutter/material.dart';
@@ -51,11 +49,6 @@ class _LineChartPlayerState extends State<LineChartPlayer> {
     //     ),
     //   ),
     // );
-
-    // // verticalBarChart, lineChart
-
-
-   
 
     final toDate = DateTime.now();
     final fromDate = DateTime(toDate.year - 1, toDate.month, toDate.day);
