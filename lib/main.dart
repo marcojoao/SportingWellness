@@ -1,46 +1,47 @@
-// import 'dart:io';
+// // import 'dart:io';
 
-// import 'package:flutter/foundation.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:Wellness/services/route_generator.dart';
+// // import 'package:flutter/foundation.dart';
+// // import 'package:flutter/material.dart';
+// // import 'package:flutter/services.dart';
+// // import 'package:Wellness/services/route_generator.dart';
 
-// void main() {
-//   //set device orientation,
-//   SystemChrome.setEnabledSystemUIOverlays([]);
-//   SystemChrome.setPreferredOrientations(
-//       [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
-//   _setTargetPlatformForDesktop();
-//   return runApp(MyApp());
-// }
+// // void main() {
+// //   //set device orientation,
+// //   SystemChrome.setEnabledSystemUIOverlays([]);
+// //   SystemChrome.setPreferredOrientations(
+// //       [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+// //   _setTargetPlatformForDesktop();
+// //   return runApp(MyApp());
+// // }
 
-// void _setTargetPlatformForDesktop() {
-//   TargetPlatform targetPlatform;
-//   if (Platform.isMacOS) {
-//     targetPlatform = TargetPlatform.iOS;
-//   } else if (Platform.isLinux || Platform.isWindows) {
-//     targetPlatform = TargetPlatform.android;
-//   }
-//   if (targetPlatform != null) {
-//     debugDefaultTargetPlatformOverride = targetPlatform;
-//   }
-// }
+// // void _setTargetPlatformForDesktop() {
+// //   TargetPlatform targetPlatform;
+// //   if (Platform.isMacOS) {
+// //     targetPlatform = TargetPlatform.iOS;
+// //   } else if (Platform.isLinux || Platform.isWindows) {
+// //     targetPlatform = TargetPlatform.android;
+// //   }
+// //   if (targetPlatform != null) {
+// //     debugDefaultTargetPlatformOverride = targetPlatform;
+// //   }
+// // }
 
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       theme: ThemeData(
-//           brightness: Brightness.light,
-//           primarySwatch: Colors.green,
-//           accentColor: Colors.redAccent),
-//       initialRoute: '/',
-//       onGenerateRoute: RouteGenerator.generateRoute,
-//     );
-//   }
-// }
+// // class MyApp extends StatelessWidget {
+// //   @override
+// //   Widget build(BuildContext context) {
+// //     return MaterialApp(
+// //       debugShowCheckedModeBanner: false,
+// //       theme: ThemeData(
+// //           brightness: Brightness.light,
+// //           primarySwatch: Colors.green,
+// //           accentColor: Colors.redAccent),
+// //       initialRoute: '/',
+// //       onGenerateRoute: RouteGenerator.generateRoute,
+// //     );
+// //   }
+// // }
 
+import 'package:Wellness/widgets/players/FloatingActionButton_Extended.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
@@ -54,10 +55,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Generated App',
+      title: 'Wellness',
       theme: new ThemeData(
-        primaryColor: Colors.green,
-        accentColor: Colors.redAccent,
+        primaryColor: Colors.grey[300],
+        accentColor: Colors.green,
         brightness: Brightness.light,
       ),
       home: new MyHomePage(),
@@ -71,10 +72,11 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => new _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage>  {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      floatingActionButton:  FloatingActionButton_Extended(context),
       body: new Container(
         child: new Row(
           children: <Widget>[
@@ -92,7 +94,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: new Card(
                         child: new Container(
                           margin: EdgeInsets.all(10),
-                          color: Theme.of(context).accentColor,
+                          //color: Theme.of(context).accentColor,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                              color: Theme.of(context).accentColor),
                         ),
                       ),
                       alignment: Alignment.center,
