@@ -23,8 +23,7 @@ class ItemDetails extends StatelessWidget {
       IconData icon, String heading, int color, BuildContext context) {
     return Material(
       color: Colors.white,
-      elevation: 8,
-      shadowColor: Color.fromARGB(243, 128, 33, 150),
+      elevation: 2,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -62,15 +61,16 @@ class ItemDetails extends StatelessWidget {
 
   Widget _addReportButton(BuildContext context) {
     return Container(
-        width: 50.0,
-        height: 50.0,
-        child: FittedBox(
-          child: FloatingActionButton(
-              child: Icon(Icons.add),
-              onPressed: () {
-                _addReport(context);
-              }),
-        ));
+      width: 50.0,
+      height: 50.0,
+      child: FittedBox(
+        child: FloatingActionButton(
+            child: Icon(Icons.add),
+            onPressed: () {
+              _addReport(context);
+            }),
+      ),
+    );
   }
 
   Widget _buildReportListHeader() {
@@ -82,8 +82,7 @@ class ItemDetails extends StatelessWidget {
     );
     return Material(
         color: Colors.white,
-        elevation: 8,
-        shadowColor: Color.fromARGB(243, 128, 33, 150),
+        elevation: 2,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
@@ -95,11 +94,9 @@ class ItemDetails extends StatelessWidget {
 
   Widget _chartITem(String heading, Color color, double height, double width) {
     return Center(
-        child: Material(
-            color: Colors.white,
-            elevation: 8,
-            shadowColor: Color.fromARGB(243, 128, 33, 150),
-            child: LineChartPlayer()));
+      child:
+          Material(color: Colors.white, elevation: 2, child: LineChartPlayer()),
+    );
   }
 
   @override
@@ -118,8 +115,8 @@ class ItemDetails extends StatelessWidget {
         _listReports(Icons.graphic_eq, "Total Reports", 0xffed22b, context),
       ],
       staggeredTiles: [
-        StaggeredTile.extent(1, _sizeHeigth * 0.25),
-        StaggeredTile.extent(1, _sizeHeigth * 0.25),
+        StaggeredTile.extent(1, _sizeHeigth * 0.37),
+        StaggeredTile.extent(1, _sizeHeigth * 0.37),
         StaggeredTile.extent(2, _sizeHeigth * 0.1),
         StaggeredTile.extent(2, _sizeHeigth * 0.57),
       ],
