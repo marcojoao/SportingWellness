@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 class FloatingActionMenu extends StatefulWidget {
-  final BuildContext buildContext;
-  final List<Widget> children;
+  static String tag = 'FloatingActionMenu';
+  List<Widget> children = const <Widget>[];
   final void Function(double) onProgressChanged;
 
   final Color closedColor;
   final Color openedColor;
   final AnimatedIconData toogleAnimatedIconData;
 
-  FloatingActionMenu(this.buildContext,
+  FloatingActionMenu(
       {this.children,
       this.onProgressChanged,
       this.openedColor,
@@ -73,13 +73,15 @@ class _FloatingActionMenu extends State<FloatingActionMenu>
   }
 
   Widget toggle() {
+
     return Container(
       child: FloatingActionButton(
+        heroTag: "floating_action_menu_toggle",
         backgroundColor: _buttonColor.value,
         onPressed: animate,
         child: AnimatedIcon(
           icon: widget.toogleAnimatedIconData ?? AnimatedIcons.menu_close,
-          progress: _animateIcon,
+          progress: _animateIcon
         ),
       ),
     );
@@ -91,6 +93,7 @@ class _FloatingActionMenu extends State<FloatingActionMenu>
       list.add(toggle());
       return list;
     }
+   
 
     for (var i = 0; i < items.length; i++) {
       list.add(

@@ -40,6 +40,8 @@ class Player {
     };
   }
 
+  static String defaultAvatar = "assets/player_default.png";
+
   static Player fromMap(Map<String, dynamic> map) {
     return Player(
         name: map['name'],
