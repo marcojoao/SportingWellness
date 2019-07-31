@@ -16,7 +16,7 @@ class Report {
   BodySide painSide;
   int painNumber;
   DateTime dateTime;
-  bool selected ;
+  String notes;
 
   Report(
       {@required this.playerId,
@@ -30,7 +30,7 @@ class Report {
       this.painLocation,
       this.painSide,
       this.painNumber,
-      this.selected});
+      this.notes});
 
   Map<String, dynamic> toMap() {
     return {
@@ -45,7 +45,7 @@ class Report {
       'painSide': painSide,
       'painNumber': painNumber,
       'dateTime': dateTime,
-      'selected': selected
+      'notes': notes
     };
   }
 
@@ -62,7 +62,7 @@ class Report {
         painSide: map['painSide'],
         painNumber: map['painNumber'],
         dateTime: map['dateTime'],
-        selected: map['selected']);
+        notes: map['notes']);
   }
 }
 

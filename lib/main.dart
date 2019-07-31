@@ -9,7 +9,7 @@ void main() {
   SystemChrome.setEnabledSystemUIOverlays([]);
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
-      
+
   _setTargetPlatformForDesktop();
   return runApp(MyApp());
 }
@@ -31,13 +31,24 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: Colors.grey[300],
-        accentColor: Colors.green,
-        brightness: Brightness.light,
-      ),
+      theme: _getThemeDate(false),
       initialRoute: '/',
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
+}
+
+ThemeData _getThemeDate(bool useDark) {
+  var lightTheme = ThemeData(
+    brightness: Brightness.light,
+    primaryColor: Colors.grey[200],
+    accentColor: Colors.green,
+  );
+
+  var darkTheme = ThemeData(
+    brightness: Brightness.dark,
+    primaryColor: Colors.grey[600],
+    accentColor: Colors.green,
+  );
+  return useDark ? darkTheme : lightTheme;
 }

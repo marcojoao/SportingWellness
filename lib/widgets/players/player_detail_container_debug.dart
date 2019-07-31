@@ -57,7 +57,7 @@ class _PlayerDetailContainerDebugState
                   timeInSecForIos: 1),
             },
             tooltip: 'Add Report',
-            backgroundColor: Theme.of(context).cardColor,
+            backgroundColor: Colors.white,
             child: Icon(Icons.add, color: Theme.of(context).accentColor),
           ),
         ),
@@ -72,7 +72,7 @@ class _PlayerDetailContainerDebugState
                   timeInSecForIos: 1),
             },
             tooltip: 'Edit Profile',
-            backgroundColor: Theme.of(context).cardColor,
+            backgroundColor: Colors.white,
             child: Icon(Icons.edit, color: Theme.of(context).accentColor),
           ),
         ),
@@ -131,13 +131,13 @@ class _PlayerDetailContainerDebugState
   Widget _buildRigtPanel(BuildContext context, Player player, DateTime date) {
     return new Expanded(
       child: new Container(
+        color: Theme.of(context).primaryColor,
         child: new ListView(
           children: <Widget>[
             new Container(
               margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 5),
               child: new Card(
                 child: new Container(
-                  margin: EdgeInsets.all(10),
                   child: chartExample(context, player, date),
                 ),
               ),
@@ -146,11 +146,7 @@ class _PlayerDetailContainerDebugState
             ),
             Container(
               margin: EdgeInsets.only(top: 5, left: 10, right: 10, bottom: 80),
-              child: new Card(
-                child: new Container(
-                  child: _buildReportDateTables(context, player),
-                ),
-              ),
+              child: _buildReportDateTables(context, player)
             ),
           ],
         ),
@@ -159,7 +155,7 @@ class _PlayerDetailContainerDebugState
   }
 
   Widget _buildDebug(BuildContext context, Player player, DateTime date) {
-    if (player.reports == null) player.reports = randomReports(date);
+    if (player.reports == null) player.reports = randomDayReports(date);
 
     return new Scaffold(
       floatingActionButton: _buildFloatingMenu(context),
@@ -175,9 +171,9 @@ class _PlayerDetailContainerDebugState
   }
 
   var reportNum = 10;
-  PaginatedDataTable _buildReportDateTables(
-      BuildContext context, Player player) {
+  PaginatedDataTable _buildReportDateTables(BuildContext context, Player player) {
     return PaginatedDataTable(
+      
       rowsPerPage: (player.reports.length < reportNum)
           ? player.reports.length
           : reportNum,
@@ -205,7 +201,7 @@ class _PlayerDetailContainerDebugState
   }
 }
 
-List<Report> randomReports(DateTime date) {
+List<Report> randomDayReports(DateTime date) {
   List<Report> report = new List<Report>();
   Random rng = new Random();
   var playerId = rng.nextInt(1000);
@@ -227,7 +223,7 @@ List<Report> randomReports(DateTime date) {
               BodyLocation.values[rng.nextInt(BodyLocation.values.length)],
           painSide: BodySide.values[rng.nextInt(BodySide.values.length)],
           painNumber: rng.nextInt(10),
-          selected: false),
+          notes: rng.nextBool() ? "Where do random thoughts come from?\nA song can make or ruin a person’s day if they let it get to them." : ""),
     );
   }
   return report;
