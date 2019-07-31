@@ -41,12 +41,18 @@
 // //   }
 // // }
 
+import 'dart:math';
+
 import 'package:Wellness/widgets/general/floating_action_menu.dart';
 import 'package:bezier_chart/bezier_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+
+import 'model/report.dart';
 
 void main() {
   SystemChrome.setEnabledSystemUIOverlays([]);
@@ -129,12 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: new Card(
                         child: new Container(
                           margin: EdgeInsets.all(10),
-                          //color: Theme.of(context).accentColor,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5.0)),
-                              color: Theme.of(context).accentColor),
-                          child: chartExample(context),
+                          child: chartExample2(context),
                         ),
                       ),
                       alignment: Alignment.center,
@@ -169,10 +170,65 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-Widget chartExample(BuildContext context) {
+List<Report> randomReports() {
+  List<Report> report = new List<Report>();
+  Random rng = new Random();
+  var playerId = rng.nextInt(1000);
+  for (var i = 1; i <= 12; i++) {
+    report.add(
+      Report(
+        playerId: playerId,
+        dateTime: DateTime.utc(2019, i, 1),
+        sleepState: SleepState.values[rng.nextInt(SleepState.values.length)],
+        recovery: (rng.nextDouble() * 100).round() * 1.0,
+        sorroness: true,
+        soronessLocation:
+            BodyLocation.values[rng.nextInt(BodyLocation.values.length)],
+        sorronessSide: BodySide.values[rng.nextInt(BodySide.values.length)],
+        pain: true,
+        painLocation:
+            BodyLocation.values[rng.nextInt(BodyLocation.values.length)],
+        painSide: BodySide.values[rng.nextInt(BodySide.values.length)],
+        painNumber: rng.nextInt(10),
+      ),
+    );
+  }
+  return report;
+}
 
+Widget chartExample2(BuildContext context) {
+  return SfCartesianChart(
+    primaryXAxis: CategoryAxis(),
+    primaryYAxis: NumericAxis(
+      edgeLabelPlacement: EdgeLabelPlacement.hide,
+      interval: 20,
+      minimum: -20,
+      maximum: 120,
+      visibleMinimum: 0,
+      visibleMaximum: 100,
+      rangePadding: ChartRangePadding.additional,
+    ),
+    //legend: Legend(isVisible: true),
+    // Chart title
+    title: ChartTitle(text: "Player Recovery over ${DateTime.now().year}"),
+    tooltipBehavior: TooltipBehavior(enable: true),
+    series: <LineSeries<Report, String>>[
+      LineSeries<Report, String>(
+        color: Theme.of(context).accentColor,
+        dataSource: randomReports(),
+        xValueMapper: (Report report, _) => report.dateTime.month.toString(),
+        yValueMapper: (Report report, _) => report.recovery,
+        dataLabelSettings: DataLabelSettings(
+          isVisible: true,
+        ),
+      )
+    ],
+  );
+}
+
+Widget chartExample(BuildContext context) {
   final toDate = DateTime.now();
-  final fromDate = DateTime(toDate.year-1, toDate.month, toDate.day);
+  final fromDate = DateTime(toDate.year - 1, toDate.month, toDate.day);
 
   final date1 = DateTime.now().subtract(Duration(days: 2));
   final date2 = DateTime.now().subtract(Duration(days: 3));
