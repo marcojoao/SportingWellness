@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class Report {
@@ -13,9 +14,11 @@ class Report {
   BodySide painSide;
   int painNumber;
   DateTime dateTime;
+  bool selected ;
 
   Report(
       {@required this.playerId,
+      @required this.dateTime,
       @required this.sleepState,
       @required this.recovery,
       @required this.sorroness,
@@ -25,7 +28,7 @@ class Report {
       this.painLocation,
       this.painSide,
       this.painNumber,
-      @required this.dateTime});
+      this.selected});
 
   Map<String, dynamic> toMap() {
     return {
@@ -39,7 +42,8 @@ class Report {
       'painLocation': painLocation,
       'painSide': painSide,
       'painNumber': painNumber,
-      'dateTime': dateTime
+      'dateTime': dateTime,
+      'selected': selected
     };
   }
 
@@ -54,9 +58,33 @@ class Report {
         pain: map['pain'],
         painLocation: map['painLocation'],
         painSide: map['painSide'],
-        painNumber: map['painNumber'], 
-        dateTime: map['dateTime']);
+        painNumber: map['painNumber'],
+        dateTime: map['dateTime'],
+        selected: map['selected']);
   }
+
+  static List<DataColumn> dataTableColumn = <DataColumn>[
+    DataColumn(
+    label: const Text('Date'),
+    numeric: false,
+  ),
+  DataColumn(
+    label: const Text('Sleep'),
+    numeric: false,
+  ),
+  DataColumn(
+    label: const Text('Recovery'),
+    numeric: false,
+  ),
+  DataColumn(
+    label: const Text('Sorness'),
+    numeric: false,
+  ),
+  DataColumn(
+    label: const Text('Pain'),
+    numeric: false,
+  ),
+];
 }
 
 enum SleepState { good, noInfo, notAtAll, bad }

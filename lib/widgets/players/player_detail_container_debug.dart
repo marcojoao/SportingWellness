@@ -4,10 +4,10 @@ import 'package:Wellness/model/player.dart';
 import 'package:Wellness/model/report.dart';
 import 'package:Wellness/widgets/general/floating_action_menu.dart';
 import 'package:Wellness/widgets/players/players_mock_list.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
-import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class PlayerDetailContainerDebug extends StatefulWidget {
@@ -22,7 +22,7 @@ class _PlayerDetailContainerDebugState
     extends State<PlayerDetailContainerDebug> {
   Player _selectedItem;
   double _leftPanelWidthSize = 250;
-
+  int _rowsPerPage = 10;
   @override
   void initState() {
     super.initState();
@@ -76,11 +76,11 @@ class _PlayerDetailContainerDebugState
     );
   }
 
+
   List<Widget> _buildReportTiles(BuildContext context, Player player) {
     var result = List<Widget>();
-    for (var i = 0; i < player.reports.length; i++) {
+    for (var i = 0; i < player.reports.length; i++)
       result.add(reportTile(player.reports[i]));
-    }
 
     return ListTile.divideTiles(
       context: context,
@@ -159,12 +159,9 @@ class _PlayerDetailContainerDebugState
                 child: new Card(
                   child: new Container(
                     child: Scrollbar(
-                      child: LiquidPullToRefresh(
-                        child: ListView(
-                          children: _buildReportTiles(context, player),
+                      child: SingleChildScrollView(
+                          child: _buildReportDateTables(context, player,_rowsPerPage),
                         ),
-                        onRefresh: () async {}, // scroll view
-                      ),
                     ),
                   ),
                 ),
@@ -221,20 +218,22 @@ List<Report> randomReports() {
         dateTime: DateTime.utc(DateTime.now().year, i, 1),
         sleepState: SleepState.values[rng.nextInt(SleepState.values.length)],
         recovery: (rng.nextDouble() * 100).round() * 1.0,
-        sorroness: true,
+        sorroness: rng.nextBool(),
         soronessLocation:
             BodyLocation.values[rng.nextInt(BodyLocation.values.length)],
         sorronessSide: BodySide.values[rng.nextInt(BodySide.values.length)],
-        pain: true,
+        pain: rng.nextBool(),
         painLocation:
             BodyLocation.values[rng.nextInt(BodyLocation.values.length)],
         painSide: BodySide.values[rng.nextInt(BodySide.values.length)],
         painNumber: rng.nextInt(10),
+        selected: false
       ),
     );
   }
   return report;
 }
+
 
 Widget chartExample(BuildContext context, Player player) {
   return SfCartesianChart(
@@ -264,6 +263,58 @@ Widget chartExample(BuildContext context, Player player) {
   );
 }
 
+
+PaginatedDataTable _buildReportDateTables(BuildContext context, Player player, int rowsPerPage){
+   
+    return PaginatedDataTable(
+        header: Text('Player Reports'),
+        rowsPerPage: rowsPerPage,
+        //availableRowsPerPage: <int>[12, 24, 120],
+        onRowsPerPageChanged: (value)=>{
+          rowsPerPage = value,
+        },
+        columns: Report.dataTableColumn,
+        source: ReportDataSource(player.reports),
+      );
+  }
+  
 Widget reportTile(Report report) {
   return ListTile(title: Text(report.recovery.toString()));
+}
+
+ 
+class ReportDataSource extends DataTableSource {
+  int _selectedCount = 0;
+   List<Report> _reports;
+
+  ReportDataSource(this._reports);
+
+  @override
+  DataRow getRow(int index) {
+    assert(index >= 0);
+    if (index >= _reports.length) return null;
+    final Report report = _reports[index];
+    var sorroness = report.sorroness ?  EnumToString.parseCamelCase(report.sorronessSide) : "No info";
+    var pain = report.pain ? EnumToString.parseCamelCase(report.painLocation) : 'No info';
+    var painNumber = report.pain ? " | ${report.painNumber}" : "";
+    
+    return DataRow.byIndex(
+        index: index,
+        cells: <DataCell>[
+          DataCell(Text(DateFormat('MMMM').format(report.dateTime).substring(0, 3))),
+          DataCell(Text(EnumToString.parseCamelCase(report.sleepState))),
+          DataCell(Text("${report.recovery}%")),
+          DataCell(Text(sorroness)),
+          DataCell(Text( "${pain}${painNumber}")),
+        ]);
+  }
+
+  @override
+  int get rowCount => _reports.length;
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get selectedRowCount => _selectedCount;
 }
