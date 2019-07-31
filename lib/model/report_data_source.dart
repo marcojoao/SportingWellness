@@ -23,8 +23,7 @@ class ReportDataSource extends DataTableSource {
     var painNumber = report.pain ? " | ${report.painNumber}" : "";
 
     return DataRow.byIndex(index: index, cells: <DataCell>[
-      DataCell(
-          Text(DateFormat('MMMM').format(report.dateTime).substring(0, 3))),
+      DataCell(Text(report.dateTime.day.toString())),
       DataCell(Text(EnumToString.parseCamelCase(report.sleepState))),
       DataCell(Text("${report.recovery}%")),
       DataCell(Text(sorroness)),
@@ -43,7 +42,7 @@ class ReportDataSource extends DataTableSource {
 
   static List<DataColumn> getDataColumn = <DataColumn>[
     DataColumn(
-      label: const Text('Date'),
+      label: const Text('Day'),
       numeric: false,
     ),
     DataColumn(

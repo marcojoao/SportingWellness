@@ -5,14 +5,17 @@ import 'package:Wellness/model/report.dart';
 import 'package:Wellness/model/report_data_source.dart';
 import 'package:Wellness/widgets/general/floating_action_menu.dart';
 import 'package:Wellness/widgets/players/players_mock_list.dart';
+import 'package:date_util/date_util.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class PlayerDetailContainerDebug extends StatefulWidget {
-  Player player;
-  PlayerDetailContainerDebug({Key key, this.player}) : super(key: key);
+  Player selectedPlayer;
+  DateTime selectedDate;
+  PlayerDetailContainerDebug({Key key, this.selectedPlayer, this.selectedDate})
+      : super(key: key);
   @override
   _PlayerDetailContainerDebugState createState() =>
       _PlayerDetailContainerDebugState();
@@ -21,20 +24,22 @@ class PlayerDetailContainerDebug extends StatefulWidget {
 class _PlayerDetailContainerDebugState
     extends State<PlayerDetailContainerDebug> {
   Player _selectedItem;
+  DateTime _selectedDate;
   double _leftPanelWidthSize = 250;
   @override
   void initState() {
     super.initState();
     setState(
       () {
-        _selectedItem = widget.player ?? players[0];
+        _selectedItem = widget.selectedPlayer ?? players[0];
+        _selectedDate = widget.selectedDate ?? DateTime.now();
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return _buildDebug(context, _selectedItem);
+    return _buildDebug(context, _selectedItem, _selectedDate);
   }
 
   Widget _buildFloatingMenu(BuildContext context) {
@@ -123,44 +128,38 @@ class _PlayerDetailContainerDebugState
     );
   }
 
-  Widget _buildRigtPanel(BuildContext context, Player player) {
+  Widget _buildRigtPanel(BuildContext context, Player player, DateTime date) {
     return new Expanded(
       child: new Container(
-        child: new Column(
+        child: new ListView(
           children: <Widget>[
             new Container(
               margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 5),
               child: new Card(
                 child: new Container(
                   margin: EdgeInsets.all(10),
-                  child: chartExample(context, player),
+                  child: chartExample(context, player, date),
                 ),
               ),
               alignment: Alignment.center,
               height: 250,
             ),
-            new Expanded(
-              child: new Container(
-                margin:
-                    EdgeInsets.only(top: 5, left: 10, right: 10, bottom: 10),
-                child: new Card(
-                  child: new Container(
-                    child: _buildReportDateTables(context, player),
-                  ),
+            Container(
+              margin: EdgeInsets.only(top: 5, left: 10, right: 10, bottom: 80),
+              child: new Card(
+                child: new Container(
+                  child: _buildReportDateTables(context, player),
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(top: 65),
-            )
           ],
         ),
       ),
     );
   }
 
-  Widget _buildDebug(BuildContext context, Player player) {
-    if (player.reports == null) player.reports = randomReports();
+  Widget _buildDebug(BuildContext context, Player player, DateTime date) {
+    if (player.reports == null) player.reports = randomReports(date);
 
     return new Scaffold(
       floatingActionButton: _buildFloatingMenu(context),
@@ -168,17 +167,20 @@ class _PlayerDetailContainerDebugState
         child: new Row(
           children: <Widget>[
             _buildLeftPanel(context, player),
-            _buildRigtPanel(context, player)
+            _buildRigtPanel(context, player, date)
           ],
         ),
       ),
     );
   }
 
+  var reportNum = 10;
   PaginatedDataTable _buildReportDateTables(
       BuildContext context, Player player) {
     return PaginatedDataTable(
-      rowsPerPage: 5,
+      rowsPerPage: (player.reports.length < reportNum)
+          ? player.reports.length
+          : reportNum,
       header: Text('Recent reports'),
       columns: ReportDataSource.getDataColumn,
       source: ReportDataSource(player.reports),
@@ -203,15 +205,17 @@ class _PlayerDetailContainerDebugState
   }
 }
 
-List<Report> randomReports() {
+List<Report> randomReports(DateTime date) {
   List<Report> report = new List<Report>();
   Random rng = new Random();
   var playerId = rng.nextInt(1000);
-  for (var i = 1; i <= 12; i++) {
+  var dateUtility = new DateUtil();
+  var days = dateUtility.daysInMonth(date.month, date.year);
+  for (var i = 1; i <= days; i++) {
     report.add(
       Report(
           playerId: playerId,
-          dateTime: DateTime.utc(DateTime.now().year, i, 1),
+          dateTime: DateTime.utc(date.year, date.month, i),
           sleepState: SleepState.values[rng.nextInt(SleepState.values.length)],
           recovery: (rng.nextDouble() * 100).round() * 1.0,
           sorroness: rng.nextBool(),
@@ -229,7 +233,7 @@ List<Report> randomReports() {
   return report;
 }
 
-Widget chartExample(BuildContext context, Player player) {
+Widget chartExample(BuildContext context, Player player, DateTime date) {
   return SfCartesianChart(
     primaryXAxis: CategoryAxis(),
     primaryYAxis: NumericAxis(
@@ -241,15 +245,13 @@ Widget chartExample(BuildContext context, Player player) {
         visibleMaximum: 100,
         rangePadding: ChartRangePadding.additional,
         labelFormat: '{value}%'),
-    title:
-        ChartTitle(text: "${player.name} recovery over ${DateTime.now().year}"),
+    title: ChartTitle(text: "Recovery over ${DateFormat('MMMM').format(date)}"),
     tooltipBehavior: TooltipBehavior(enable: true),
     series: <LineSeries<Report, String>>[
       LineSeries<Report, String>(
         color: Theme.of(context).accentColor,
         dataSource: player.reports,
-        xValueMapper: (Report report, _) =>
-            '${DateFormat('MMMM').format(report.dateTime).substring(0, 3)}',
+        xValueMapper: (Report report, _) => report.dateTime.day.toString(),
         yValueMapper: (Report report, _) => report.recovery,
         markerSettings: MarkerSettings(color: Colors.white, isVisible: true),
       )
