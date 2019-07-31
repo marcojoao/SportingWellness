@@ -1,5 +1,7 @@
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 
 class Report {
   int id;
@@ -62,29 +64,6 @@ class Report {
         dateTime: map['dateTime'],
         selected: map['selected']);
   }
-
-  static List<DataColumn> dataTableColumn = <DataColumn>[
-    DataColumn(
-    label: const Text('Date'),
-    numeric: false,
-  ),
-  DataColumn(
-    label: const Text('Sleep'),
-    numeric: false,
-  ),
-  DataColumn(
-    label: const Text('Recovery'),
-    numeric: false,
-  ),
-  DataColumn(
-    label: const Text('Sorness'),
-    numeric: false,
-  ),
-  DataColumn(
-    label: const Text('Pain'),
-    numeric: false,
-  ),
-];
 }
 
 enum SleepState { good, noInfo, notAtAll, bad }

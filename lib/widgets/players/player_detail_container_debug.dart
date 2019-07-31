@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:Wellness/model/player.dart';
 import 'package:Wellness/model/report.dart';
+import 'package:Wellness/model/report_data_source.dart';
 import 'package:Wellness/widgets/general/floating_action_menu.dart';
 import 'package:Wellness/widgets/players/players_mock_list.dart';
-import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -22,7 +22,6 @@ class _PlayerDetailContainerDebugState
     extends State<PlayerDetailContainerDebug> {
   Player _selectedItem;
   double _leftPanelWidthSize = 250;
-  int _rowsPerPage = 10;
   @override
   void initState() {
     super.initState();
@@ -74,18 +73,6 @@ class _PlayerDetailContainerDebugState
         ),
       ],
     );
-  }
-
-
-  List<Widget> _buildReportTiles(BuildContext context, Player player) {
-    var result = List<Widget>();
-    for (var i = 0; i < player.reports.length; i++)
-      result.add(reportTile(player.reports[i]));
-
-    return ListTile.divideTiles(
-      context: context,
-      tiles: result,
-    ).toList();
   }
 
   Widget _buildLeftPanel(BuildContext context, Player player) {
@@ -158,15 +145,14 @@ class _PlayerDetailContainerDebugState
                     EdgeInsets.only(top: 5, left: 10, right: 10, bottom: 10),
                 child: new Card(
                   child: new Container(
-                    child: Scrollbar(
-                      child: SingleChildScrollView(
-                          child: _buildReportDateTables(context, player,_rowsPerPage),
-                        ),
-                    ),
+                    child: _buildReportDateTables(context, player),
                   ),
                 ),
               ),
             ),
+            Padding(
+              padding: EdgeInsets.only(top: 65),
+            )
           ],
         ),
       ),
@@ -186,6 +172,16 @@ class _PlayerDetailContainerDebugState
           ],
         ),
       ),
+    );
+  }
+
+  PaginatedDataTable _buildReportDateTables(
+      BuildContext context, Player player) {
+    return PaginatedDataTable(
+      rowsPerPage: 5,
+      header: Text('Recent reports'),
+      columns: ReportDataSource.getDataColumn,
+      source: ReportDataSource(player.reports),
     );
   }
 
@@ -214,26 +210,24 @@ List<Report> randomReports() {
   for (var i = 1; i <= 12; i++) {
     report.add(
       Report(
-        playerId: playerId,
-        dateTime: DateTime.utc(DateTime.now().year, i, 1),
-        sleepState: SleepState.values[rng.nextInt(SleepState.values.length)],
-        recovery: (rng.nextDouble() * 100).round() * 1.0,
-        sorroness: rng.nextBool(),
-        soronessLocation:
-            BodyLocation.values[rng.nextInt(BodyLocation.values.length)],
-        sorronessSide: BodySide.values[rng.nextInt(BodySide.values.length)],
-        pain: rng.nextBool(),
-        painLocation:
-            BodyLocation.values[rng.nextInt(BodyLocation.values.length)],
-        painSide: BodySide.values[rng.nextInt(BodySide.values.length)],
-        painNumber: rng.nextInt(10),
-        selected: false
-      ),
+          playerId: playerId,
+          dateTime: DateTime.utc(DateTime.now().year, i, 1),
+          sleepState: SleepState.values[rng.nextInt(SleepState.values.length)],
+          recovery: (rng.nextDouble() * 100).round() * 1.0,
+          sorroness: rng.nextBool(),
+          soronessLocation:
+              BodyLocation.values[rng.nextInt(BodyLocation.values.length)],
+          sorronessSide: BodySide.values[rng.nextInt(BodySide.values.length)],
+          pain: rng.nextBool(),
+          painLocation:
+              BodyLocation.values[rng.nextInt(BodyLocation.values.length)],
+          painSide: BodySide.values[rng.nextInt(BodySide.values.length)],
+          painNumber: rng.nextInt(10),
+          selected: false),
     );
   }
   return report;
 }
-
 
 Widget chartExample(BuildContext context, Player player) {
   return SfCartesianChart(
@@ -261,60 +255,4 @@ Widget chartExample(BuildContext context, Player player) {
       )
     ],
   );
-}
-
-
-PaginatedDataTable _buildReportDateTables(BuildContext context, Player player, int rowsPerPage){
-   
-    return PaginatedDataTable(
-        header: Text('Player Reports'),
-        rowsPerPage: rowsPerPage,
-        //availableRowsPerPage: <int>[12, 24, 120],
-        onRowsPerPageChanged: (value)=>{
-          rowsPerPage = value,
-        },
-        columns: Report.dataTableColumn,
-        source: ReportDataSource(player.reports),
-      );
-  }
-  
-Widget reportTile(Report report) {
-  return ListTile(title: Text(report.recovery.toString()));
-}
-
- 
-class ReportDataSource extends DataTableSource {
-  int _selectedCount = 0;
-   List<Report> _reports;
-
-  ReportDataSource(this._reports);
-
-  @override
-  DataRow getRow(int index) {
-    assert(index >= 0);
-    if (index >= _reports.length) return null;
-    final Report report = _reports[index];
-    var sorroness = report.sorroness ?  EnumToString.parseCamelCase(report.sorronessSide) : "No info";
-    var pain = report.pain ? EnumToString.parseCamelCase(report.painLocation) : 'No info';
-    var painNumber = report.pain ? " | ${report.painNumber}" : "";
-    
-    return DataRow.byIndex(
-        index: index,
-        cells: <DataCell>[
-          DataCell(Text(DateFormat('MMMM').format(report.dateTime).substring(0, 3))),
-          DataCell(Text(EnumToString.parseCamelCase(report.sleepState))),
-          DataCell(Text("${report.recovery}%")),
-          DataCell(Text(sorroness)),
-          DataCell(Text( "${pain}${painNumber}")),
-        ]);
-  }
-
-  @override
-  int get rowCount => _reports.length;
-
-  @override
-  bool get isRowCountApproximate => false;
-
-  @override
-  int get selectedRowCount => _selectedCount;
 }
