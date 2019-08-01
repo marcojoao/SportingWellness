@@ -226,7 +226,6 @@ class _PlayerDetailContainerDebugState
   }
 
   Future<void> _editAvatarDialogBox(BuildContext context) {
-    var accentColor = Theme.of(context).accentColor;
     return showDialog<void>(
       context: context,
       barrierDismissible: true,
@@ -291,11 +290,22 @@ class _PlayerDetailContainerDebugState
     );
   }
 
+  //! Testing Random avatars
   Widget _buildBackgroundHeader(BuildContext context, File file) {
+    var randomAvatar = "https://randomuser.me/api/portraits/men/${Random().nextInt(99).toString()}.jpg";
     return new DiagonallyCutColoredImage(
-      Image.asset(
-        file == null ? Player.defaultAvatar : file.path,
+      Image.network(
+        randomAvatar,
+        fit: BoxFit.cover,
+        alignment: Alignment.topCenter,
+        height: 300,
       ),
+      // Image.asset(
+      //   file == null ? Player.defaultAvatar : file.path,
+      //   fit: BoxFit.cover,
+      //   alignment: Alignment.topCenter,
+      //   height: 300,
+      // ),
       color: Colors.black.withOpacity(0.3),
     );
   }
