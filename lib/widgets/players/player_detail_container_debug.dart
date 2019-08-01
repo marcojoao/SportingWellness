@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:Wellness/model/player.dart';
@@ -11,6 +12,7 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -31,12 +33,14 @@ class _PlayerDetailContainerDebugState
   double _leftPanelWidthSize = 250;
   int _reportPerPage = 10;
 
+  File _debugImage;
+
   @override
   void initState() {
     super.initState();
     setState(
       () {
-        _selectedItem = widget.selectedPlayer ?? players[0];
+        _selectedItem = widget.selectedPlayer ?? players[1];
         _selectedDate = widget.selectedDate ?? DateTime.now();
       },
     );
@@ -94,11 +98,16 @@ class _PlayerDetailContainerDebugState
           Container(
             child: Stack(
               children: <Widget>[
-                _buildBackgroundHeader(context),
+                _buildBackgroundHeader(context,_debugImage),
                 new Positioned(
-                  top: 10.0,
-                  left: 10.0,
+                  top: 0,
+                  left: 0,
                   child: new BackButton(color: Colors.white),
+                ),
+                new Positioned(
+                  bottom: 18,
+                  right: 12,
+                  child: _buildPlayerEdit(context),
                 ),
               ],
             ),
@@ -106,7 +115,7 @@ class _PlayerDetailContainerDebugState
           Container(
             child: _buildPlayerInfo(context, player),
             alignment: Alignment.topLeft,
-            margin: EdgeInsets.all(10),
+            margin: EdgeInsets.all(5),
           ),
         ],
       ),
@@ -196,19 +205,59 @@ class _PlayerDetailContainerDebugState
     );
   }
 
-  Widget _buildPlayerAvatar(Player player) {
-    return CircleAvatar(
-      backgroundImage: Image.asset(Player.defaultAvatar).image,
-      radius: 50.0,
+  Widget _buildPlayerEdit(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: _editAvatarDialogBox,
+      elevation: 0,
+      mini: true,
+      child: Icon(
+        Icons.edit,
+        color: Theme.of(context).accentColor,
+      ),
+      backgroundColor: Colors.white,
     );
   }
+  Future getImage(ImageSource imgSource) async {
+    var image = await ImagePicker.pickImage(source: imgSource);
 
-  Widget _buildBackgroundHeader(BuildContext context) {
+    setState(() {
+      if(image != null)
+        _debugImage = image;
+    });
+  }
+
+  Future<void> _editAvatarDialogBox() {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            children: <Widget>[
+              ListTile(
+                leading: new Icon(Icons.photo_camera),
+                title: new Text('Take a picture'),
+                onTap: () async {
+                  await getImage(ImageSource.camera);
+                  Navigator.pop(context, null);
+                },
+              ),
+              ListTile(
+                leading: new Icon(Icons.photo),
+                title: new Text('Choose a picture'),
+                onTap: () async {
+                  await getImage(ImageSource.gallery);
+                  Navigator.pop(context, null);
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  Widget _buildBackgroundHeader(BuildContext context, File file) {
     return new DiagonallyCutColoredImage(
-      new Image.asset(
-        Player.defaultAvatar,
-        height: 280.0,
-        fit: BoxFit.cover,
+      Image.asset(
+        file == null ? Player.defaultAvatar : file.path,
       ),
       color: Colors.black.withOpacity(0.3),
     );
@@ -216,7 +265,7 @@ class _PlayerDetailContainerDebugState
 
   Widget _buildPlayerInfo(BuildContext context, Player player) {
     return new Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         new Text(
           player.name,
@@ -226,30 +275,121 @@ class _PlayerDetailContainerDebugState
               .copyWith(color: Colors.white),
         ),
         new Padding(
-          padding: const EdgeInsets.only(top: 4.0),
-          child: _buildPlayerTeam(context, player),
+          padding: const EdgeInsets.only(top: 10),
+        ),
+        Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                new Padding(
+                  child: _buildPlayerTeam(context, player),
+                  padding: const EdgeInsets.only(right: 5, left: 0),
+                ),
+                new Padding(
+                  child: _buildPlayerDominantMember(context, player),
+                  padding: const EdgeInsets.only(right: 0, left: 5),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 5, bottom: 0),
+              child: Row(
+                children: <Widget>[
+                  new Padding(
+                    child: _buildPlayerHeight(context, player),
+                    padding: const EdgeInsets.only(right: 5, left: 0),
+                  ),
+                  new Padding(
+                    child: _buildPlayerWeight(context, player),
+                    padding: const EdgeInsets.only(right: 0, left: 5),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPlayerHeight(BuildContext context, Player player) {
+    return new Row(
+      children: <Widget>[
+        CircleAvatar(
+          backgroundColor: Colors.white12,
+          child: Padding(
+            padding: EdgeInsets.all(6),
+            child: SvgPicture.asset(
+              "assets/height.svg",
+              color: Colors.white,
+            ),
+          ),
+          radius: 14,
         ),
         new Padding(
-          padding: const EdgeInsets.only(top: 16.0),
+          padding: const EdgeInsets.only(left: 8.0),
           child: new Text(
-            'Lorem Ipsum is simply dummy text of the printing and typesetting '
-            'industry. Lorem Ipsum has been the industry\'s standard dummy '
-            'text ever since the 1500s.',
+            "${player.height} cm",
             style: Theme.of(context)
                 .textTheme
-                .body1
-                .copyWith(color: Colors.white70, fontSize: 16.0),
+                .subhead
+                .copyWith(color: Colors.white),
           ),
         ),
+      ],
+    );
+  }
+
+  Widget _buildPlayerWeight(BuildContext context, Player player) {
+    return new Row(
+      children: <Widget>[
+        CircleAvatar(
+          backgroundColor: Colors.white12,
+          child: Padding(
+            padding: EdgeInsets.all(4),
+            child: SvgPicture.asset(
+              "assets/weight.svg",
+              color: Colors.white,
+            ),
+          ),
+          radius: 14,
+        ),
         new Padding(
-          padding: const EdgeInsets.only(top: 16.0),
-          child: new Row(
-            children: <Widget>[
-              _createCircleBadge(
-                  Icons.beach_access, Theme.of(context).accentColor),
-              _createCircleBadge(Icons.cloud, Colors.white12),
-              _createCircleBadge(Icons.shop, Colors.white12),
-            ],
+          padding: const EdgeInsets.only(left: 8.0),
+          child: new Text(
+            "${player.weight} kg",
+            style: Theme.of(context)
+                .textTheme
+                .subhead
+                .copyWith(color: Colors.white),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPlayerDominantMember(BuildContext context, Player player) {
+    return new Row(
+      children: <Widget>[
+        CircleAvatar(
+          backgroundColor: Colors.white12,
+          child: Padding(
+            padding: EdgeInsets.all(4),
+            child: SvgPicture.asset(
+              "assets/leg.svg",
+              color: Colors.white,
+            ),
+          ),
+          radius: 14,
+        ),
+        new Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: new Text(
+            "${EnumToString.parseCamelCase(player.dominantMember)} foot",
+            style: Theme.of(context)
+                .textTheme
+                .subhead
+                .copyWith(color: Colors.white),
           ),
         ),
       ],
@@ -259,66 +399,22 @@ class _PlayerDetailContainerDebugState
   Widget _buildPlayerTeam(BuildContext context, Player player) {
     return new Row(
       children: <Widget>[
-        SvgPicture.asset("assets/teams.svg",
-        color: Colors.white),
+        CircleAvatar(
+          backgroundColor: Colors.white12,
+          child: Padding(
+            padding: EdgeInsets.all(3),
+            child: SvgPicture.asset("assets/teams.svg", color: Colors.white),
+          ),
+          radius: 14,
+        ),
         new Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: new Text(
             EnumToString.parseCamelCase(player.team),
-            style: Theme.of(context).textTheme.subhead.copyWith(color: Colors.white),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _createCircleBadge(IconData iconData, Color color) {
-    return new Padding(
-      padding: const EdgeInsets.only(left: 8.0),
-      child: new CircleAvatar(
-        backgroundColor: color,
-        child: new Icon(
-          iconData,
-          color: Colors.white,
-          size: 16.0,
-        ),
-        radius: 16.0,
-      ),
-    );
-  }
-
-  Widget _buildPlayerName(Player player) {
-    var rawNameS = player.name.split(" ");
-    for (var i = 0; i < rawNameS.length; i++) {
-      var n = rawNameS[i];
-      rawNameS[i] = n.substring(0, 1).toUpperCase() + n.substring(1, n.length);
-    }
-    var name = (rawNameS.length) > 1
-        ? "${rawNameS[0]} ${rawNameS[rawNameS.length - 1]}"
-        : rawNameS[0];
-    return Column(
-      children: <Widget>[
-        Text(
-          name,
-          textAlign: TextAlign.left,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Text(
-          EnumToString.parseCamelCase(player.team),
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            shadows: [
-              Shadow(
-                offset: Offset(1, 1),
-                blurRadius: 5,
-              ),
-            ],
+            style: Theme.of(context)
+                .textTheme
+                .subhead
+                .copyWith(color: Colors.white),
           ),
         ),
       ],

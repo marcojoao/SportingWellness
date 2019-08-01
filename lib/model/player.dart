@@ -58,4 +58,4 @@ class Player {
   }
 }
 
-enum TeamType { sub17, sub19, sub23, woman }
+enum TeamType { under17, under19, under23, woman }

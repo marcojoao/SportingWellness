@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 final _player = Player(
     name: 'Marco',
-    team: TeamType.sub23,
+    team: TeamType.under23,
     height: 190,
     weight: 80,
     avatarPath: 'ww',
