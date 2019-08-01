@@ -123,7 +123,7 @@ class _PlayerDetailContainerDebugState
               margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 5),
               child: new Card(
                 child: new Container(
-                  child: chartExample(context, player, date),
+                  child: _buildChart(context, player, date),
                 ),
               ),
               alignment: Alignment.center,
@@ -155,6 +155,33 @@ class _PlayerDetailContainerDebugState
     );
   }
 
+  Widget _buildChart(BuildContext context, Player player, DateTime date) {
+    return SfCartesianChart(
+      primaryXAxis: CategoryAxis(),
+      primaryYAxis: NumericAxis(
+          edgeLabelPlacement: EdgeLabelPlacement.shift,
+          interval: 20,
+          minimum: -20,
+          maximum: 120,
+          visibleMinimum: 0,
+          visibleMaximum: 100,
+          rangePadding: ChartRangePadding.additional,
+          labelFormat: '{value}%'),
+      title:
+          ChartTitle(text: "Recovery over ${DateFormat('MMMM').format(date)}"),
+      tooltipBehavior: TooltipBehavior(enable: true),
+      series: <LineSeries<Report, String>>[
+        LineSeries<Report, String>(
+          color: Theme.of(context).accentColor,
+          dataSource: player.reports,
+          xValueMapper: (Report report, _) => report.dateTime.day.toString(),
+          yValueMapper: (Report report, _) => report.recovery,
+          markerSettings: MarkerSettings(color: Colors.white, isVisible: true),
+        )
+      ],
+    );
+  }
+
   PaginatedDataTable _buildReportDateTables(
       BuildContext context, Player player) {
     return PaginatedDataTable(
@@ -163,7 +190,7 @@ class _PlayerDetailContainerDebugState
           : _reportPerPage,
       header: Text('Recent reports'),
       columns: ReportDataSource.getDataColumn,
-      source: ReportDataSource(player.reports),
+      source: ReportDataSource(context, player.reports),
     );
   }
 
@@ -186,12 +213,19 @@ class _PlayerDetailContainerDebugState
   }
 
   Widget _buildPlayerName(Player player) {
-    var playerName = player.name.split(" ");
-    var name = (playerName.length) > 1 ? playerName[playerName.length-1] : playerName[0];
+    var rawNameS = player.name.split(" ");
+    for (var i = 0; i < rawNameS.length; i++) {
+      var n = rawNameS[i];
+      rawNameS[i] =
+          n.substring(0, 1).toUpperCase() + n.substring(1, n.length);
+    }
+    var name = (rawNameS.length) > 1
+        ? "${rawNameS[0].substring(0, 1)}. ${rawNameS[rawNameS.length - 1]}"
+        : rawNameS[0];
     return Column(
       children: <Widget>[
         Text(
-          name.toUpperCase(),
+          name,
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,
@@ -252,30 +286,4 @@ List<Report> randomDayReports(DateTime date) {
     );
   }
   return report;
-}
-
-Widget chartExample(BuildContext context, Player player, DateTime date) {
-  return SfCartesianChart(
-    primaryXAxis: CategoryAxis(),
-    primaryYAxis: NumericAxis(
-        edgeLabelPlacement: EdgeLabelPlacement.shift,
-        interval: 20,
-        minimum: -20,
-        maximum: 120,
-        visibleMinimum: 0,
-        visibleMaximum: 100,
-        rangePadding: ChartRangePadding.additional,
-        labelFormat: '{value}%'),
-    title: ChartTitle(text: "Recovery over ${DateFormat('MMMM').format(date)}"),
-    tooltipBehavior: TooltipBehavior(enable: true),
-    series: <LineSeries<Report, String>>[
-      LineSeries<Report, String>(
-        color: Theme.of(context).accentColor,
-        dataSource: player.reports,
-        xValueMapper: (Report report, _) => report.dateTime.day.toString(),
-        yValueMapper: (Report report, _) => report.recovery,
-        markerSettings: MarkerSettings(color: Colors.white, isVisible: true),
-      )
-    ],
-  );
 }
