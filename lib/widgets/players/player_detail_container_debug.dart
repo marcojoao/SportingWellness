@@ -98,7 +98,7 @@ class _PlayerDetailContainerDebugState
           Container(
             child: Stack(
               children: <Widget>[
-                _buildBackgroundHeader(context,_debugImage),
+                _buildBackgroundHeader(context, _debugImage),
                 new Positioned(
                   top: 0,
                   left: 0,
@@ -207,7 +207,7 @@ class _PlayerDetailContainerDebugState
 
   Widget _buildPlayerEdit(BuildContext context) {
     return FloatingActionButton(
-      onPressed: _editAvatarDialogBox,
+      onPressed: () => _editAvatarDialogBox(context),
       elevation: 0,
       mini: true,
       child: Icon(
@@ -217,41 +217,78 @@ class _PlayerDetailContainerDebugState
       backgroundColor: Colors.white,
     );
   }
+
   Future getImage(ImageSource imgSource) async {
     var image = await ImagePicker.pickImage(source: imgSource);
-
     setState(() {
-      if(image != null)
-        _debugImage = image;
+      if (image != null) _debugImage = image;
     });
   }
 
-  Future<void> _editAvatarDialogBox() {
-    return showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext context) {
-          return SimpleDialog(
-            children: <Widget>[
-              ListTile(
-                leading: new Icon(Icons.photo_camera),
-                title: new Text('Take a picture'),
-                onTap: () async {
-                  await getImage(ImageSource.camera);
-                  Navigator.pop(context, null);
-                },
-              ),
-              ListTile(
-                leading: new Icon(Icons.photo),
-                title: new Text('Choose a picture'),
-                onTap: () async {
-                  await getImage(ImageSource.gallery);
-                  Navigator.pop(context, null);
-                },
-              ),
-            ],
-          );
-        });
+  Future<void> _editAvatarDialogBox(BuildContext context) {
+    var accentColor = Theme.of(context).accentColor;
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(24.0),
+            ),
+          ),
+          contentPadding: EdgeInsets.all(0),
+          content: Container(
+            width: 300.0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Container(
+                  height: 60,
+                  child: FlatButton(
+                    onPressed: () async => {
+                      Navigator.pop(context, null),
+                      await getImage(ImageSource.camera),
+                    },
+                    child: Text(
+                      "Take a picture",
+                      textAlign: TextAlign.center,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(24.0),
+                        topRight: Radius.circular(24.0),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 60,
+                  child: FlatButton(
+                    onPressed: () async => {
+                      Navigator.pop(context, null),
+                      await getImage(ImageSource.gallery),
+                    },
+                    child: Text(
+                      "Choose a picture",
+                      textAlign: TextAlign.center,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(24.0),
+                        bottomRight: Radius.circular(24.0),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   Widget _buildBackgroundHeader(BuildContext context, File file) {
@@ -283,11 +320,11 @@ class _PlayerDetailContainerDebugState
               children: <Widget>[
                 new Padding(
                   child: _buildPlayerTeam(context, player),
-                  padding: const EdgeInsets.only(right: 5, left: 0),
+                  padding: const EdgeInsets.only(right: 5, left: 5),
                 ),
                 new Padding(
                   child: _buildPlayerDominantMember(context, player),
-                  padding: const EdgeInsets.only(right: 0, left: 5),
+                  padding: const EdgeInsets.only(right: 5, left: 5),
                 ),
               ],
             ),
@@ -297,11 +334,11 @@ class _PlayerDetailContainerDebugState
                 children: <Widget>[
                   new Padding(
                     child: _buildPlayerHeight(context, player),
-                    padding: const EdgeInsets.only(right: 5, left: 0),
+                    padding: const EdgeInsets.only(right: 5, left: 5),
                   ),
                   new Padding(
                     child: _buildPlayerWeight(context, player),
-                    padding: const EdgeInsets.only(right: 0, left: 5),
+                    padding: const EdgeInsets.only(right: 5, left: 5),
                   ),
                 ],
               ),

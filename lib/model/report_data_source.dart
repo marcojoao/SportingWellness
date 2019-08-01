@@ -89,7 +89,7 @@ class ReportDataSource extends DataTableSource {
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(32.0))),
+              borderRadius: BorderRadius.all(Radius.circular(24.0))),
           contentPadding: EdgeInsets.only(top: 10.0),
           content: Container(
             width: 300.0,
@@ -137,8 +137,8 @@ class ReportDataSource extends DataTableSource {
                     color: Theme.of(context).accentColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(32.0),
-                        bottomRight: Radius.circular(32.0),
+                        bottomLeft: Radius.circular(24.0),
+                        bottomRight: Radius.circular(24.0),
                       ),
                     ),
                   ),
