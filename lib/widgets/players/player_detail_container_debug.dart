@@ -3,9 +3,11 @@ import 'dart:math';
 import 'package:Wellness/model/player.dart';
 import 'package:Wellness/model/report.dart';
 import 'package:Wellness/model/report_data_source.dart';
+import 'package:Wellness/widgets/general/diagonally_cut_colored_image.dart';
 import 'package:Wellness/widgets/general/floating_action_menu.dart';
 import 'package:Wellness/widgets/players/players_mock_list.dart';
 import 'package:date_util/date_util.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -26,6 +28,7 @@ class _PlayerDetailContainerDebugState
   Player _selectedItem;
   DateTime _selectedDate;
   double _leftPanelWidthSize = 250;
+  int _reportPerPage = 10;
   @override
   void initState() {
     super.initState();
@@ -84,44 +87,26 @@ class _PlayerDetailContainerDebugState
     return new Container(
       width: _leftPanelWidthSize,
       color: Theme.of(context).accentColor,
-      child: Column(
+      child: new Stack(
         children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(top: 10),
-            alignment: Alignment.topLeft,
-            height: 40,
-            child: FlatButton(
-              shape: CircleBorder(),
-              child: Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-              ),
-              onPressed: () => {
-                Fluttertoast.showToast(
-                    msg: "Back",
-                    toastLength: Toast.LENGTH_SHORT,
-                    timeInSecForIos: 1),
-              },
+          _buildBackgroundHeader(context),
+          new Align(
+            alignment: FractionalOffset.bottomCenter,
+            heightFactor: 1.4,
+            child: new Column(
+              children: <Widget>[
+                Container(
+                  child: _buildPlayerName(player),
+                  alignment: Alignment.topCenter,
+                  margin: EdgeInsets.only(top: 180),
+                )
+              ],
             ),
           ),
-          Container(
-            alignment: Alignment.topCenter,
-            height: 120,
-            width: 120,
-            decoration: _buildPlayerAvatar(player),
-          ),
-          Container(
-            margin: EdgeInsets.all(10),
-            alignment: Alignment.topCenter,
-            height: 40,
-            child: Text(
-              player.name.split(' ')[0].toUpperCase(),
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30,
-                  fontWeight: FontWeight.w600),
-              textAlign: TextAlign.center,
-            ),
+          new Positioned(
+            top: 10.0,
+            left: 4.0,
+            child: new BackButton(color: Colors.white),
           ),
         ],
       ),
@@ -145,9 +130,9 @@ class _PlayerDetailContainerDebugState
               height: 250,
             ),
             Container(
-              margin: EdgeInsets.only(top: 5, left: 10, right: 10, bottom: 80),
-              child: _buildReportDateTables(context, player)
-            ),
+                margin:
+                    EdgeInsets.only(top: 5, left: 10, right: 10, bottom: 80),
+                child: _buildReportDateTables(context, player)),
           ],
         ),
       ),
@@ -170,33 +155,71 @@ class _PlayerDetailContainerDebugState
     );
   }
 
-  var reportNum = 10;
-  PaginatedDataTable _buildReportDateTables(BuildContext context, Player player) {
+  PaginatedDataTable _buildReportDateTables(
+      BuildContext context, Player player) {
     return PaginatedDataTable(
-      
-      rowsPerPage: (player.reports.length < reportNum)
+      rowsPerPage: (player.reports.length < _reportPerPage)
           ? player.reports.length
-          : reportNum,
+          : _reportPerPage,
       header: Text('Recent reports'),
       columns: ReportDataSource.getDataColumn,
       source: ReportDataSource(player.reports),
     );
   }
 
-  BoxDecoration _buildPlayerAvatar(Player player) {
-    return BoxDecoration(
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.6),
-          blurRadius: 5.0, // has the effect of softening the shadow
-          spreadRadius: 1.0, // has the effect of extending the shadow
+  Widget _buildPlayerAvatar(Player player) {
+    return CircleAvatar(
+      backgroundImage: Image.asset(Player.defaultAvatar).image,
+      radius: 50.0,
+    );
+  }
+
+  Widget _buildBackgroundHeader(BuildContext context) {
+    return new DiagonallyCutColoredImage(
+      new Image.asset(
+        Player.defaultAvatar,
+        height: 280.0,
+        fit: BoxFit.cover,
+      ),
+      color: Colors.black.withOpacity(0.3),
+    );
+  }
+
+  Widget _buildPlayerName(Player player) {
+    var playerName = player.name.split(" ");
+    var name = (playerName.length) > 1 ? playerName[playerName.length-1] : playerName[0];
+    return Column(
+      children: <Widget>[
+        Text(
+          name.toUpperCase(),
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            shadows: [
+              Shadow(
+                offset: Offset(1, 1),
+                blurRadius: 5,
+              ),
+            ],
+          ),
+        ),
+        Text(
+          EnumToString.parseCamelCase(player.team),
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            shadows: [
+              Shadow(
+                offset: Offset(1, 1),
+                blurRadius: 5,
+              ),
+            ],
+          ),
         ),
       ],
-      shape: BoxShape.circle,
-      image: new DecorationImage(
-        fit: BoxFit.fill,
-        image: AssetImage(Player.defaultAvatar),
-      ),
     );
   }
 }
@@ -223,7 +246,9 @@ List<Report> randomDayReports(DateTime date) {
               BodyLocation.values[rng.nextInt(BodyLocation.values.length)],
           painSide: BodySide.values[rng.nextInt(BodySide.values.length)],
           painNumber: rng.nextInt(10),
-          notes: rng.nextBool() ? "Where do random thoughts come from?\nA song can make or ruin a person’s day if they let it get to them." : ""),
+          notes: rng.nextBool()
+              ? "Where do random thoughts come from?\nA song can make or ruin a person’s day if they let it get to them."
+              : ""),
     );
   }
   return report;

@@ -11,7 +11,7 @@ void main() {
   test('create instance player', () {
     final _player = Player(
         name: 'Marco',
-        team: TeamType.u_23,
+        team: TeamType.sub23,
         height: 190,
         weight: 80,
         avatarPath: 'ww',
@@ -38,7 +38,7 @@ void main() {
     PlayersDAO _playersDao = PlayersDAO();
     var res = await _playersDao.insert(Player(
         name: 'Andy',
-        team: TeamType.u_23,
+        team: TeamType.sub23,
         height: 190,
         weight: 80,
         avatarPath: 'ww',

@@ -4,27 +4,27 @@ import 'package:Wellness/model/report.dart';
 
 final List<Player> players = <Player>[
   Player(
-      name: 'anderson',
-      team: TeamType.u_17,
+      name: 'Anderson Cansado',
+      team: TeamType.sub17,
       dominantMember: BodySide.left,
       height: 190,
-      avatarPath: 'ww',
+      avatarPath: '',
       birthDate: DateTime.now(),
       weight: 60),
   Player(
-      name: 'Marco',
-      team: TeamType.u_23,
+      name: 'Marco João',
+      team: TeamType.sub23,
       height: 190,
       weight: 80,
       dominantMember: BodySide.left,
-      avatarPath: 'ww',
+      avatarPath: '',
       birthDate: DateTime.now()),
   Player(
       name: 'Ricardo',
       team: TeamType.woman,
       height: 190,
       weight: 80,
-      avatarPath: 'ww',
+      avatarPath: '',
       dominantMember: BodySide.left,
       birthDate: DateTime.now())
 ];

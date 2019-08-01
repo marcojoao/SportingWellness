@@ -4,14 +4,14 @@ import 'package:Wellness/model/report.dart';
 class Player {
   int id;
 
-   String name;
-   double height;
-   double weight;
-   DateTime birthDate;
-   String avatarPath;
-   TeamType team;
-   BodySide dominantMember;
-   List<Report> reports;
+  String name;
+  double height;
+  double weight;
+  DateTime birthDate;
+  String avatarPath;
+  TeamType team;
+  BodySide dominantMember;
+  List<Report> reports;
 
   Player(
       {@required this.name,
@@ -41,6 +41,7 @@ class Player {
   }
 
   static String defaultAvatar = "assets/player_default.png";
+  static String defaultBackground = "assets/background_fallback.png";
 
   static Player fromMap(Map<String, dynamic> map) {
     return Player(
@@ -55,4 +56,4 @@ class Player {
   }
 }
 
-enum TeamType { u_17, u_19, u_23, woman }
+enum TeamType { sub17, sub19, sub23, woman }
