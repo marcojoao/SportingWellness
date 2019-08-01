@@ -2,7 +2,6 @@ import 'package:Wellness/model/report.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
 
 class ReportDataSource extends DataTableSource {
   int _selectedCount = 0;
@@ -16,8 +15,11 @@ class ReportDataSource extends DataTableSource {
     if (index >= _reports.length) return null;
     final Report report = _reports[index];
     var sorroness = report.sorroness
-        ? EnumToString.parseCamelCase(report.sorronessSide)
+        ? EnumToString.parseCamelCase(report.soronessLocation)
         : "No info";
+    var sorronessSide = report.sorroness
+        ? " | ${EnumToString.parseCamelCase(report.sorronessSide)}"
+        : "";
     var pain = report.pain
         ? EnumToString.parseCamelCase(report.painLocation)
         : 'No info';
@@ -29,7 +31,7 @@ class ReportDataSource extends DataTableSource {
         DataCell(Text(report.dateTime.day.toString())),
         DataCell(Text(EnumToString.parseCamelCase(report.sleepState))),
         DataCell(Text("${report.recovery}%")),
-        DataCell(Text(sorroness)),
+        DataCell(Text("${sorroness}${sorronessSide}")),
         DataCell(Text("${pain}${painNumber}")),
         DataCell(
             Icon(Icons.note,
@@ -42,7 +44,7 @@ class ReportDataSource extends DataTableSource {
                       Fluttertoast.showToast(
                           msg: report.notes,
                           toastLength: Toast.LENGTH_SHORT,
-                          timeInSecForIos: 1),
+                          timeInSecForIos: 3),
                     }
                 }),
       ],
