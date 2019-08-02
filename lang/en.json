@@ -1,0 +1,22 @@
+{
+    "ok": "Ok",
+    "cancel": "Cancel",
+    "close": "Close",
+    "save": "Save",
+    "delete": "Delete",
+    "create": "Create",
+    "download": "Download",
+    "warning": "Warning",
+    "left_foot": "Left foot",
+    "right_foot": "Right foot",
+    "under": "Under",
+    "woman": "Woman",
+    "man": "Man",
+    "recovery": "Recovery",
+    "recovery_over": "Recovery over",
+    "reports_over": "Reports over",
+    "report_note": "Report note",
+    "low_battery": "Low Battery",
+    "take_picture": "Take a picture",
+    "choose_picture": "Choose a picture"
+}

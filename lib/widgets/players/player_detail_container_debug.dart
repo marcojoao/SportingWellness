@@ -4,13 +4,13 @@ import 'dart:math';
 import 'package:Wellness/model/player.dart';
 import 'package:Wellness/model/report.dart';
 import 'package:Wellness/model/report_data_source.dart';
+import 'package:Wellness/services/app_localizations.dart';
 import 'package:Wellness/widgets/general/diagonally_cut_colored_image.dart';
 import 'package:Wellness/widgets/general/floating_action_menu.dart';
 import 'package:Wellness/widgets/players/players_mock_list.dart';
 import 'package:battery/battery.dart';
 import 'package:date_util/date_util.dart';
 import 'package:enum_to_string/enum_to_string.dart';
-import 'package:flare_flutter/flare_actor.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
@@ -49,11 +49,16 @@ class _PlayerDetailContainerDebugState
         _battery.onBatteryStateChanged.listen((BatteryState state) {
           _battery.batteryLevel.then((level) {
             this.setState(() {
-              if (state == BatteryState.discharging && level <= 15 && !_batteryWarning) {
+              if (state == BatteryState.discharging &&
+                  level <= 15 &&
+                  !_batteryWarning) {
                 _showMessageDialog(
                   context,
-                  "Warning",
-                  Text("Low Battery!",textAlign: TextAlign.center,),
+                  AppLocalizations.translate('warning'),
+                  Text(
+                    "${AppLocalizations.translate("low_battery")}!",
+                    textAlign: TextAlign.center,
+                  ),
                 );
                 _batteryWarning = true;
               }
@@ -92,7 +97,6 @@ class _PlayerDetailContainerDebugState
                   toastLength: Toast.LENGTH_SHORT,
                   timeInSecForIos: 1),
             },
-            tooltip: 'Add Report',
             backgroundColor: Colors.white,
             child: Icon(Icons.add, color: Theme.of(context).accentColor),
           ),
@@ -107,7 +111,6 @@ class _PlayerDetailContainerDebugState
                   toastLength: Toast.LENGTH_SHORT,
                   timeInSecForIos: 1),
             },
-            tooltip: 'Edit Profile',
             backgroundColor: Colors.white,
             child: Icon(Icons.edit, color: Theme.of(context).accentColor),
           ),
@@ -184,8 +187,8 @@ class _PlayerDetailContainerDebugState
         onPressed: () {
           _showMessageDialog(
             context,
-            "Test",
-            Text("Hi"),
+            "Testing dialog",
+            Text("Testing Stuff"),
           );
         },
         child: Icon(Icons.add),
@@ -220,12 +223,13 @@ class _PlayerDetailContainerDebugState
           visibleMaximum: 100,
           rangePadding: ChartRangePadding.additional,
           labelFormat: '{value}%'),
-      title:
-          ChartTitle(text: "Recovery over ${DateFormat('MMMM').format(date)}"),
+      title: ChartTitle(
+          text:
+              "${AppLocalizations.translate('recovery_over')} ${DateFormat('MMMM').format(date)}"),
       tooltipBehavior: TooltipBehavior(enable: true),
       series: <LineSeries<Report, String>>[
         LineSeries<Report, String>(
-          name: "Recovery",
+          name: AppLocalizations.translate('recovery'),
           color: Theme.of(context).accentColor,
           dataSource: player.reports,
           xValueMapper: (Report report, _) => report.dateTime.day.toString(),
@@ -243,7 +247,8 @@ class _PlayerDetailContainerDebugState
           ? player.reports.length
           : _reportPerPage,
       columnSpacing: 40,
-      header: Text('Reports over ${DateFormat('MMMM').format(date)}'),
+      header: Text(
+          '${AppLocalizations.translate('reports_over')} ${DateFormat('MMMM').format(date)}'),
       columns: ReportDataSource.getDataColumn,
       source: ReportDataSource(context, player.reports),
     );
@@ -296,7 +301,7 @@ class _PlayerDetailContainerDebugState
                       await getImage(ImageSource.camera),
                     },
                     child: Text(
-                      "Take a picture",
+                      AppLocalizations.translate("take_picture"),
                       textAlign: TextAlign.center,
                     ),
                     shape: RoundedRectangleBorder(
@@ -315,7 +320,7 @@ class _PlayerDetailContainerDebugState
                       await getImage(ImageSource.gallery),
                     },
                     child: Text(
-                      "Choose a picture",
+                      AppLocalizations.translate("choose_picture"),
                       textAlign: TextAlign.center,
                     ),
                     shape: RoundedRectangleBorder(
@@ -468,7 +473,10 @@ class _PlayerDetailContainerDebugState
         new Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: new Text(
-            "${EnumToString.parseCamelCase(player.dominantMember)} foot",
+            AppLocalizations.translate(
+              ("${EnumToString.parseCamelCase(player.dominantMember)}_foot")
+                  .toLowerCase(),
+            ),
             style: Theme.of(context)
                 .textTheme
                 .subhead
@@ -492,6 +500,7 @@ class _PlayerDetailContainerDebugState
   }
 
   Widget _buildPlayerTeam(BuildContext context, Player player) {
+    //var team = EnumToString.parse(player.team).split("_");
     return new Row(
       children: <Widget>[
         CircleAvatar(
@@ -504,8 +513,8 @@ class _PlayerDetailContainerDebugState
         ),
         new Padding(
           padding: const EdgeInsets.only(left: 8.0),
-          child: new Text(
-            EnumToString.parseCamelCase(player.team),
+          child: new Text("t",
+            //"${AppLocalizations.translate(team[0])} ${team[1]}",
             style: Theme.of(context)
                 .textTheme
                 .subhead
@@ -561,7 +570,7 @@ Future<void> _showMessageDialog(BuildContext context, String title, Text msg) {
                     Navigator.pop(context),
                   },
                   child: Text(
-                    "Close",
+                    AppLocalizations.translate("close"),
                     style: TextStyle(color: Colors.white),
                     textAlign: TextAlign.center,
                   ),

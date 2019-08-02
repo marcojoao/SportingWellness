@@ -9,6 +9,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+    
   date_util: ^0.1.4
   intl: ^0.15.8
   syncfusion_flutter_charts: ^1.0.0-beta.3
@@ -29,6 +32,7 @@ dependencies:
   flutter_offline: ^0.2.4+1
   flare_flutter: ^1.5.5
   battery: ^0.3.0+5
+  
 
 dev_dependencies:
   flutter_test:
@@ -45,6 +49,7 @@ flutter_icons:
 flutter:
   assets: 
     - assets/
+    - lang/
   uses-material-design: true
 
 fonts:

@@ -1,4 +1,5 @@
 import 'package:Wellness/model/report.dart';
+import 'package:Wellness/services/app_localizations.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 
@@ -102,7 +103,7 @@ class ReportDataSource extends DataTableSource {
                   alignment: Alignment.center,
                   margin: EdgeInsets.only(left: 20, right: 20),
                   child: Text(
-                    "Report note",
+                    AppLocalizations.translate("report_note"),
                     style: TextStyle(fontSize: 24.0),
                   ),
                 ),
@@ -130,7 +131,7 @@ class ReportDataSource extends DataTableSource {
                       Navigator.pop(context),
                     },
                     child: Text(
-                      "Close",
+                      AppLocalizations.translate("close"),
                       style: TextStyle(color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
