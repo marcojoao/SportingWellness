@@ -39,8 +39,7 @@ class _PlayerDetailContainerDebugState
   File _debugImage;
 
   final Battery _battery = Battery();
-  BatteryState _batteryState;
-  int _batteryLevel;
+  bool _batteryWarning = false;
 
   @override
   void initState() {
@@ -50,12 +49,14 @@ class _PlayerDetailContainerDebugState
         _battery.onBatteryStateChanged.listen((BatteryState state) {
           _battery.batteryLevel.then((level) {
             this.setState(() {
-              if(level < 30){
-
+              if (state == BatteryState.discharging && level <= 15 && !_batteryWarning) {
+                _showMessageDialog(
+                  context,
+                  "Warning",
+                  Text("Low Battery!",textAlign: TextAlign.center,),
+                );
+                _batteryWarning = true;
               }
-              _batteryLevel = level;
-              _batteryState = state;
-              print(_batteryLevel);
             });
           });
         });
@@ -67,9 +68,6 @@ class _PlayerDetailContainerDebugState
 
   @override
   Widget build(BuildContext context) {
-    _battery.onBatteryStateChanged.listen((BatteryState state) {
-      print(EnumToString.parse(state));
-    });
     //return _buildDebug(context, _selectedItem, _selectedDate);
     return OfflineBuilder(
         connectivityBuilder: (BuildContext context,
@@ -253,7 +251,7 @@ class _PlayerDetailContainerDebugState
 
   Widget _buildPlayerEdit(BuildContext context) {
     return FloatingActionButton(
-      onPressed: () => _editAvatarDialogBox(context),
+      onPressed: () => _editAvatarDialog(context),
       elevation: 0,
       mini: true,
       child: Icon(
@@ -271,7 +269,7 @@ class _PlayerDetailContainerDebugState
     });
   }
 
-  Future<void> _editAvatarDialogBox(BuildContext context) {
+  Future<void> _editAvatarDialog(BuildContext context) {
     return showDialog<void>(
       context: context,
       barrierDismissible: true,
@@ -491,10 +489,6 @@ class _PlayerDetailContainerDebugState
       child: Text("Offline",
           style: TextStyle(color: Colors.white), textAlign: TextAlign.center),
     );
-  }
-
-  Widget _buildBatteryDialog(BuildContext context){
-
   }
 
   Widget _buildPlayerTeam(BuildContext context, Player player) {
