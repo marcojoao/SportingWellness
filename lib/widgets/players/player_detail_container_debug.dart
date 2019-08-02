@@ -7,9 +7,13 @@ import 'package:Wellness/model/report_data_source.dart';
 import 'package:Wellness/widgets/general/diagonally_cut_colored_image.dart';
 import 'package:Wellness/widgets/general/floating_action_menu.dart';
 import 'package:Wellness/widgets/players/players_mock_list.dart';
+import 'package:battery/battery.dart';
 import 'package:date_util/date_util.dart';
 import 'package:enum_to_string/enum_to_string.dart';
+import 'package:flare_flutter/flare_actor.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_offline/flutter_offline.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -32,14 +36,29 @@ class _PlayerDetailContainerDebugState
   DateTime _selectedDate;
   double _leftPanelWidthSize = 250;
   int _reportPerPage = 10;
-
   File _debugImage;
+
+  final Battery _battery = Battery();
+  BatteryState _batteryState;
+  int _batteryLevel;
 
   @override
   void initState() {
     super.initState();
     setState(
       () {
+        _battery.onBatteryStateChanged.listen((BatteryState state) {
+          _battery.batteryLevel.then((level) {
+            this.setState(() {
+              if(level < 30){
+
+              }
+              _batteryLevel = level;
+              _batteryState = state;
+              print(_batteryLevel);
+            });
+          });
+        });
         _selectedItem = widget.selectedPlayer ?? players[1];
         _selectedDate = widget.selectedDate ?? DateTime.now();
       },
@@ -48,7 +67,17 @@ class _PlayerDetailContainerDebugState
 
   @override
   Widget build(BuildContext context) {
-    return _buildDebug(context, _selectedItem, _selectedDate);
+    _battery.onBatteryStateChanged.listen((BatteryState state) {
+      print(EnumToString.parse(state));
+    });
+    //return _buildDebug(context, _selectedItem, _selectedDate);
+    return OfflineBuilder(
+        connectivityBuilder: (BuildContext context,
+            ConnectivityResult connectivity, Widget child) {
+          return _buildDebug(
+              context, _selectedItem, _selectedDate, connectivity);
+        },
+        child: Container());
   }
 
   Widget _buildFloatingMenu(BuildContext context) {
@@ -148,16 +177,33 @@ class _PlayerDetailContainerDebugState
     );
   }
 
-  Widget _buildDebug(BuildContext context, Player player, DateTime date) {
+  Widget _buildDebug(BuildContext context, Player player, DateTime date,
+      ConnectivityResult connectivity) {
     if (player.reports == null) player.reports = randomDayReports(date);
-
     return new Scaffold(
-      floatingActionButton: _buildFloatingMenu(context),
-      body: new Container(
-        child: new Row(
+      floatingActionButton: FloatingActionButton(
+        heroTag: "FA_Add",
+        onPressed: () {
+          _showMessageDialog(
+            context,
+            "Test",
+            Text("Hi"),
+          );
+        },
+        child: Icon(Icons.add),
+      ),
+      body: Container(
+        child: Column(
           children: <Widget>[
-            _buildLeftPanel(context, player),
-            _buildRigtPanel(context, player, date)
+            _checkConnection(connectivity),
+            Expanded(
+              child: Row(
+                children: <Widget>[
+                  _buildLeftPanel(context, player),
+                  _buildRigtPanel(context, player, date)
+                ],
+              ),
+            )
           ],
         ),
       ),
@@ -290,22 +336,14 @@ class _PlayerDetailContainerDebugState
     );
   }
 
-  //! Testing Random avatars
   Widget _buildBackgroundHeader(BuildContext context, File file) {
-    var randomAvatar = "https://randomuser.me/api/portraits/men/${Random().nextInt(99).toString()}.jpg";
     return new DiagonallyCutColoredImage(
-      Image.network(
-        randomAvatar,
+      Image.asset(
+        file == null ? Player.defaultAvatar : file.path,
         fit: BoxFit.cover,
         alignment: Alignment.topCenter,
         height: 300,
       ),
-      // Image.asset(
-      //   file == null ? Player.defaultAvatar : file.path,
-      //   fit: BoxFit.cover,
-      //   alignment: Alignment.topCenter,
-      //   height: 300,
-      // ),
       color: Colors.black.withOpacity(0.3),
     );
   }
@@ -443,6 +481,22 @@ class _PlayerDetailContainerDebugState
     );
   }
 
+  Widget _checkConnection(ConnectivityResult connectivity) {
+    if (connectivity != ConnectivityResult.none) return Container();
+    return Container(
+      alignment: Alignment.center,
+      color: Colors.red,
+      height: 32,
+      width: MediaQuery.of(context).size.width,
+      child: Text("Offline",
+          style: TextStyle(color: Colors.white), textAlign: TextAlign.center),
+    );
+  }
+
+  Widget _buildBatteryDialog(BuildContext context){
+
+  }
+
   Widget _buildPlayerTeam(BuildContext context, Player player) {
     return new Row(
       children: <Widget>[
@@ -467,6 +521,71 @@ class _PlayerDetailContainerDebugState
       ],
     );
   }
+}
+
+Future<void> _showMessageDialog(BuildContext context, String title, Text msg) {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(24.0))),
+        contentPadding: EdgeInsets.only(top: 10.0),
+        content: Container(
+          width: 300.0,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.only(left: 20, right: 20),
+                child: Text(
+                  title,
+                  style: TextStyle(fontSize: 24.0),
+                ),
+              ),
+              SizedBox(
+                height: 5.0,
+              ),
+              Divider(
+                color: Colors.grey,
+                height: 4.0,
+              ),
+              Container(
+                margin: EdgeInsets.all(20),
+                child: SingleChildScrollView(
+                  child: msg,
+                ),
+              ),
+              Container(
+                height: 50,
+                child: FlatButton(
+                  onPressed: () => {
+                    Navigator.pop(context),
+                  },
+                  child: Text(
+                    "Close",
+                    style: TextStyle(color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                  color: Theme.of(context).accentColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(24.0),
+                      bottomRight: Radius.circular(24.0),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }
 
 List<Report> randomDayReports(DateTime date) {
