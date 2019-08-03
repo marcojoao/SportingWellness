@@ -1,4 +1,5 @@
-import 'package:Wellness/widgets/players/players_mock_list.dart'; //mock Data
+//mock Data
+import 'package:Wellness/model/tests/players_mock_list.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:Wellness/model/player.dart';

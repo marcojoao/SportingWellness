@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:Wellness/services/route_generator.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_offline/flutter_offline.dart';
 
 void main() {
   SystemChrome.setEnabledSystemUIOverlays([]);
@@ -14,6 +15,25 @@ void main() {
 
   _setTargetPlatformForDesktop();
   return runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return OfflineBuilder(
+        connectivityBuilder: (BuildContext context,
+            ConnectivityResult connectivity, Widget child) {
+          return Container(
+            child: Column(
+              children: <Widget>[
+                _buildConnectionWarning(context, connectivity),
+                _buildMaterialApp(),
+              ],
+            ),
+          );
+        },
+        child: Container());
+  }
 }
 
 void _setTargetPlatformForDesktop() {
@@ -28,34 +48,41 @@ void _setTargetPlatformForDesktop() {
   }
 }
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      supportedLocales: [
-        Locale('en', 'US'),
-        Locale('pt', 'PT'),
-      ],
+Widget _buildConnectionWarning(
+    BuildContext context, ConnectivityResult connectivity) {
+  if (connectivity != ConnectivityResult.none) return Container();
+  return Container(
+    alignment: Alignment.center,
+    color: Colors.red,
+    height: 32,
+    child: new Directionality(
+      textDirection: TextDirection.ltr,
+      child: new Text('Offline'),
+    ),
+  );
+}
+
+Widget _buildMaterialApp() {
+  return Expanded(
+    child: MaterialApp(
+      supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
+      // ! For now only english
       localeResolutionCallback: (locale, supportedLocales) {
-        for (var supportedLocale in supportedLocales) {
-          if (supportedLocale.languageCode == locale.languageCode &&
-              supportedLocale.countryCode == locale.countryCode) {
-            return supportedLocale;
-          }
-        }
+        for (var supportedLocale in supportedLocales)
+          if (supportedLocale == locale) return supportedLocale;
         return supportedLocales.first;
       },
       debugShowCheckedModeBanner: false,
       theme: _getThemeDate(false),
       initialRoute: '/',
       onGenerateRoute: RouteGenerator.generateRoute,
-    );
-  }
+    ),
+  );
 }
 
 ThemeData _getThemeDate(bool useDark) {

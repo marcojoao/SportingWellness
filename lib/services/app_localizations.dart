@@ -8,8 +8,9 @@ import 'package:flutter/widgets.dart';
 class AppLocalizations {
   final Locale locale;
   AppLocalizations(this.locale);
-
   static Map<String, String> _localizedStrings;
+
+  static final List<Locale> supportedLocales = [Locale('en', 'US')/*, Locale('pt', 'PT')*/];
 
   static const LocalizationsDelegate<AppLocalizations> delegate =
       _AppLocalizationsDelegate();
@@ -23,7 +24,8 @@ class AppLocalizations {
   }
 
   Future load() async {
-    String jsonString = await rootBundle.loadString('lang/${locale.languageCode}.json');
+    String jsonString =
+        await rootBundle.loadString('lang/${locale.languageCode}.json');
     Map<String, dynamic> jsonMap = json.decode(jsonString);
     _localizedStrings = jsonMap.map(
       (key, value) {
@@ -39,7 +41,7 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) {
-    return ['en', 'pt'].contains(locale.languageCode);
+    return AppLocalizations.supportedLocales.contains(locale);
   }
 
   @override
