@@ -15,7 +15,6 @@ dependencies:
   date_util: ^0.1.4
   intl: ^0.15.8
   syncfusion_flutter_charts: ^1.0.0-beta.3
-  fluttertoast: ^3.1.0
   liquid_pull_to_refresh: ^1.1.1
   flutter_staggered_grid_view: ^0.3.0
   bezier_chart: ^1.0.12

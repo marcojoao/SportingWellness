@@ -14,7 +14,6 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -66,10 +65,10 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
             heroTag: "add_report",
             mini: true,
             onPressed: () => {
-              Fluttertoast.showToast(
-                  msg: "Add Report",
-                  toastLength: Toast.LENGTH_SHORT,
-                  timeInSecForIos: 1),
+              // Fluttertoast.showToast(
+              //     msg: "Add Report",
+              //     toastLength: Toast.LENGTH_SHORT,
+              //     timeInSecForIos: 1),
             },
             backgroundColor: Colors.white,
             child: Icon(Icons.add, color: Theme.of(context).accentColor),
@@ -80,10 +79,10 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
             heroTag: "edit_profile",
             mini: true,
             onPressed: () => {
-              Fluttertoast.showToast(
-                  msg: "Edit Profile",
-                  toastLength: Toast.LENGTH_SHORT,
-                  timeInSecForIos: 1),
+              // Fluttertoast.showToast(
+              //     msg: "Edit Profile",
+              //     toastLength: Toast.LENGTH_SHORT,
+              //     timeInSecForIos: 1),
             },
             backgroundColor: Colors.white,
             child: Icon(Icons.edit, color: Theme.of(context).accentColor),
