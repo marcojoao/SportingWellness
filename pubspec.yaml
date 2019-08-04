@@ -15,11 +15,7 @@ dependencies:
   date_util: ^0.1.4
   intl: ^0.15.8
   syncfusion_flutter_charts: ^1.0.0-beta.3
-  liquid_pull_to_refresh: ^1.1.1
-  flutter_staggered_grid_view: ^0.3.0
-  bezier_chart: ^1.0.12
   date_utils: ^0.1.0+2
-  flutter_form_builder: ^3.3.1
   sembast: ^2.0.1
   path_provider: ^1.2.0
   equatable: ^0.3.0
@@ -30,7 +26,6 @@ dependencies:
   flutter_svg: ^0.14.0
   flutter_offline: ^0.2.4+1
   flare_flutter: ^1.5.5
-  battery: ^0.3.0+5
   
 
 dev_dependencies:
