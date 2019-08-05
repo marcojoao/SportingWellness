@@ -171,6 +171,7 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
       floatingActionButton: FloatingActionButton(
         heroTag: "FaAdd",
         onPressed: () {
+          //_showReportDialog2();
           _showReportDialog(player, true);
         },
         child: Icon(Icons.add),
@@ -502,11 +503,11 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
 
   Future<void> _showReportDialog(Player player, bool create) {
     final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
-    var width = 400.0;
-    var height = 400.0;
+    var width = 550.0;
+    var height = 500.0;
     return showDialog<void>(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
@@ -521,14 +522,13 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Container(
-                  height: 350,
                   child: Column(
                     children: <Widget>[
                       Container(
                         alignment: Alignment.center,
                         margin: EdgeInsets.only(left: 20, right: 20),
                         child: Text(
-                          AppLocalizations.translate("createReport"),
+                          AppLocalizations.translate("submitReport"),
                           style: TextStyle(fontSize: 24.0),
                         ),
                       ),
@@ -540,149 +540,140 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
                         height: 5.0,
                       ),
                       Container(
-                        margin: EdgeInsets.all(20),
-                        height: 270,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: <Widget>[
-                              FormBuilder(
-                                key: _fbKey,
-                                initialValue: {
-                                  'date': DateTime.now(),
-                                  'accept_terms': false,
-                                },
-                                autovalidate: true,
-                                child: Column(
-                                  children: <Widget>[
-                                    FormBuilderDateTimePicker(
-                                      attribute: "date",
-                                      inputType: InputType.date,
-                                      format: DateFormat("yyyy-MM-dd"),
-                                      decoration: InputDecoration(
-                                          labelText: "Appointment Time"),
-                                    ),
-                                    FormBuilderSlider(
-                                      attribute: "slider",
-                                      validators: [
-                                        FormBuilderValidators.min(6)
-                                      ],
-                                      min: 0.0,
-                                      max: 10.0,
-                                      initialValue: 1.0,
-                                      divisions: 20,
-                                      decoration: InputDecoration(
-                                          labelText: "Number of things"),
-                                    ),
-                                    FormBuilderCheckbox(
-                                      attribute: 'accept_terms',
-                                      label: Text(
-                                          "I have read and agree to the terms and conditions"),
-                                      validators: [
-                                        FormBuilderValidators.requiredTrue(
-                                          errorText:
-                                              "You must accept terms and conditions to continue",
+                        height: height - 88,
+                        child: Scrollbar(
+                          child: SingleChildScrollView(
+                            child: Container(
+                              margin: EdgeInsets.all(20),
+                              child: Column(
+                                children: <Widget>[
+                                  FormBuilder(
+                                    key: _fbKey,
+                                    initialValue: {
+                                      'date': DateTime.now(),
+                                      'accept_terms': false,
+                                    },
+                                    autovalidate: true,
+                                    child: Column(
+                                      children: <Widget>[
+                                        FormBuilderDateTimePicker(
+                                          attribute: "date",
+                                          inputType: InputType.date,
+                                          format: DateFormat("yyyy-MM-dd"),
+                                          decoration: InputDecoration(
+                                              labelText: "Appointment Time"),
+                                        ),
+                                        FormBuilderSlider(
+                                          attribute: "slider",
+                                          validators: [
+                                            FormBuilderValidators.min(6)
+                                          ],
+                                          min: 0.0,
+                                          max: 10.0,
+                                          initialValue: 1.0,
+                                          divisions: 20,
+                                          decoration: InputDecoration(
+                                              labelText: "Number of things"),
+                                        ),
+                                        FormBuilderCheckbox(
+                                          attribute: 'accept_terms',
+                                          label: Text(
+                                              "I have read and agree to the terms and conditions"),
+                                          validators: [
+                                            FormBuilderValidators.requiredTrue(
+                                              errorText:
+                                                  "You must accept terms and conditions to continue",
+                                            ),
+                                          ],
+                                        ),
+                                        FormBuilderDropdown(
+                                          attribute: "gender",
+                                          decoration: InputDecoration(
+                                              labelText: "Gender"),
+                                          // initialValue: 'Male',
+                                          hint: Text('Select Gender'),
+                                          validators: [
+                                            FormBuilderValidators.required()
+                                          ],
+                                          items: ['Male', 'Female', 'Other']
+                                              .map((gender) => DropdownMenuItem(
+                                                  value: gender,
+                                                  child: Text("$gender")))
+                                              .toList(),
+                                        ),
+                                        FormBuilderTextField(
+                                          attribute: "age",
+                                          decoration:
+                                              InputDecoration(labelText: "Age"),
+                                          validators: [
+                                            FormBuilderValidators.numeric(),
+                                            FormBuilderValidators.max(70),
+                                          ],
+                                        ),
+                                        FormBuilderSegmentedControl(
+                                          decoration: InputDecoration(
+                                              labelText:
+                                                  "Movie Rating (Archer)"),
+                                          attribute: "movie_rating",
+                                          options:
+                                              List.generate(5, (i) => i + 1)
+                                                  .map((number) =>
+                                                      FormBuilderFieldOption(
+                                                          value: number))
+                                                  .toList(),
+                                        ),
+                                        FormBuilderSwitch(
+                                          label: Text(
+                                              'I Accept the tems and conditions'),
+                                          attribute: "accept_terms_switch",
+                                          initialValue: true,
+                                        ),
+                                        FormBuilderStepper(
+                                          decoration: InputDecoration(
+                                              labelText: "Stepper"),
+                                          attribute: "stepper",
+                                          initialValue: 10,
+                                          step: 1,
+                                        ),
+                                        FormBuilderRate(
+                                          decoration: InputDecoration(
+                                              labelText: "Rate this form"),
+                                          attribute: "rate",
+                                          iconSize: 32.0,
+                                          initialValue: 1,
+                                          max: 5,
+                                        ),
+                                        FormBuilderCheckboxList(
+                                          decoration: InputDecoration(
+                                              labelText:
+                                                  "The language of my people"),
+                                          attribute: "languages",
+                                          initialValue: ["Dart"],
+                                          options: [
+                                            FormBuilderFieldOption(
+                                                value: "Dart"),
+                                            FormBuilderFieldOption(
+                                                value: "Kotlin"),
+                                            FormBuilderFieldOption(
+                                                value: "Java"),
+                                            FormBuilderFieldOption(
+                                                value: "Swift"),
+                                            FormBuilderFieldOption(
+                                                value: "Objective-C"),
+                                          ],
+                                        ),
+                                        FormBuilderSignaturePad(
+                                          decoration: InputDecoration(
+                                              labelText: "Signature"),
+                                          attribute: "signature",
+                                          height: 100,
                                         ),
                                       ],
                                     ),
-                                    FormBuilderDropdown(
-                                      attribute: "gender",
-                                      decoration:
-                                          InputDecoration(labelText: "Gender"),
-                                      // initialValue: 'Male',
-                                      hint: Text('Select Gender'),
-                                      validators: [
-                                        FormBuilderValidators.required()
-                                      ],
-                                      items: ['Male', 'Female', 'Other']
-                                          .map((gender) => DropdownMenuItem(
-                                              value: gender,
-                                              child: Text("$gender")))
-                                          .toList(),
-                                    ),
-                                    FormBuilderTextField(
-                                      attribute: "age",
-                                      decoration:
-                                          InputDecoration(labelText: "Age"),
-                                      validators: [
-                                        FormBuilderValidators.numeric(),
-                                        FormBuilderValidators.max(70),
-                                      ],
-                                    ),
-                                    FormBuilderSegmentedControl(
-                                      decoration: InputDecoration(
-                                          labelText: "Movie Rating (Archer)"),
-                                      attribute: "movie_rating",
-                                      options: List.generate(5, (i) => i + 1)
-                                          .map((number) =>
-                                              FormBuilderFieldOption(
-                                                  value: number))
-                                          .toList(),
-                                    ),
-                                    FormBuilderSwitch(
-                                      label: Text(
-                                          'I Accept the tems and conditions'),
-                                      attribute: "accept_terms_switch",
-                                      initialValue: true,
-                                    ),
-                                    FormBuilderStepper(
-                                      decoration:
-                                          InputDecoration(labelText: "Stepper"),
-                                      attribute: "stepper",
-                                      initialValue: 10,
-                                      step: 1,
-                                    ),
-                                    FormBuilderRate(
-                                      decoration: InputDecoration(
-                                          labelText: "Rate this form"),
-                                      attribute: "rate",
-                                      iconSize: 32.0,
-                                      initialValue: 1,
-                                      max: 5,
-                                    ),
-                                    FormBuilderCheckboxList(
-                                      decoration: InputDecoration(
-                                          labelText:
-                                              "The language of my people"),
-                                      attribute: "languages",
-                                      initialValue: ["Dart"],
-                                      options: [
-                                        FormBuilderFieldOption(value: "Dart"),
-                                        FormBuilderFieldOption(value: "Kotlin"),
-                                        FormBuilderFieldOption(value: "Java"),
-                                        FormBuilderFieldOption(value: "Swift"),
-                                        FormBuilderFieldOption(
-                                            value: "Objective-C"),
-                                      ],
-                                    ),
-                                    FormBuilderSignaturePad(
-                                      decoration: InputDecoration(
-                                          labelText: "Signature"),
-                                      attribute: "signature",
-                                      height: 100,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  MaterialButton(
-                                    child: Text("Submit"),
-                                    onPressed: () {
-                                      _fbKey.currentState.save();
-                                      if (_fbKey.currentState.validate()) {
-                                        print(_fbKey.currentState.value);
-                                      }
-                                    },
-                                  ),
-                                  MaterialButton(
-                                    child: Text("Reset"),
-                                    onPressed: () {
-                                      _fbKey.currentState.reset();
-                                    },
                                   ),
                                 ],
-                              )
-                            ],
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -698,10 +689,15 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
                         width: width * .5,
                         child: FlatButton(
                           onPressed: () => {
+                            _fbKey.currentState.save(),
+                            if (_fbKey.currentState.validate())
+                              {
+                                print(_fbKey.currentState.value),
+                              },
                             Navigator.pop(context),
                           },
                           child: Text(
-                            AppLocalizations.translate("create"),
+                            AppLocalizations.translate("submit"),
                             style: TextStyle(color: Colors.white),
                             textAlign: TextAlign.center,
                           ),
@@ -718,6 +714,7 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
                         width: width * .5,
                         child: FlatButton(
                           onPressed: () => {
+                            _fbKey.currentState.reset(),
                             Navigator.pop(context),
                           },
                           child: Text(
