@@ -503,8 +503,7 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
 
   Future<void> _showReportDialog(Player player, bool create) {
     final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
-    var width = 550.0;
-    var height = 500.0;
+    var width = 520.0;
     return showDialog<void>(
       context: context,
       barrierDismissible: true,
@@ -515,7 +514,6 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
           contentPadding: EdgeInsets.only(top: 10.0),
           content: Container(
             width: width,
-            height: height,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -523,10 +521,13 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
               children: <Widget>[
                 Container(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       Container(
                         alignment: Alignment.center,
-                        margin: EdgeInsets.only(left: 20, right: 20),
+              
                         child: Text(
                           AppLocalizations.translate("submitReport"),
                           style: TextStyle(fontSize: 24.0),
@@ -540,7 +541,7 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
                         height: 5.0,
                       ),
                       Container(
-                        height: height - 88,
+                        height: 350,
                         child: Scrollbar(
                           child: SingleChildScrollView(
                             child: Container(
@@ -681,11 +682,12 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
                   ),
                 ),
                 Container(
+                  height: 50,
                   alignment: Alignment.bottomCenter,
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       Container(
-                        height: 50,
                         width: width * .5,
                         child: FlatButton(
                           onPressed: () => {
@@ -710,7 +712,6 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
                         ),
                       ),
                       Container(
-                        height: 50,
                         width: width * .5,
                         child: FlatButton(
                           onPressed: () => {
