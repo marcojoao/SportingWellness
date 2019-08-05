@@ -170,10 +170,7 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
       floatingActionButton: FloatingActionButton(
         heroTag: "FaAdd",
         onPressed: () {
-          _showMessageDialog(
-            "Testing dialog",
-            Text("Testing Stuff"),
-          );
+          _showReportDialog(player, true);
         },
         child: Icon(Icons.add),
       ),
@@ -499,6 +496,144 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
           ),
         ),
       ],
+    );
+  }
+
+  Future<void> _showReportDialog(Player player, bool create) {
+    var width = 400.0;
+    var height = 400.0;
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(12.0))),
+          contentPadding: EdgeInsets.only(top: 10.0),
+          content: Container(
+            width: width,
+            height: height,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Container(
+                  height: 350,
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.only(left: 20, right: 20),
+                        child: Text(
+                          AppLocalizations.translate("createReport"),
+                          style: TextStyle(fontSize: 24.0),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                      Divider(
+                        color: Colors.grey,
+                        height: 5.0,
+                      ),
+                      Container(
+                        margin: EdgeInsets.all(20),
+                        height: 270,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: <Widget>[
+                              TextFormField(
+                                decoration: InputDecoration(
+                                    labelText: 'Name'),
+                              ),
+                              TextFormField(
+                                decoration: InputDecoration(
+                                    labelText: 'Enter Name', hintText: 'Name'),
+                              ),
+                              TextFormField(
+                                decoration: InputDecoration(
+                                    labelText: 'Enter Name', hintText: 'Name'),
+                              ),
+                              TextFormField(
+                                decoration: InputDecoration(
+                                    labelText: 'Enter Name', hintText: 'Name'),
+                              ),
+                              TextFormField(
+                                decoration: InputDecoration(
+                                    labelText: 'Enter Name', hintText: 'Name'),
+                              ),
+                              TextFormField(
+                                decoration: InputDecoration(
+                                    labelText: 'Enter Name', hintText: 'Name'),
+                              ),
+                              TextFormField(
+                                decoration: InputDecoration(
+                                    labelText: 'Enter Name', hintText: 'Name'),
+                              ),
+                              TextFormField(
+                                decoration: InputDecoration(
+                                    labelText: 'Enter Name', hintText: 'Name'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.bottomCenter,
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        height: 50,
+                        width: width * .5,
+                        child: FlatButton(
+                          onPressed: () => {
+                            Navigator.pop(context),
+                          },
+                          child: Text(
+                            AppLocalizations.translate("create"),
+                            style: TextStyle(color: Colors.white),
+                            textAlign: TextAlign.center,
+                          ),
+                          color: Theme.of(context).accentColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(12.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 50,
+                        width: width * .5,
+                        child: FlatButton(
+                          onPressed: () => {
+                            Navigator.pop(context),
+                          },
+                          child: Text(
+                            AppLocalizations.translate("cancel"),
+                            style: TextStyle(color: Colors.white),
+                            textAlign: TextAlign.center,
+                          ),
+                          color: Colors.red[400],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(12.0),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 

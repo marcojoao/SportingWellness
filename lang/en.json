@@ -54,5 +54,6 @@
     "noInfo": "No info",
     "bad": "Bad",
     "good": "Good",
-    "yourDeviceIsNotSecure": "Your device is not secure"
+    "yourDeviceIsNotSecure": "Your device is not secure",
+    "createReport": "Create report"
 }
