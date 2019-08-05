@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sembast/sembast.dart';
 import 'package:Wellness/data/app_database.dart';
 
-import 'package:Wellness/main.dart';
 import 'package:Wellness/model/player.dart';
 import 'package:Wellness/model/player_dao.dart';
 
@@ -11,7 +10,7 @@ void main() {
   test('create instance player', () {
     final _player = Player(
         name: 'Marco',
-        team: TeamType.u_23,
+        team: TeamType.under23,
         height: 190,
         weight: 80,
         avatarPath: 'ww',
@@ -38,7 +37,7 @@ void main() {
     PlayersDAO _playersDao = PlayersDAO();
     var res = await _playersDao.insert(Player(
         name: 'Andy',
-        team: TeamType.u_23,
+        team: TeamType.under23,
         height: 190,
         weight: 80,
         avatarPath: 'ww',

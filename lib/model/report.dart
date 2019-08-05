@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class Report {
@@ -12,9 +13,12 @@ class Report {
   BodyLocation painLocation;
   BodySide painSide;
   int painNumber;
+  DateTime dateTime;
+  String notes;
 
   Report(
       {@required this.playerId,
+      @required this.dateTime,
       @required this.sleepState,
       @required this.recovery,
       @required this.sorroness,
@@ -23,7 +27,8 @@ class Report {
       @required this.pain,
       this.painLocation,
       this.painSide,
-      this.painNumber});
+      this.painNumber,
+      this.notes});
 
   Map<String, dynamic> toMap() {
     return {
@@ -36,7 +41,9 @@ class Report {
       'pain': pain,
       'painLocation': painLocation,
       'painSide': painSide,
-      'painNumber': painNumber
+      'painNumber': painNumber,
+      'dateTime': dateTime,
+      'notes': notes
     };
   }
 
@@ -51,7 +58,9 @@ class Report {
         pain: map['pain'],
         painLocation: map['painLocation'],
         painSide: map['painSide'],
-        painNumber: map['painNumber']);
+        painNumber: map['painNumber'],
+        dateTime: map['dateTime'],
+        notes: map['notes']);
   }
 }
 

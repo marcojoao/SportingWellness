@@ -1,4 +1,5 @@
-# Sporting Wellness App     [![Build Status](https://app.bitrise.io/app/a2aa166eecbc90f8/status.svg?token=lWwwlp7xODozAHNbKI8tWg)](https://app.bitrise.io/app/a2aa166eecbc90f8)
+# Sporting Wellness App
+ [![Platform](https://img.shields.io/badge/Platform-Flutter-yellow.svg)](https://flutter.io) [![License](https://img.shields.io/badge/License-MIT-red.svg)](https://opensource.org/licenses/MIT) [![Build Status](https://app.bitrise.io/app/a2aa166eecbc90f8/status.svg?token=lWwwlp7xODozAHNbKI8tWg)](https://app.bitrise.io/app/a2aa166eecbc90f8)
 
 ![](/assets/wellness.png?raw=true)   
   

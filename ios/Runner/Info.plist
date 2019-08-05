@@ -11,11 +11,11 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Used to choose a photo for the avatar</string>
+	<string>Choose a photo for the avatar</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Used to take a photo for the avatar</string>
+	<string>Take a photo for the avatar</string>
 	<key>NSMicrophoneUsageDescription </key>
-	<string>Used for report notes</string>
+	<string>Report notes with audio</string>
 	<key>CFBundleName</key>
 	<string>Wellness</string>
 	<key>CFBundlePackageType</key>
