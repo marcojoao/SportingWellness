@@ -29,7 +29,6 @@
     "soreness": "Soreness",
     "pain": "Pain",
     "note": "Note",
-    "noInfo": "No info",
     "upperBack": "Upper back",
     "abdomen": "Abdomen",
     "ankle": "Ankle",
@@ -49,5 +48,11 @@
     "knee": "Knee",
     "adductor": "Adductor",
     "lowerBody": "Lower body",
-    "allBody": "All body"
+    "lowerBack ": "Lower back",
+    "allBody": "All body",
+    "notAtAll": "Not at all",
+    "noInfo": "No info",
+    "bad": "Bad",
+    "good": "Good",
+    "yourDeviceIsNotSecure": "Your device is not secure"
 }

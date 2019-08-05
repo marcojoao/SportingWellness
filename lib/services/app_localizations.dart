@@ -12,14 +12,18 @@ class AppLocalizations {
 
   static final List<Locale> supportedLocales = [Locale('en', 'US')/*, Locale('pt', 'PT')*/];
 
-  static const LocalizationsDelegate<AppLocalizations> delegate =
-      _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
 
   static AppLocalizations of(BuildContext context) {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
   static String translate(String key) {
+    var result = _localizedStrings[key];
+    if(result == null){
+      print("Warning: [$key] dont exist");
+      return "[NULL]";
+    }
     return _localizedStrings[key];
   }
 
@@ -35,8 +39,7 @@ class AppLocalizations {
   }
 }
 
-class _AppLocalizationsDelegate
-    extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override

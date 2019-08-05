@@ -14,14 +14,15 @@ class ReportDataSource extends DataTableSource {
     assert(index >= 0);
     if (index >= _reports.length) return null;
     final Report report = _reports[index];
+    var sleepState = AppLocalizations.translate(EnumToString.parse(report.sleepState));
     var sorroness = report.sorroness
-        ? EnumToString.parseCamelCase(report.soronessLocation)
+        ? AppLocalizations.translate(EnumToString.parse(report.soronessLocation))
         : AppLocalizations.translate("noInfo");
     var sorronessSide = report.sorroness
-        ? " (${EnumToString.parseCamelCase(report.sorronessSide)})"
+        ? " (${AppLocalizations.translate(EnumToString.parse(report.sorronessSide))})"
         : "";
     var pain = report.pain
-        ? EnumToString.parseCamelCase(report.painLocation)
+        ? AppLocalizations.translate(EnumToString.parse(report.painLocation))
         : AppLocalizations.translate("noInfo");
     var painNumber = report.pain ? " (${report.painNumber})" : "";
 
@@ -29,7 +30,8 @@ class ReportDataSource extends DataTableSource {
       index: index,
       cells: <DataCell>[
         DataCell(Text(report.dateTime.day.toString())),
-        DataCell(Text(EnumToString.parseCamelCase(report.sleepState))),
+        
+        DataCell(Text(sleepState)),
         DataCell(Text("${report.recovery}%")),
         DataCell(Text("$sorroness$sorronessSide")),
         DataCell(Text("$pain$painNumber")),

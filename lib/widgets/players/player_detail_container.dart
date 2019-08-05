@@ -49,8 +49,6 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
 
   @override
   Widget build(BuildContext context) {
-    
-    //return _buildDebug(context, _selectedItem, _selectedDate);
     return OfflineBuilder(
         connectivityBuilder: (BuildContext context,
             ConnectivityResult connectivity, Widget child) {
@@ -60,13 +58,16 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
   }
 
   Future _checkDeviceSecure() async {
-  bool isDeviceSecure = await RootChecker.isDeviceRooted;
-
-  if(isDeviceSecure)
-     _showMessageDialog(AppLocalizations.translate("warning"),Text("Your device is not secure",textAlign: TextAlign.center,));
-
-  print("Device is Rooted: $isDeviceSecure");
-}
+    bool isDeviceSecure = await RootChecker.isDeviceRooted;
+    if (isDeviceSecure)
+      _showMessageDialog(
+        AppLocalizations.translate("warning"),
+        Text(
+          AppLocalizations.translate("yourDeviceIsNotSecure"),
+          textAlign: TextAlign.center,
+        ),
+      );
+  }
 
   Widget _buildFloatingMenu() {
     return FloatingActionMenu(
@@ -104,7 +105,7 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
     );
   }
 
-  Widget _buildLeftPanel( Player player) {
+  Widget _buildLeftPanel(Player player) {
     return new Container(
       width: _leftPanelWidthSize,
       color: Theme.of(context).accentColor,
@@ -163,9 +164,9 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
     );
   }
 
-  Widget _buildScaffold( Player player, DateTime date) {
+  Widget _buildScaffold(Player player, DateTime date) {
     if (player.reports == null) player.reports = randomDayReports(date);
-    return  new Scaffold(
+    return new Scaffold(
       floatingActionButton: FloatingActionButton(
         heroTag: "FaAdd",
         onPressed: () {
@@ -178,7 +179,6 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
       ),
       body: _buildPainels(player, date),
     );
-
   }
 
   Widget _buildPainels(Player player, DateTime date) {
@@ -192,7 +192,7 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
     );
   }
 
-  Widget _buildChart( Player player, DateTime date) {
+  Widget _buildChart(Player player, DateTime date) {
     return SfCartesianChart(
       primaryXAxis: CategoryAxis(),
       primaryYAxis: NumericAxis(
@@ -221,8 +221,7 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
     );
   }
 
-  PaginatedDataTable _buildReportDateTables(
-       Player player, DateTime date) {
+  PaginatedDataTable _buildReportDateTables(Player player, DateTime date) {
     return PaginatedDataTable(
       rowsPerPage: (player.reports.length < _reportPerPage)
           ? player.reports.length
@@ -332,7 +331,7 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
     );
   }
 
-  Widget _buildPlayerInfo( Player player) {
+  Widget _buildPlayerInfo(Player player) {
     return new Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
@@ -391,6 +390,7 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
             child: SvgPicture.asset(
               "assets/height.svg",
               color: Colors.white,
+              width: 100,
             ),
           ),
           radius: 14,
@@ -409,7 +409,7 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
     );
   }
 
-  Widget _buildPlayerWeight( Player player) {
+  Widget _buildPlayerWeight(Player player) {
     return new Row(
       children: <Widget>[
         CircleAvatar(
@@ -419,6 +419,7 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
             child: SvgPicture.asset(
               "assets/weight.svg",
               color: Colors.white,
+              width: 100,
             ),
           ),
           radius: 14,
@@ -437,9 +438,7 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
     );
   }
 
-  Widget _buildPlayerDominantMember( Player player) {
-    var dominatMember =
-        EnumToString.parseCamelCase(player.dominantMember).toLowerCase();
+  Widget _buildPlayerDominantMember(Player player) {
     return new Row(
       children: <Widget>[
         CircleAvatar(
@@ -449,6 +448,7 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
             child: SvgPicture.asset(
               "assets/leg.svg",
               color: Colors.white,
+              width: 100,
             ),
           ),
           radius: 14,
@@ -456,7 +456,8 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
         new Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: new Text(
-            AppLocalizations.translate(dominatMember),
+            AppLocalizations.translate(
+                EnumToString.parse(player.dominantMember)),
             style: Theme.of(context)
                 .textTheme
                 .subhead
@@ -467,7 +468,7 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
     );
   }
 
-  Widget _buildPlayerTeam( Player player) {
+  Widget _buildPlayerTeam(Player player) {
     var team = EnumToString.parseCamelCase(player.team).split(" ");
     var teamName = AppLocalizations.translate(team[0].toLowerCase());
     if (team.length > 1) {
@@ -479,7 +480,11 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
           backgroundColor: Colors.white12,
           child: Padding(
             padding: EdgeInsets.all(3),
-            child: SvgPicture.asset("assets/teams.svg", color: Colors.white),
+            child: SvgPicture.asset(
+              "assets/teams.svg",
+              color: Colors.white,
+              width: 100,
+            ),
           ),
           radius: 14,
         ),
@@ -497,8 +502,7 @@ class _PlayerDetailContainerState extends State<PlayerDetailContainer> {
     );
   }
 
-  Future<void> _showMessageDialog(
-       String title, Text msg) {
+  Future<void> _showMessageDialog(String title, Text msg) {
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
