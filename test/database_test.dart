@@ -1,10 +1,10 @@
+import 'package:Wellness/model/dao/player_dao.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:sembast/sembast.dart';
 import 'package:Wellness/data/app_database.dart';
 
 import 'package:Wellness/model/player.dart';
-import 'package:Wellness/model/player_dao.dart';
 
 void main() {
   test('create instance player', () {

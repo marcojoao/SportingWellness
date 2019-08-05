@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:Wellness/model/dao/player_dao.dart';
 import 'package:Wellness/model/player.dart';
-import 'package:Wellness/model/player_dao.dart';
+
 import 'package:bloc/bloc.dart';
 import './bloc.dart';
 

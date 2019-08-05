@@ -26,8 +26,13 @@ class ReportDAO {
   }
 
   Future<List<Report>> getAllByDateTime(String dateTime) async {
-    final finder =
-        Finder(filter: Filter.equals('dateTime', dateTime), sortOrders: [
+    Filter filter;
+    if (dateTime.isEmpty || dateTime == null) {
+      filter = Filter.equals('dateTime', DateTime.now());
+    } else {
+      filter = Filter.equals('dateTime', dateTime);
+    }
+    final finder = Finder(filter: filter, sortOrders: [
       SortOrder('dateTime'),
     ]);
 
