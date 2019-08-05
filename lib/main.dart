@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:Wellness/services/route_generator.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_offline/flutter_offline.dart';
-
 void main() {
   SystemChrome.setEnabledSystemUIOverlays([]);
   SystemChrome.setPreferredOrientations(
@@ -35,6 +34,7 @@ class MyApp extends StatelessWidget {
         child: Container());
   }
 }
+
 
 void _setTargetPlatformForDesktop() {
   TargetPlatform targetPlatform;

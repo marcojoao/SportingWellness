@@ -1,3 +1,4 @@
+import 'package:Wellness/services/app_localizations.dart';
 import 'package:Wellness/widgets/players/player_detail_container.dart';
 import 'package:flutter/material.dart';
 import 'package:Wellness/widgets/splash_page.dart';
@@ -19,9 +20,7 @@ class RouteGenerator {
       case '/addlistplayerstatus': //TODO: new player list / edit form
         if (args is Player) {
           return MaterialPageRoute(
-            builder: (_) => MyHomePage(
-              title: 'Secondpage',
-            ),
+            builder: (_) => MyHomePage(),
           );
         }
         return _errorRoute();
@@ -41,10 +40,10 @@ class RouteGenerator {
     return MaterialPageRoute(builder: (_) {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Error'),
+          title: Text(AppLocalizations.translate("error")),
         ),
         body: Center(
-          child: Text('ERROR'),
+          child: Text(AppLocalizations.translate("error").toUpperCase()),
         ),
       );
     });
