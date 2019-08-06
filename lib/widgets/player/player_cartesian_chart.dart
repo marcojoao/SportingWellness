@@ -27,11 +27,11 @@ class PlayerCartesianChart extends StatelessWidget {
           labelFormat: '{value}%'),
       title: ChartTitle(
           text:
-              "${AppLocalizations.translate('recoveryOver')} ${DateFormat('MMMM').format(date)}"),
+              "${AppLoc.getValue('recoveryOver')} ${DateFormat('MMMM').format(date)}"),
       tooltipBehavior: TooltipBehavior(enable: true),
       series: <LineSeries<Report, String>>[
         LineSeries<Report, String>(
-          name: AppLocalizations.translate('recovery'),
+          name: AppLoc.getValue('recovery'),
           color: Theme.of(context).accentColor,
           dataSource: player.reports,
           xValueMapper: (Report report, _) => report.dateTime.day.toString(),

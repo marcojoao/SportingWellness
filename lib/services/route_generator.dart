@@ -41,10 +41,10 @@ class RouteGenerator {
     return MaterialPageRoute(builder: (_) {
       return Scaffold(
         appBar: AppBar(
-          title: Text(AppLocalizations.translate("error")),
+          title: Text(AppLoc.getValue("error")),
         ),
         body: Center(
-          child: Text(AppLocalizations.translate("error").toUpperCase()),
+          child: Text(AppLoc.getValue("error").toUpperCase()),
         ),
       );
     });

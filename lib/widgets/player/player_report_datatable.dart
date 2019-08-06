@@ -18,7 +18,7 @@ class PlayerReportDatatable extends StatelessWidget {
       rowsPerPage: (player.reports.length < reportPerPage)
           ? player.reports.length : reportPerPage,
       columnSpacing: 40,
-      header: Text('${AppLocalizations.translate('reportsOver')} ${DateFormat('MMMM').format(date)}'),
+      header: Text('${AppLoc.getValue('reportsOver')} ${DateFormat('MMMM').format(date)}'),
       columns: ReportDataSource.getDataColumn,
       source: ReportDataSource(context, player.reports),
     );

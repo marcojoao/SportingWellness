@@ -48,7 +48,7 @@ Future<void> showMessageDialog(
                       Navigator.pop(context),
                     },
                     child: Text(
-                      AppLocalizations.translate("close"),
+                      AppLoc.getValue("close"),
                       style: TextStyle(color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
@@ -72,9 +72,9 @@ Future checkDeviceSecure(BuildContext context) async {
     bool isDeviceSecure = await RootChecker.isDeviceRooted;
     if (isDeviceSecure)
       showMessageDialog(context,
-        AppLocalizations.translate("warning"),
+        AppLoc.getValue("warning"),
         Text(
-          AppLocalizations.translate("yourDeviceIsNotSecure"),
+          AppLoc.getValue("yourDeviceIsNotSecure"),
           textAlign: TextAlign.center,
         ),
       );

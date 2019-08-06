@@ -4,11 +4,13 @@ import 'package:Wellness/model/player.dart';
 import 'package:Wellness/tests/players_mock_list.dart';
 import 'package:Wellness/services/app_localizations.dart';
 import 'package:Wellness/tests/report_mock.dart';
+
 import 'package:Wellness/widgets/floating_action_menu.dart';
 import 'package:Wellness/widgets/player/player_avatar.dart';
 import 'package:Wellness/widgets/player/player_cartesian_chart.dart';
 import 'package:Wellness/widgets/player/player_info.dart';
 import 'package:Wellness/widgets/player/player_report_datatable.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -31,7 +33,7 @@ class PlayerPage extends StatefulWidget {
 class _PlayerPageState extends State<PlayerPage> {
   Player _selectedItem;
   DateTime _selectedDate;
-  
+
   double _leftPanelWidthSize = 250;
   int _reportPerPage = 10;
   File _debugImage;
@@ -101,7 +103,7 @@ class _PlayerPageState extends State<PlayerPage> {
         heroTag: "FaAdd",
         onPressed: () {
           //_showReportDialog2();
-          _reportDialog(player, true);
+          _reportDialog2(player, true);
         },
         child: Icon(Icons.add),
       ),
@@ -226,7 +228,7 @@ class _PlayerPageState extends State<PlayerPage> {
                       Container(
                         alignment: Alignment.center,
                         child: Text(
-                          AppLocalizations.translate("submitReport"),
+                          AppLoc.getValue("submitReport"),
                           style: TextStyle(fontSize: 24.0),
                         ),
                       ),
@@ -396,7 +398,7 @@ class _PlayerPageState extends State<PlayerPage> {
                             Navigator.pop(context),
                           },
                           child: Text(
-                            AppLocalizations.translate("submit"),
+                            AppLoc.getValue("submit"),
                             style: TextStyle(color: Colors.white),
                             textAlign: TextAlign.center,
                           ),
@@ -416,7 +418,128 @@ class _PlayerPageState extends State<PlayerPage> {
                             Navigator.pop(context),
                           },
                           child: Text(
-                            AppLocalizations.translate("cancel"),
+                            AppLoc.getValue("cancel"),
+                            style: TextStyle(color: Colors.white),
+                            textAlign: TextAlign.center,
+                          ),
+                          color: Colors.red[400],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(12.0),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+
+  Future<void> _reportDialog2(Player player, bool create) {
+    final basicSlider = CarouselSlider(
+      items: [1, 2, 3, 4, 5].map((i) {
+        return Builder(
+          builder: (BuildContext context) {
+            return Container(
+                width:  520.0,
+                //margin: EdgeInsets.symmetric(horizontal: 5.0),
+                decoration: BoxDecoration(color: Colors.amber),
+                child: Text(
+                  'text $i',
+                  style: TextStyle(fontSize: 16.0),
+                ));
+          },
+        );
+      }).toList(),
+    
+      autoPlay: false,
+      enlargeCenterPage: true,
+      viewportFraction: 0.9,
+      aspectRatio: 2.0,
+    );
+    var width = 520.0;
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(12.0))),
+          contentPadding: EdgeInsets.only(top: 10.0),
+          content: Container(
+            width: width,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          AppLoc.getValue("submitReport"),
+                          style: TextStyle(fontSize: 24.0),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                      Divider(
+                        color: Colors.grey,
+                        height: 5.0,
+                      ),
+                      Container(
+                        height: 350,
+                        child: basicSlider,
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  height: 50,
+                  alignment: Alignment.bottomCenter,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Container(
+                        width: width * .5,
+                        child: FlatButton(
+                          onPressed: () => basicSlider.previousPage(
+                              duration: Duration(milliseconds: 300),
+                              curve: Curves.linear),
+                          child: Text(
+                            AppLoc.getValue("submit"),
+                            style: TextStyle(color: Colors.white),
+                            textAlign: TextAlign.center,
+                          ),
+                          color: Theme.of(context).accentColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(12.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: width * .5,
+                        child: FlatButton(
+                          onPressed: () => basicSlider.nextPage(
+                              duration: Duration(milliseconds: 300),
+                              curve: Curves.linear),
+                          child: Text(
+                            AppLoc.getValue("cancel"),
                             style: TextStyle(color: Colors.white),
                             textAlign: TextAlign.center,
                           ),
@@ -466,7 +589,7 @@ class _PlayerPageState extends State<PlayerPage> {
                       await _getImage(ImageSource.camera),
                     },
                     child: Text(
-                      AppLocalizations.translate("takePicture"),
+                      AppLoc.getValue("takePicture"),
                       textAlign: TextAlign.center,
                     ),
                     shape: RoundedRectangleBorder(
@@ -485,7 +608,7 @@ class _PlayerPageState extends State<PlayerPage> {
                       await _getImage(ImageSource.gallery),
                     },
                     child: Text(
-                      AppLocalizations.translate("choosePicture"),
+                      AppLoc.getValue("choosePicture"),
                       textAlign: TextAlign.center,
                     ),
                     shape: RoundedRectangleBorder(

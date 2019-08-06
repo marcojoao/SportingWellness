@@ -5,20 +5,20 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
-class AppLocalizations {
+class AppLoc {
   final Locale locale;
-  AppLocalizations(this.locale);
+  AppLoc(this.locale);
   static Map<String, String> _localizedStrings;
 
   static final List<Locale> supportedLocales = [Locale('en', 'US')/*, Locale('pt', 'PT')*/];
 
-  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLoc> delegate = _AppLocalizationsDelegate();
 
-  static AppLocalizations of(BuildContext context) {
-    return Localizations.of<AppLocalizations>(context, AppLocalizations);
+  static AppLoc of(BuildContext context) {
+    return Localizations.of<AppLoc>(context, AppLoc);
   }
-
-  static String translate(String key) {
+  
+  static String getValue(String key) {
     var result = _localizedStrings[key];
     if(result == null){
       print("Warning: [$key] dont exist");
@@ -39,23 +39,23 @@ class AppLocalizations {
   }
 }
 
-class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLoc> {
   const _AppLocalizationsDelegate();
 
   @override
   bool isSupported(Locale locale) {
-    return AppLocalizations.supportedLocales.contains(locale);
+    return AppLoc.supportedLocales.contains(locale);
   }
 
   @override
-  Future<AppLocalizations> load(Locale locale) async {
-    AppLocalizations localizations = new AppLocalizations(locale);
+  Future<AppLoc> load(Locale locale) async {
+    AppLoc localizations = new AppLoc(locale);
     await localizations.load();
     return localizations;
   }
 
   @override
-  bool shouldReload(LocalizationsDelegate<AppLocalizations> old) {
+  bool shouldReload(LocalizationsDelegate<AppLoc> old) {
     return false;
   }
 }

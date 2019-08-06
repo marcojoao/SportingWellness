@@ -14,7 +14,7 @@ class PlayerInfo extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     var team = EnumToString.parseCamelCase(player.team).split(" ");
-    var teamName = AppLocalizations.translate(team[0].toLowerCase());
+    var teamName = AppLoc.getValue(team[0].toLowerCase());
     if (team.length > 1) {
       teamName = "$teamName ${team[1]}";
     }
@@ -52,7 +52,7 @@ class PlayerInfo extends StatelessWidget{
                 ),
                 new Padding(
                   child: BadgeField(
-                    AppLocalizations.translate(
+                    AppLoc.getValue(
                       EnumToString.parse(player.dominantMember),
                     ),
                     Padding(

@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:Wellness/services/route_generator.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_offline/flutter_offline.dart';
+
 void main() {
   SystemChrome.setEnabledSystemUIOverlays([]);
   SystemChrome.setPreferredOrientations(
@@ -66,9 +67,9 @@ Widget _buildMaterialApp(bool useDarkTheme) {
 
   return Expanded(
     child: MaterialApp(
-      supportedLocales: AppLocalizations.supportedLocales,
+      supportedLocales: AppLoc.supportedLocales,
       localizationsDelegates: [
-        AppLocalizations.delegate,
+        AppLoc.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
@@ -85,4 +86,3 @@ Widget _buildMaterialApp(bool useDarkTheme) {
     ),
   );
 }
-

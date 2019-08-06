@@ -16,17 +16,17 @@ class ReportDataSource extends DataTableSource {
     if (index >= _reports.length) return null;
     final Report report = _reports[index];
     var sleepState =
-        AppLocalizations.translate(EnumToString.parse(report.sleepState));
+        AppLoc.getValue(EnumToString.parse(report.sleepState));
     var sorroness = report.sorroness
-        ? AppLocalizations.translate(
+        ? AppLoc.getValue(
             EnumToString.parse(report.soronessLocation))
-        : AppLocalizations.translate("noInfo");
+        : AppLoc.getValue("noInfo");
     var sorronessSide = report.sorroness
-        ? " (${AppLocalizations.translate(EnumToString.parse(report.sorronessSide))})"
+        ? " (${AppLoc.getValue(EnumToString.parse(report.sorronessSide))})"
         : "";
     var pain = report.pain
-        ? AppLocalizations.translate(EnumToString.parse(report.painLocation))
-        : AppLocalizations.translate("noInfo");
+        ? AppLoc.getValue(EnumToString.parse(report.painLocation))
+        : AppLoc.getValue("noInfo");
     var painNumber = report.pain ? " (${report.painNumber})" : "";
 
     return DataRow.byIndex(
@@ -46,7 +46,7 @@ class ReportDataSource extends DataTableSource {
             if (report.notes.length > 0)
               showMessageDialog(
                 context,
-                AppLocalizations.translate("reportNote"),
+                AppLoc.getValue("reportNote"),
                 Text(
                   report.notes,
                   style: TextStyle(fontSize: 12.0),
@@ -69,27 +69,27 @@ class ReportDataSource extends DataTableSource {
 
   static List<DataColumn> getDataColumn = <DataColumn>[
     DataColumn(
-      label: Text(AppLocalizations.translate("day")),
+      label: Text(AppLoc.getValue("day")),
       numeric: false,
     ),
     DataColumn(
-      label: Text(AppLocalizations.translate("sleep")),
+      label: Text(AppLoc.getValue("sleep")),
       numeric: false,
     ),
     DataColumn(
-      label: Text(AppLocalizations.translate("recovery")),
+      label: Text(AppLoc.getValue("recovery")),
       numeric: false,
     ),
     DataColumn(
-      label: Text(AppLocalizations.translate("soreness")),
+      label: Text(AppLoc.getValue("soreness")),
       numeric: false,
     ),
     DataColumn(
-      label: Text(AppLocalizations.translate("pain")),
+      label: Text(AppLoc.getValue("pain")),
       numeric: false,
     ),
     DataColumn(
-      label: Text(AppLocalizations.translate("note")),
+      label: Text(AppLoc.getValue("note")),
       numeric: false,
     ),
   ];
