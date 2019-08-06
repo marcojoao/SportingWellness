@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:Wellness/services/app_localizations.dart';
+import 'package:Wellness/utils/themes.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 _buildConnectionWarning(context, connectivity),
-                _buildMaterialApp(),
+                _buildMaterialApp(false),
               ],
             ),
           );
@@ -34,7 +35,6 @@ class MyApp extends StatelessWidget {
         child: Container());
   }
 }
-
 
 void _setTargetPlatformForDesktop() {
   TargetPlatform targetPlatform;
@@ -62,7 +62,8 @@ Widget _buildConnectionWarning(
   );
 }
 
-Widget _buildMaterialApp() {
+Widget _buildMaterialApp(bool useDarkTheme) {
+
   return Expanded(
     child: MaterialApp(
       supportedLocales: AppLocalizations.supportedLocales,
@@ -78,24 +79,10 @@ Widget _buildMaterialApp() {
         return supportedLocales.first;
       },
       debugShowCheckedModeBanner: false,
-      theme: _getThemeDate(false),
+      theme: useDarkTheme ? Themes.darkTheme : Themes.lightTheme,
       initialRoute: '/',
       onGenerateRoute: RouteGenerator.generateRoute,
     ),
   );
 }
 
-ThemeData _getThemeDate(bool useDark) {
-  var lightTheme = ThemeData(
-    brightness: Brightness.light,
-    primaryColor: Colors.grey[200],
-    accentColor: Colors.green,
-  );
-
-  var darkTheme = ThemeData(
-    brightness: Brightness.dark,
-    primaryColor: Colors.grey[600],
-    accentColor: Colors.green,
-  );
-  return useDark ? darkTheme : lightTheme;
-}
