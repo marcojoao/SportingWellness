@@ -1,4 +1,5 @@
 import 'package:Wellness/model/report.dart';
+import 'package:Wellness/services/app_localizations.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 
@@ -13,22 +14,24 @@ class ReportDataSource extends DataTableSource {
     assert(index >= 0);
     if (index >= _reports.length) return null;
     final Report report = _reports[index];
+    var sleepState = AppLocalizations.translate(EnumToString.parse(report.sleepState));
     var sorroness = report.sorroness
-        ? EnumToString.parseCamelCase(report.soronessLocation)
-        : "No info";
+        ? AppLocalizations.translate(EnumToString.parse(report.soronessLocation))
+        : AppLocalizations.translate("noInfo");
     var sorronessSide = report.sorroness
-        ? " | ${EnumToString.parseCamelCase(report.sorronessSide)}"
+        ? " (${AppLocalizations.translate(EnumToString.parse(report.sorronessSide))})"
         : "";
     var pain = report.pain
-        ? EnumToString.parseCamelCase(report.painLocation)
-        : 'No info';
-    var painNumber = report.pain ? " | ${report.painNumber}" : "";
+        ? AppLocalizations.translate(EnumToString.parse(report.painLocation))
+        : AppLocalizations.translate("noInfo");
+    var painNumber = report.pain ? " (${report.painNumber})" : "";
 
     return DataRow.byIndex(
       index: index,
       cells: <DataCell>[
         DataCell(Text(report.dateTime.day.toString())),
-        DataCell(Text(EnumToString.parseCamelCase(report.sleepState))),
+        
+        DataCell(Text(sleepState)),
         DataCell(Text("${report.recovery}%")),
         DataCell(Text("$sorroness$sorronessSide")),
         DataCell(Text("$pain$painNumber")),
@@ -57,27 +60,27 @@ class ReportDataSource extends DataTableSource {
 
   static List<DataColumn> getDataColumn = <DataColumn>[
     DataColumn(
-      label: const Text('Day'),
+      label: Text(AppLocalizations.translate("day")),
       numeric: false,
     ),
     DataColumn(
-      label: const Text('Sleep'),
+      label: Text(AppLocalizations.translate("sleep")),
       numeric: false,
     ),
     DataColumn(
-      label: const Text('Recovery'),
+      label: Text(AppLocalizations.translate("recovery")),
       numeric: false,
     ),
     DataColumn(
-      label: const Text('Soreness'),
+      label: Text(AppLocalizations.translate("soreness")),
       numeric: false,
     ),
     DataColumn(
-      label: const Text('Pain'),
+      label: Text(AppLocalizations.translate("pain")),
       numeric: false,
     ),
     DataColumn(
-      label: const Text('Note'),
+      label: Text(AppLocalizations.translate("note")),
       numeric: false,
     ),
   ];
@@ -89,7 +92,7 @@ class ReportDataSource extends DataTableSource {
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(24.0))),
+              borderRadius: BorderRadius.all(Radius.circular(12.0))),
           contentPadding: EdgeInsets.only(top: 10.0),
           content: Container(
             width: 300.0,
@@ -102,7 +105,7 @@ class ReportDataSource extends DataTableSource {
                   alignment: Alignment.center,
                   margin: EdgeInsets.only(left: 20, right: 20),
                   child: Text(
-                    "Report note",
+                    AppLocalizations.translate("reportNote"),
                     style: TextStyle(fontSize: 24.0),
                   ),
                 ),
@@ -130,15 +133,15 @@ class ReportDataSource extends DataTableSource {
                       Navigator.pop(context),
                     },
                     child: Text(
-                      "Close",
+                      AppLocalizations.translate("close"),
                       style: TextStyle(color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
                     color: Theme.of(context).accentColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(24.0),
-                        bottomRight: Radius.circular(24.0),
+                        bottomLeft: Radius.circular(12.0),
+                        bottomRight: Radius.circular(12.0),
                       ),
                     ),
                   ),

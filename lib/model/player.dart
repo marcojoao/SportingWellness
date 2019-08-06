@@ -25,6 +25,7 @@ class Player {
       this.avatarPath,
       this.reports});
 
+
   Future insertRecord(Report rec) async {
     this.reports.add(rec);
   }
