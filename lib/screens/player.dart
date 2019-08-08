@@ -97,13 +97,14 @@ class _PlayerPageState extends State<PlayerPage> {
   }
 
   Widget _buildScaffold(Player player, DateTime date) {
-    if (player.reports == null) player.reports = randomDayReports(date);
+    //if (player.reports == null) player.reports = randomDayReports(date);
     return new Scaffold(
       floatingActionButton: FloatingActionButton(
         heroTag: "FaAdd",
         onPressed: () {
           //_showReportDialog2();
           _reportDialog2(player, true);
+          //randomDayReports(player.id, DateTime.now());
         },
         child: Icon(Icons.add),
       ),

@@ -13,7 +13,6 @@ class Player {
   String avatarPath;
   TeamType team;
   BodySide dominantMember;
-  List<Report> reports;
 
   Player(
       {@required this.name,
@@ -22,13 +21,7 @@ class Player {
       @required this.height,
       @required this.weight,
       @required this.dominantMember,
-      this.avatarPath,
-      this.reports});
-
-
-  Future insertRecord(Report rec) async {
-    this.reports.add(rec);
-  }
+      this.avatarPath});
 
   Map<String, dynamic> toMap() {
     return {
@@ -39,12 +32,10 @@ class Player {
       'weight': weight,
       'avatarPath': avatarPath,
       'dominantMember': dominantMember,
-      'records': reports
     };
   }
 
   static String defaultAvatar = "assets/player_default.png";
-  static String defaultBackground = "assets/background_fallback.png";
 
   static Player fromMap(Map<String, dynamic> map) {
     return Player(
@@ -54,8 +45,7 @@ class Player {
         height: map['height'],
         weight: map['weight'],
         avatarPath: map['avatar_path'],
-        dominantMember: map['dominantMember'],
-        reports: map['records']);
+        dominantMember: map['dominantMember']);
   }
 }
 

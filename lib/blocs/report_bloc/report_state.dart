@@ -12,7 +12,7 @@ class InitialReportState extends ReportState {}
 class ReportsLoading extends ReportState {}
 
 class ReportsLoaded extends ReportState {
-  final List<Report> players;
+  final List<Report> reports;
 
-  ReportsLoaded(this.players) : super([players]);
+  ReportsLoaded(this.reports) : super([reports]);
 }

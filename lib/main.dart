@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:Wellness/blocs/report_bloc/bloc.dart';
 import 'package:Wellness/services/app_localizations.dart';
 import 'package:Wellness/utils/themes.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:Wellness/services/route_generator.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 
@@ -21,19 +23,23 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return OfflineBuilder(
-        connectivityBuilder: (BuildContext context,
-            ConnectivityResult connectivity, Widget child) {
-          return Container(
-            child: Column(
-              children: <Widget>[
-                _buildConnectionWarning(context, connectivity),
-                _buildMaterialApp(false),
-              ],
-            ),
-          );
-        },
-        child: Container());
+    return BlocProvider(
+      builder: (context) => ReportBloc(),
+      child: OfflineBuilder(
+          connectivityBuilder: (BuildContext context,
+              ConnectivityResult connectivity, Widget child) {
+            return Container(
+              child: Column(
+                children: <Widget>[
+                  _buildConnectionWarning(context, connectivity),
+                  _buildMaterialApp(false),
+                 
+                ],
+              ),
+            );
+          },
+          child: Container()),
+    );
   }
 }
 
@@ -64,7 +70,6 @@ Widget _buildConnectionWarning(
 }
 
 Widget _buildMaterialApp(bool useDarkTheme) {
-
   return Expanded(
     child: MaterialApp(
       supportedLocales: AppLoc.supportedLocales,

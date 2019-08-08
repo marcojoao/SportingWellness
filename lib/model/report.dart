@@ -1,3 +1,4 @@
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -33,16 +34,16 @@ class Report {
   Map<String, dynamic> toMap() {
     return {
       'playerId': playerId,
-      'sleepState': sleepState,
+      'sleepState': EnumToString.parse(sleepState),
       'recovery': recovery,
       'sorroness': sorroness,
-      'soronessLocation': soronessLocation,
-      'sorronessSide': sorronessSide,
+      'soronessLocation': EnumToString.parse(soronessLocation),
+      'sorronessSide': EnumToString.parse(sorronessSide),
       'pain': pain,
-      'painLocation': painLocation,
-      'painSide': painSide,
+      'painLocation': EnumToString.parse(painLocation),
+      'painSide': EnumToString.parse(painSide),
       'painNumber': painNumber,
-      'dateTime': dateTime,
+      'dateTime': dateTime.toString(),
       'notes': notes
     };
   }
