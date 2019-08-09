@@ -51,17 +51,40 @@ class Report {
   static Report fromMap(Map<String, dynamic> map) {
     return Report(
         playerId: map['playerId'],
-        sleepState: map['sleepState'],
+        sleepState:
+            EnumToString.fromString(SleepState.values, map['sleepState']),
         recovery: map['recovery'],
         sorroness: map['sorroness'],
-        soronessLocation: map['soronessLocation'],
-        sorronessSide: map['sorronessSide'],
+        soronessLocation: EnumToString.fromString(
+            BodyLocation.values, map['soronessLocation']),
+        sorronessSide:
+            EnumToString.fromString(BodySide.values, map['sorronessSide']),
         pain: map['pain'],
-        painLocation: map['painLocation'],
-        painSide: map['painSide'],
+        painLocation:
+            EnumToString.fromString(BodyLocation.values, map['painLocation']),
+        painSide: EnumToString.fromString(BodyLocation.values, map['painSide']),
         painNumber: map['painNumber'],
-        dateTime: map['dateTime'],
+        dateTime: DateTime.tryParse(map['dateTime']),
         notes: map['notes']);
+  }
+
+  @override
+  String toString() {
+    final data = """
+                    PlayerId: ${this.playerId}
+                    SleepState: ${EnumToString.parseCamelCase(this.sleepState)}
+                    Recovery: ${this.recovery}
+                    Sorroness: ${this.sorroness}
+                    Sorroness Location: ${EnumToString.parseCamelCase(this.soronessLocation)}
+                    Sorroness Side: ${EnumToString.parseCamelCase(this.sorronessSide)}
+                    Pain: ${this.pain}
+                    Pain Location: ${EnumToString.parseCamelCase(this.painLocation)}
+                    Pain Side: ${EnumToString.parseCamelCase(this.painSide)}
+                    Pain Number: ${this.painNumber}
+                    Created at: ${this.dateTime.toString()}
+                    Notes: ${this.notes}
+                    """;
+    return data;
   }
 }
 

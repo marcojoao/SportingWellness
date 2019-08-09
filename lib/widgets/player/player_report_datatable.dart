@@ -48,7 +48,13 @@ class _PlayerReportDatatableState extends State<PlayerReportDatatable> {
               source: ReportDataSource(context, state.reports),
             );
           } else
-            return  Text("aaa");//null;
+            return SizedBox(
+              child: new CircularProgressIndicator(
+                
+                  strokeWidth: 5.0),
+              height: 50.0,
+              width: 50.0,
+            );
         });
   }
 }

@@ -1,3 +1,4 @@
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/widgets.dart';
 import 'package:Wellness/model/report.dart';
 
@@ -15,7 +16,8 @@ class Player {
   BodySide dominantMember;
 
   Player(
-      {@required this.name,
+      {this.id,
+      @required this.name,
       @required this.birthDate,
       @required this.team,
       @required this.height,
@@ -25,13 +27,14 @@ class Player {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'name': name,
-      'birt_date': birthDate,
-      'team': team,
+      'birt_date': birthDate.toString(),
+      'team': EnumToString.parse(team),
       'height': height,
       'weight': weight,
       'avatarPath': avatarPath,
-      'dominantMember': dominantMember,
+      'dominantMember': EnumToString.parse(dominantMember),
     };
   }
 
@@ -39,13 +42,28 @@ class Player {
 
   static Player fromMap(Map<String, dynamic> map) {
     return Player(
+        id: map['id'],
         name: map['name'],
-        birthDate: map['birthDate'],
-        team: map['team'],
+        birthDate: DateTime.tryParse(map['birthDate']),
+        team: EnumToString.fromString(TeamType.values, map['team']),
         height: map['height'],
         weight: map['weight'],
         avatarPath: map['avatar_path'],
-        dominantMember: map['dominantMember']);
+        dominantMember:
+            EnumToString.fromString(BodySide.values, map['dominantMember']));
+  }
+
+  @override
+  String toString() {
+    final data = """
+                    Name: ${this.name}
+                    Birth Date: ${this.birthDate.toString()}
+                    Team: ${EnumToString.parseCamelCase(this.team)}
+                    Height: ${this.height}
+                    Weight: ${EnumToString.parseCamelCase(this.weight)}
+                    Dominant Member: ${EnumToString.parseCamelCase(this.dominantMember)}                   
+                    """;
+    return data;
   }
 }
 

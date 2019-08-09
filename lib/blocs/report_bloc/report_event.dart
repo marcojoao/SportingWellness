@@ -1,3 +1,4 @@
+import 'package:Wellness/model/player.dart';
 import 'package:Wellness/model/report.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
@@ -8,6 +9,12 @@ abstract class ReportEvent extends Equatable {
 }
 
 class LoadReports extends ReportEvent {}
+
+class LoadReportsByPlayer extends ReportEvent {
+  final Player player;
+
+  LoadReportsByPlayer(this.player) : super([player]);
+}
 
 class AddReport extends ReportEvent {
   final Report insertReport;

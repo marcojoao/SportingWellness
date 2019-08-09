@@ -103,8 +103,8 @@ class _PlayerPageState extends State<PlayerPage> {
         heroTag: "FaAdd",
         onPressed: () {
           //_showReportDialog2();
-          _reportDialog2(player, true);
-          //randomDayReports(player.id, DateTime.now());
+          //_reportDialog2(player, true);
+          randomDayReports(player, DateTime.now());
         },
         child: Icon(Icons.add),
       ),
@@ -442,14 +442,13 @@ class _PlayerPageState extends State<PlayerPage> {
     );
   }
 
-
   Future<void> _reportDialog2(Player player, bool create) {
     final basicSlider = CarouselSlider(
       items: [1, 2, 3, 4, 5].map((i) {
         return Builder(
           builder: (BuildContext context) {
             return Container(
-                width:  520.0,
+                width: 520.0,
                 //margin: EdgeInsets.symmetric(horizontal: 5.0),
                 decoration: BoxDecoration(color: Colors.amber),
                 child: Text(
@@ -459,7 +458,6 @@ class _PlayerPageState extends State<PlayerPage> {
           },
         );
       }).toList(),
-    
       autoPlay: false,
       enlargeCenterPage: true,
       viewportFraction: 0.9,

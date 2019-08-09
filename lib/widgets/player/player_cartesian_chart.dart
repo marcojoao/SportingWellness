@@ -12,7 +12,7 @@ class PlayerCartesianChart extends StatefulWidget {
   Player player;
   DateTime date;
 
-PlayerCartesianChart(this.player, this.date) ;
+  PlayerCartesianChart(this.player, this.date);
 
   _PlayerCartesianChartState createState() => _PlayerCartesianChartState();
 }
@@ -36,7 +36,13 @@ class _PlayerCartesianChartState extends State<PlayerCartesianChart> {
         bloc: _reportBloc,
         builder: (BuildContext context, ReportState state) {
           if (state is ReportsLoading) {
-            return Text("loading");
+            return Container(
+              child: SizedBox(
+                child: new CircularProgressIndicator(strokeWidth: 5.0),
+                height: 50.0,
+                width: 50.0,
+              ),
+            );
           } else if (state is ReportsLoaded) {
             return SfCartesianChart(
               primaryXAxis: CategoryAxis(),
@@ -66,6 +72,8 @@ class _PlayerCartesianChartState extends State<PlayerCartesianChart> {
                 )
               ],
             );
+          } else {
+            return Text("PlayerCartesianChart");
           }
         });
   }
