@@ -34,9 +34,10 @@ List<Report> randomDayReports(Player player, DateTime date) {
 
     report.add(rep);
     repo.insert(rep);
-    repo.getAllById(1).then((vals) => {
-          vals.forEach((f) => {print("${f.toString()}")})
-        });
+    //   repo.getAllById(1).then((vals) => {
+    //         vals.forEach((f) => {print("${f.toString()}")})
+    //       });
+    // }
+    return report;
   }
-  return report;
 }

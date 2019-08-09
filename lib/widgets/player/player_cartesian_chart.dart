@@ -1,4 +1,5 @@
 import 'package:Wellness/blocs/report_bloc/bloc.dart';
+import 'package:Wellness/model/dao/report_dao.dart';
 import 'package:Wellness/model/player.dart';
 import 'package:Wellness/model/report.dart';
 import 'package:Wellness/services/app_localizations.dart';
@@ -19,7 +20,7 @@ class PlayerCartesianChart extends StatefulWidget {
 
 class _PlayerCartesianChartState extends State<PlayerCartesianChart> {
   ReportBloc _reportBloc;
-
+  ReportDAO repoDAO = ReportDAO();
   @override
   void initState() {
     super.initState();
@@ -32,49 +33,39 @@ class _PlayerCartesianChartState extends State<PlayerCartesianChart> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder(
-        bloc: _reportBloc,
-        builder: (BuildContext context, ReportState state) {
-          if (state is ReportsLoading) {
-            return Container(
-              child: SizedBox(
-                child: new CircularProgressIndicator(strokeWidth: 5.0),
-                height: 50.0,
-                width: 50.0,
-              ),
-            );
-          } else if (state is ReportsLoaded) {
-            return SfCartesianChart(
-              primaryXAxis: CategoryAxis(),
-              primaryYAxis: NumericAxis(
-                  edgeLabelPlacement: EdgeLabelPlacement.shift,
-                  interval: 20,
-                  minimum: -20,
-                  maximum: 120,
-                  visibleMinimum: 0,
-                  visibleMaximum: 100,
-                  rangePadding: ChartRangePadding.additional,
-                  labelFormat: '{value}%'),
-              title: ChartTitle(
-                  text:
-                      "${AppLoc.getValue('recoveryOver')} ${DateFormat('MMMM').format(widget.date)}"),
-              tooltipBehavior: TooltipBehavior(enable: true),
-              series: <LineSeries<Report, String>>[
-                LineSeries<Report, String>(
-                  name: AppLoc.getValue('recovery'),
-                  color: Theme.of(context).accentColor,
-                  dataSource: state.reports,
-                  xValueMapper: (Report report, _) =>
-                      report.dateTime.day.toString(),
-                  yValueMapper: (Report report, _) => report.recovery,
-                  markerSettings:
-                      MarkerSettings(color: Colors.white, isVisible: true),
+    return FutureBuilder(
+        future: repoDAO.getAllById(1),
+        builder: (BuildContext context, AsyncSnapshot<List<Report>> snapshot) {
+          return snapshot.hasData
+              ? SfCartesianChart(
+                  primaryXAxis: CategoryAxis(),
+                  primaryYAxis: NumericAxis(
+                      edgeLabelPlacement: EdgeLabelPlacement.shift,
+                      interval: 20,
+                      minimum: -20,
+                      maximum: 120,
+                      visibleMinimum: 0,
+                      visibleMaximum: 100,
+                      rangePadding: ChartRangePadding.additional,
+                      labelFormat: '{value}%'),
+                  title: ChartTitle(
+                      text:
+                          "${AppLoc.getValue('recoveryOver')} ${DateFormat('MMMM').format(widget.date)}"),
+                  tooltipBehavior: TooltipBehavior(enable: true),
+                  series: <LineSeries<Report, String>>[
+                    LineSeries<Report, String>(
+                      name: AppLoc.getValue('recovery'),
+                      color: Theme.of(context).accentColor,
+                      dataSource: snapshot.data,
+                      xValueMapper: (Report report, _) =>
+                          report.dateTime.day.toString(),
+                      yValueMapper: (Report report, _) => report.recovery,
+                      markerSettings:
+                          MarkerSettings(color: Colors.white, isVisible: true),
+                    )
+                  ],
                 )
-              ],
-            );
-          } else {
-            return Text("PlayerCartesianChart");
-          }
+              : CircularProgressIndicator();
         });
   }
 }

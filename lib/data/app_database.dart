@@ -33,9 +33,9 @@ class AppDatabase {
     //TODO: REMOVE this
     print("DBPATH ----------------------------------------- ${dbPath}");
     if (FileSystemEntity.typeSync(dbPath) != FileSystemEntityType.notFound) {
-      // createDatabaseFactoryIo().deleteDatabase(dbPath);
-      var config = new File(dbPath);
-      config.readAsLines().then((handleLines) => {print(handleLines)});
+      //createDatabaseFactoryIo().deleteDatabase(dbPath);
+      // var config = new File(dbPath);
+      // config.readAsLines().then((handleLines) => {print(handleLines)});
     }
 
     final database = createDatabaseFactoryIo().openDatabase(dbPath);

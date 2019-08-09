@@ -1,7 +1,9 @@
 import 'package:Wellness/blocs/report_bloc/report_bloc.dart';
 import 'package:Wellness/blocs/report_bloc/report_event.dart';
 import 'package:Wellness/blocs/report_bloc/report_state.dart';
+import 'package:Wellness/model/dao/report_dao.dart';
 import 'package:Wellness/model/player.dart';
+import 'package:Wellness/model/report.dart';
 import 'package:Wellness/services/app_localizations.dart';
 import 'package:Wellness/widgets/report/report_data_source.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,6 +23,7 @@ class PlayerReportDatatable extends StatefulWidget {
 class _PlayerReportDatatableState extends State<PlayerReportDatatable> {
   //PlayerReportDatatable(this.player, this.date, this.reportPerPage);
   ReportBloc _reportBloc;
+  ReportDAO repoDAO = ReportDAO();
   @override
   void initState() {
     super.initState();
@@ -32,7 +35,7 @@ class _PlayerReportDatatableState extends State<PlayerReportDatatable> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build1q(BuildContext context) {
     return BlocBuilder(
         bloc: _reportBloc,
         builder: (BuildContext context, ReportState state) {
@@ -49,12 +52,30 @@ class _PlayerReportDatatableState extends State<PlayerReportDatatable> {
             );
           } else
             return SizedBox(
-              child: new CircularProgressIndicator(
-                
-                  strokeWidth: 5.0),
+              child: new CircularProgressIndicator(strokeWidth: 5.0),
               height: 50.0,
               width: 50.0,
             );
+        });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: repoDAO.getAllById(1),
+        builder: (BuildContext context, AsyncSnapshot<List<Report>> snapshot) {
+          return snapshot.hasData
+              ? PaginatedDataTable(
+                  rowsPerPage: (snapshot.data.length < widget.reportPerPage)
+                      ? snapshot.data.length
+                      : widget.reportPerPage,
+                  columnSpacing: 40,
+                  header: Text(
+                      '${AppLoc.getValue('reportsOver')} ${DateFormat('MMMM').format(widget.date)}'),
+                  columns: ReportDataSource.getDataColumn,
+                  source: ReportDataSource(context, snapshot.data),
+                )
+              : CircularProgressIndicator();
         });
   }
 }
