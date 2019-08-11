@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:Wellness/model/dao/report_dao.dart';
 import 'package:Wellness/model/player.dart';
 import 'package:Wellness/model/report.dart';
 import 'package:date_util/date_util.dart';
+import 'package:http/http.dart' as http;
 
 List<Report> randomDayReports(Player player, DateTime date) {
   print("randomDayReports");
@@ -13,6 +15,7 @@ List<Report> randomDayReports(Player player, DateTime date) {
   Random rng = new Random();
   var dateUtility = new DateUtil();
   var days = dateUtility.daysInMonth(date.month, date.year);
+
   for (var i = 1; i <= days; i++) {
     var rep = Report(
         playerId: player.id,
@@ -34,10 +37,18 @@ List<Report> randomDayReports(Player player, DateTime date) {
 
     report.add(rep);
     repo.insert(rep);
-    //   repo.getAllById(1).then((vals) => {
-    //         vals.forEach((f) => {print("${f.toString()}")})
-    //       });
-    // }
+    // repo.getAllById(1).then((vals) => {
+    //       vals.forEach((f) => {print("${f.toString()}")})
+    //     });
+
     return report;
+  }
+
+  Future<List<String>> _fetchNotes(int nums) async {
+    final res = await http
+        .get("https://baconipsum.com/api/?type=meat-and-filler&paras=$nums");
+
+    final ret = json.decode(res.body.toString()) as List<String>;
+    return ret;
   }
 }

@@ -11,12 +11,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 
+import 'package:bloc/bloc.dart';
+
+class SimpleBlocDelegate extends BlocDelegate {
+  @override
+  void onTransition(Bloc bloc, Transition transition) {
+    super.onTransition(bloc, transition);
+    print(transition);
+  }
+}
+
 void main() {
   SystemChrome.setEnabledSystemUIOverlays([]);
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
 
   _setTargetPlatformForDesktop();
+  BlocSupervisor.delegate = SimpleBlocDelegate();
   return runApp(MyApp());
 }
 
@@ -33,7 +44,6 @@ class MyApp extends StatelessWidget {
                 children: <Widget>[
                   _buildConnectionWarning(context, connectivity),
                   _buildMaterialApp(false),
-                 
                 ],
               ),
             );

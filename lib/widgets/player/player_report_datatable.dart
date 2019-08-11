@@ -35,7 +35,7 @@ class _PlayerReportDatatableState extends State<PlayerReportDatatable> {
   }
 
   @override
-  Widget build1q(BuildContext context) {
+  Widget build(BuildContext context) {
     final ReportBloc reportBloc = BlocProvider.of<ReportBloc>(context);
     return BlocBuilder(
         bloc: reportBloc,
@@ -52,16 +52,14 @@ class _PlayerReportDatatableState extends State<PlayerReportDatatable> {
               source: ReportDataSource(context, state.reports),
             );
           } else
-            return SizedBox(
+            return Center(
               child: new CircularProgressIndicator(strokeWidth: 5.0),
-              height: 50.0,
-              width: 50.0,
             );
         });
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build1(BuildContext context) {
     return FutureBuilder(
         future: repoDAO.getAllById(1),
         builder: (BuildContext context, AsyncSnapshot<List<Report>> snapshot) {
