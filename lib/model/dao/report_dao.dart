@@ -59,4 +59,10 @@ class ReportDAO {
       return report;
     }).toList();
   }
+
+  getAllTest(int playerId) async {
+    final res = await getAllById(playerId);
+
+    return res;
+  }
 }
