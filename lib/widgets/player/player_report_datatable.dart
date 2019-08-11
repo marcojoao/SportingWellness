@@ -22,22 +22,23 @@ class PlayerReportDatatable extends StatefulWidget {
 
 class _PlayerReportDatatableState extends State<PlayerReportDatatable> {
   //PlayerReportDatatable(this.player, this.date, this.reportPerPage);
-  ReportBloc _reportBloc;
+  // ReportBloc _reportBloc;
   ReportDAO repoDAO = ReportDAO();
   @override
   void initState() {
     super.initState();
 
-    _reportBloc = BlocProvider.of<ReportBloc>(context);
-    //PlayerCartesianChart( this.widget.player , this.widget.date);
+    // _reportBloc = BlocProvider.of<ReportBloc>(context);
+    // //PlayerCartesianChart( this.widget.player , this.widget.date);
 
-    _reportBloc.dispatch(LoadReports());
+    // _reportBloc.dispatch(LoadReports());
   }
 
   @override
   Widget build1q(BuildContext context) {
+    final ReportBloc reportBloc = BlocProvider.of<ReportBloc>(context);
     return BlocBuilder(
-        bloc: _reportBloc,
+        bloc: reportBloc,
         builder: (BuildContext context, ReportState state) {
           if (state is ReportsLoaded) {
             PaginatedDataTable(

@@ -41,7 +41,8 @@ class ReportBloc extends Bloc<ReportEvent, ReportState> {
     if (player == null) {
       reports = await _reportDAO.getAllByDateTime(null);
     } else {
-      reports = await _reportDAO.getAllById(player.id);
+      reports = await _reportDAO
+          .getAllById(1); //await _reportDAO.getAllById(player.id);
     }
 
     yield ReportsLoaded(reports);
