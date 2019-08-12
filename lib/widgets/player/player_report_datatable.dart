@@ -31,17 +31,18 @@ class _PlayerReportDatatableState extends State<PlayerReportDatatable> {
     // _reportBloc = BlocProvider.of<ReportBloc>(context);
     // //PlayerCartesianChart( this.widget.player , this.widget.date);
 
-    // _reportBloc.dispatch(LoadReports());
+    //_reportBloc.dispatch(LoadReports());
   }
 
   @override
   Widget build(BuildContext context) {
     final ReportBloc reportBloc = BlocProvider.of<ReportBloc>(context);
+    reportBloc.dispatch(LoadReportsByPlayer(widget.player));
     return BlocBuilder(
         bloc: reportBloc,
         builder: (BuildContext context, ReportState state) {
           if (state is ReportsLoaded) {
-            PaginatedDataTable(
+            return PaginatedDataTable(
               rowsPerPage: (state.reports.length < widget.reportPerPage)
                   ? state.reports.length
                   : widget.reportPerPage,
