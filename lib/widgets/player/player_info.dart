@@ -3,10 +3,10 @@ import 'package:Wellness/services/app_localizations.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import '../badge_field.dart';
 
-class PlayerInfo extends StatelessWidget{
-
+class PlayerInfo extends StatelessWidget {
   final Player player;
 
   PlayerInfo(this.player);
@@ -75,28 +75,16 @@ class PlayerInfo extends StatelessWidget{
                   new Padding(
                     child: BadgeField(
                       "${player.height} cm",
-                      Padding(
-                        padding: EdgeInsets.all(6),
-                        child: SvgPicture.asset(
-                          "assets/height.svg",
-                          color: Colors.white,
-                          width: 100,
-                        ),
-                      ),
+                      Icon(MdiIcons.humanMaleHeightVariant,
+                          color: Colors.white, size: 20),
                     ),
                     padding: const EdgeInsets.only(right: 5, left: 5),
                   ),
                   new Padding(
                     child: BadgeField(
                       "${player.weight} kg",
-                      Padding(
-                        padding: EdgeInsets.all(6),
-                        child: SvgPicture.asset(
-                          "assets/weight.svg",
-                          color: Colors.white,
-                          width: 100,
-                        ),
-                      ),
+                      Icon(MdiIcons.weightKilogram,
+                          color: Colors.white, size: 20),
                     ),
                     padding: const EdgeInsets.only(right: 5, left: 5),
                   ),
@@ -108,4 +96,4 @@ class PlayerInfo extends StatelessWidget{
       ],
     );
   }
-} 
+}
