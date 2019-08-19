@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sembast/sembast.dart';
@@ -27,8 +30,15 @@ class AppDatabase {
     final appdocumentDir =
         await getApplicationDocumentsDirectory(); //TODO: testing on documents path, move to app files directory
     final dbPath = join(appdocumentDir.path, APP_DATABASE_NAME);
-    final database = createDatabaseFactoryIo().openDatabase(dbPath);
+    //TODO: REMOVE this
+    print("DBPATH ----------------------------------------- ${dbPath}");
+    if (FileSystemEntity.typeSync(dbPath) != FileSystemEntityType.notFound) {
+      //createDatabaseFactoryIo().deleteDatabase(dbPath);
+      // var config = new File(dbPath);
+      // config.readAsLines().then((handleLines) => {print(handleLines)});
+    }
 
+    final database = createDatabaseFactoryIo().openDatabase(dbPath);
 
     _dbOpenCompleter.complete(database);
   }

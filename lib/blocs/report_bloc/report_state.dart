@@ -7,12 +7,20 @@ abstract class ReportState extends Equatable {
   ReportState([List props = const []]) : super(props);
 }
 
-class InitialReportState extends ReportState {}
+class InitialReportState extends ReportState {
+  @override
+  String toString() => 'Initial ReportState';
+}
 
-class ReportsLoading extends ReportState {}
+class ReportsLoading extends ReportState {
+  @override
+  String toString() => 'Reports Loading';
+}
 
 class ReportsLoaded extends ReportState {
-  final List<Report> players;
+  final List<Report> reports;
 
-  ReportsLoaded(this.players) : super([players]);
+  ReportsLoaded(this.reports) : super([reports]);
+  @override
+  String toString() => 'Reports Loaded';
 }

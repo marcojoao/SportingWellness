@@ -1,3 +1,4 @@
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/widgets.dart';
 import 'package:Wellness/model/report.dart';
 
@@ -13,49 +14,56 @@ class Player {
   String avatarPath;
   TeamType team;
   BodySide dominantMember;
-  List<Report> reports;
 
   Player(
-      {@required this.name,
+      {this.id,
+      @required this.name,
       @required this.birthDate,
       @required this.team,
       @required this.height,
       @required this.weight,
       @required this.dominantMember,
-      this.avatarPath,
-      this.reports});
-
-
-  Future insertRecord(Report rec) async {
-    this.reports.add(rec);
-  }
+      this.avatarPath});
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'name': name,
-      'birt_date': birthDate,
-      'team': team,
+      'birt_date': birthDate.toString(),
+      'team': EnumToString.parse(team),
       'height': height,
       'weight': weight,
       'avatarPath': avatarPath,
-      'dominantMember': dominantMember,
-      'records': reports
+      'dominantMember': EnumToString.parse(dominantMember),
     };
   }
 
   static String defaultAvatar = "assets/player_default.png";
-  static String defaultBackground = "assets/background_fallback.png";
 
   static Player fromMap(Map<String, dynamic> map) {
     return Player(
+        id: map['id'],
         name: map['name'],
-        birthDate: map['birthDate'],
-        team: map['team'],
+        birthDate: DateTime.tryParse(map['birthDate']),
+        team: EnumToString.fromString(TeamType.values, map['team']),
         height: map['height'],
         weight: map['weight'],
         avatarPath: map['avatar_path'],
-        dominantMember: map['dominantMember'],
-        reports: map['records']);
+        dominantMember:
+            EnumToString.fromString(BodySide.values, map['dominantMember']));
+  }
+
+  @override
+  String toString() {
+    final data = """
+                    Name: ${this.name}
+                    Birth Date: ${this.birthDate.toString()}
+                    Team: ${EnumToString.parseCamelCase(this.team)}
+                    Height: ${this.height}
+                    Weight: ${EnumToString.parseCamelCase(this.weight)}
+                    Dominant Member: ${EnumToString.parseCamelCase(this.dominantMember)}                   
+                    """;
+    return data;
   }
 }
 
