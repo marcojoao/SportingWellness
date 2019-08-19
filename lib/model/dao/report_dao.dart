@@ -52,7 +52,9 @@ class ReportDAO {
     ]);
 
     final recordSnapshots = await _reportStore.find(await _db, finder: finder);
-
+    if (recordSnapshots == null || recordSnapshots.length == 0) {
+      return List<Report>();
+    }
     return recordSnapshots.map((snapshot) {
       final report = Report.fromMap(snapshot.value);
       report.id = snapshot.key;

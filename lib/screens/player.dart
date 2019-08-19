@@ -125,7 +125,7 @@ class _PlayerPageState extends State<PlayerPage> {
                   "Where do random thoughts come from?\nA song can make or ruin a person’s day if they let it get to them.");
 
           repBloc.dispatch(AddReport(rep));
-          randomDayReports(player, DateTime.now());
+          //randomDayReports(player, DateTime.now());
         },
         child: Icon(Icons.add),
       ),
