@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:Wellness/model/dao/player_dao.dart';
 import 'package:Wellness/model/dao/report_dao.dart';
 import 'package:Wellness/model/player.dart';
 import 'package:Wellness/model/report.dart';
@@ -35,8 +36,8 @@ List<Report> randomDayReports(Player player, DateTime date) {
             ? "Where do random thoughts come from?\nA song can make or ruin a person’s day if they let it get to them."
             : "");
 
-    // report.add(rep);
-    // repo.insert(rep);
+    report.add(rep);
+    repo.insert(rep);
     // repo.getAllById(1).then((vals) => {
     //       vals.forEach((f) => {print("${f.toString()}")})
     //     });
