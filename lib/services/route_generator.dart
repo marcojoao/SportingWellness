@@ -16,13 +16,9 @@ class RouteGenerator {
             builder: (_) =>
                 SplashPage(nextPage: '/mockdashboard', introDuration: 3));
       case '/myhomepage':
-<<<<<<< HEAD
-        //return _getPageRoute(PlayerPage());
-=======
         return _errorRoute(); //_getPageRoute(PlayerPage());
       case '/mockdashboard':
         return _getPageRoute(DashBoardMock());
->>>>>>> a21032ee879fbe081ebfd615a90218148d74734c
 
       case '/addlistplayerstatus': //TODO: new player list / edit form
         if (args is Player) {
@@ -33,16 +29,12 @@ class RouteGenerator {
         return _errorRoute();
 
       case '/playerdetail':
-<<<<<<< HEAD
-        //return _getPageRoute(PlayerPage());
-=======
         if (args is Player) {
           return _getPageRoute(PlayerPage(args));
         }
         return _errorRoute();
 
       // return _getPageRoute(PlayerPage());
->>>>>>> a21032ee879fbe081ebfd615a90218148d74734c
       case '/newplayer': //TODO: new player form
         return _errorRoute();
       case '/dashboard': //TODO: implement dashboard component
