@@ -28,7 +28,7 @@ class PlayerPage extends StatefulWidget {
   Player selectedPlayer;
   DateTime selectedDate;
 
-  PlayerPage({Key key, this.selectedPlayer, this.selectedDate})
+  PlayerPage(this.selectedPlayer,{Key key, this.selectedDate})
       : super(key: key);
   @override
   _PlayerPageState createState() => _PlayerPageState();
@@ -48,7 +48,7 @@ class _PlayerPageState extends State<PlayerPage> {
     setState(
       () {
         checkDeviceSecure(context);
-        _selectedItem = widget.selectedPlayer ?? players[0];
+        _selectedItem = widget.selectedPlayer;
         _selectedDate = widget.selectedDate ?? DateTime.now();
       },
     );

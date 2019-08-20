@@ -15,23 +15,17 @@ class PlayerReportDatatable extends StatefulWidget {
   Player player;
   DateTime date;
   int reportPerPage;
+  
   PlayerReportDatatable(this.player, this.date, this.reportPerPage);
 
   _PlayerReportDatatableState createState() => _PlayerReportDatatableState();
 }
 
 class _PlayerReportDatatableState extends State<PlayerReportDatatable> {
-  //PlayerReportDatatable(this.player, this.date, this.reportPerPage);
-  // ReportBloc _reportBloc;
   ReportDAO repoDAO = ReportDAO();
   @override
   void initState() {
     super.initState();
-
-    // _reportBloc = BlocProvider.of<ReportBloc>(context);
-    // //PlayerCartesianChart( this.widget.player , this.widget.date);
-
-    //_reportBloc.dispatch(LoadReports());
   }
 
   @override
