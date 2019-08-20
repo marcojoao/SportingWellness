@@ -16,7 +16,7 @@ class RouteGenerator {
             builder: (_) =>
                 SplashPage(nextPage: '/playerdetail', introDuration: 3));
       case '/myhomepage':
-        return _getPageRoute(PlayerPage());
+        //return _getPageRoute(PlayerPage());
 
       case '/addlistplayerstatus': //TODO: new player list / edit form
         if (args is Player) {
@@ -27,7 +27,7 @@ class RouteGenerator {
         return _errorRoute();
 
       case '/playerdetail':
-        return _getPageRoute(PlayerPage());
+        //return _getPageRoute(PlayerPage());
       case '/newplayer': //TODO: new player form
         return _errorRoute();
       case '/dashboard': //TODO: implement dashboard component
