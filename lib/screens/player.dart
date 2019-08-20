@@ -28,7 +28,11 @@ class PlayerPage extends StatefulWidget {
   Player selectedPlayer;
   DateTime selectedDate;
 
+<<<<<<< HEAD
   PlayerPage(this.selectedPlayer,{Key key, this.selectedDate})
+=======
+  PlayerPage(this.selectedPlayer, {Key key, this.selectedDate})
+>>>>>>> a21032ee879fbe081ebfd615a90218148d74734c
       : super(key: key);
   @override
   _PlayerPageState createState() => _PlayerPageState();
@@ -125,7 +129,7 @@ class _PlayerPageState extends State<PlayerPage> {
                   "Where do random thoughts come from?\nA song can make or ruin a person’s day if they let it get to them.");
 
           repBloc.dispatch(AddReport(rep));
-          randomDayReports(player, DateTime.now());
+          //randomDayReports(player, DateTime.now());
         },
         child: Icon(Icons.add),
       ),

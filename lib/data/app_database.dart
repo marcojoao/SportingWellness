@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:Wellness/model/dao/player_dao.dart';
+import 'package:Wellness/tests/players_mock_list.dart';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -13,6 +15,7 @@ class AppDatabase {
   //singleton instance
   static final AppDatabase _singleton = AppDatabase._();
   static AppDatabase get instance => _singleton;
+  PlayersDAO playersDAO = PlayersDAO();
 
   Completer<Database> _dbOpenCompleter;
 
@@ -33,11 +36,13 @@ class AppDatabase {
     //TODO: REMOVE this
     print("DBPATH ----------------------------------------- ${dbPath}");
     if (FileSystemEntity.typeSync(dbPath) != FileSystemEntityType.notFound) {
-      //createDatabaseFactoryIo().deleteDatabase(dbPath);
+      createDatabaseFactoryIo().deleteDatabase(dbPath);
       // var config = new File(dbPath);
       // config.readAsLines().then((handleLines) => {print(handleLines)});
     }
-
+    for (var item in players) {
+      await playersDAO.insert(item);
+    }
     final database = createDatabaseFactoryIo().openDatabase(dbPath);
 
     _dbOpenCompleter.complete(database);

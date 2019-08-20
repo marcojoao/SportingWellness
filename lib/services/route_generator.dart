@@ -2,9 +2,9 @@ import 'package:Wellness/screens/dashboard.dart';
 import 'package:Wellness/screens/player.dart';
 import 'package:Wellness/screens/splash_page.dart';
 import 'package:Wellness/services/app_localizations.dart';
+import 'package:Wellness/tests/dashboard_mock.dart';
 import 'package:flutter/material.dart';
 import 'package:Wellness/model/player.dart';
-
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -14,9 +14,15 @@ class RouteGenerator {
       case '/':
         return MaterialPageRoute(
             builder: (_) =>
-                SplashPage(nextPage: '/playerdetail', introDuration: 3));
+                SplashPage(nextPage: '/mockdashboard', introDuration: 3));
       case '/myhomepage':
+<<<<<<< HEAD
         //return _getPageRoute(PlayerPage());
+=======
+        return _errorRoute(); //_getPageRoute(PlayerPage());
+      case '/mockdashboard':
+        return _getPageRoute(DashBoardMock());
+>>>>>>> a21032ee879fbe081ebfd615a90218148d74734c
 
       case '/addlistplayerstatus': //TODO: new player list / edit form
         if (args is Player) {
@@ -27,7 +33,16 @@ class RouteGenerator {
         return _errorRoute();
 
       case '/playerdetail':
+<<<<<<< HEAD
         //return _getPageRoute(PlayerPage());
+=======
+        if (args is Player) {
+          return _getPageRoute(PlayerPage(args));
+        }
+        return _errorRoute();
+
+      // return _getPageRoute(PlayerPage());
+>>>>>>> a21032ee879fbe081ebfd615a90218148d74734c
       case '/newplayer': //TODO: new player form
         return _errorRoute();
       case '/dashboard': //TODO: implement dashboard component
