@@ -1,6 +1,9 @@
 import 'dart:io';
 
+import 'package:Wellness/blocs/report_bloc/report_bloc.dart';
+import 'package:Wellness/blocs/report_bloc/report_event.dart';
 import 'package:Wellness/model/player.dart';
+import 'package:Wellness/model/report.dart';
 import 'package:Wellness/tests/players_mock_list.dart';
 import 'package:Wellness/services/app_localizations.dart';
 import 'package:Wellness/tests/report_mock.dart';
@@ -13,6 +16,7 @@ import 'package:Wellness/widgets/player/player_report_datatable.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 import 'package:image_picker/image_picker.dart';
@@ -24,7 +28,7 @@ class PlayerPage extends StatefulWidget {
   Player selectedPlayer;
   DateTime selectedDate;
 
-  PlayerPage({Key key, this.selectedPlayer, this.selectedDate})
+  PlayerPage(this.selectedPlayer,{Key key, this.selectedDate})
       : super(key: key);
   @override
   _PlayerPageState createState() => _PlayerPageState();
@@ -44,7 +48,7 @@ class _PlayerPageState extends State<PlayerPage> {
     setState(
       () {
         checkDeviceSecure(context);
-        _selectedItem = widget.selectedPlayer ?? players[0];
+        _selectedItem = widget.selectedPlayer;
         _selectedDate = widget.selectedDate ?? DateTime.now();
       },
     );
@@ -52,10 +56,11 @@ class _PlayerPageState extends State<PlayerPage> {
 
   @override
   Widget build(BuildContext context) {
+    final ReportBloc _reportBloc = BlocProvider.of<ReportBloc>(context);
     return OfflineBuilder(
         connectivityBuilder: (BuildContext context,
             ConnectivityResult connectivity, Widget child) {
-          return _buildScaffold(_selectedItem, _selectedDate);
+          return _buildScaffold(_selectedItem, _selectedDate, _reportBloc);
         },
         child: Container());
   }
@@ -96,14 +101,31 @@ class _PlayerPageState extends State<PlayerPage> {
     );
   }
 
-  Widget _buildScaffold(Player player, DateTime date) {
-    if (player.reports == null) player.reports = randomDayReports(date);
+  Widget _buildScaffold(Player player, DateTime date, ReportBloc repBloc) {
+    //if (player.reports == null) player.reports = randomDayReports(date);
     return new Scaffold(
       floatingActionButton: FloatingActionButton(
         heroTag: "FaAdd",
         onPressed: () {
           //_showReportDialog2();
-          _reportDialog2(player, true);
+          //_reportDialog2(player, true);
+          var rep = Report(
+              playerId: player.id,
+              dateTime: DateTime.utc(date.year, date.month, 3),
+              sleepState: SleepState.noInfo,
+              recovery: 10,
+              sorroness: true,
+              soronessLocation: BodyLocation.neck,
+              sorronessSide: BodySide.right,
+              pain: false,
+              painLocation: BodyLocation.lowerBody,
+              painSide: BodySide.both,
+              painNumber: 5,
+              notes:
+                  "Where do random thoughts come from?\nA song can make or ruin a person’s day if they let it get to them.");
+
+          repBloc.dispatch(AddReport(rep));
+          randomDayReports(player, DateTime.now());
         },
         child: Icon(Icons.add),
       ),
@@ -441,14 +463,13 @@ class _PlayerPageState extends State<PlayerPage> {
     );
   }
 
-
   Future<void> _reportDialog2(Player player, bool create) {
     final basicSlider = CarouselSlider(
       items: [1, 2, 3, 4, 5].map((i) {
         return Builder(
           builder: (BuildContext context) {
             return Container(
-                width:  520.0,
+                width: 520.0,
                 //margin: EdgeInsets.symmetric(horizontal: 5.0),
                 decoration: BoxDecoration(color: Colors.amber),
                 child: Text(
@@ -458,7 +479,6 @@ class _PlayerPageState extends State<PlayerPage> {
           },
         );
       }).toList(),
-    
       autoPlay: false,
       enlargeCenterPage: true,
       viewportFraction: 0.9,
