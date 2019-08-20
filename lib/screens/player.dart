@@ -28,7 +28,7 @@ class PlayerPage extends StatefulWidget {
   Player selectedPlayer;
   DateTime selectedDate;
 
-  PlayerPage({Key key, this.selectedPlayer, this.selectedDate})
+  PlayerPage(this.selectedPlayer, {Key key, this.selectedDate})
       : super(key: key);
   @override
   _PlayerPageState createState() => _PlayerPageState();
