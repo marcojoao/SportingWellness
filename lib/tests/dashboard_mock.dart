@@ -1,4 +1,5 @@
 import 'package:Wellness/model/dao/player_dao.dart';
+import 'package:Wellness/tests/players_mock_list.dart';
 import 'package:flutter/material.dart';
 
 class DashBoardMock extends StatefulWidget {
@@ -10,19 +11,20 @@ class DashBoardMock extends StatefulWidget {
 class _DashBoardMockState extends State<DashBoardMock> {
   @override
   Widget build(BuildContext context) {
-    PlayersDAO _playerDao = PlayersDAO();
-    return Container(
-        child: Center(
+    //PlayersDAO _playerDao = PlayersDAO();
+    return Scaffold(
+        body: Center(
       child: Column(
         children: <Widget>[
           FlatButton(
             child: Text("Add Players"),
-            onPressed: () async {
-              var player = await _playerDao.getAllSortedByName();
+            onPressed: () {
+              //var player = await _playerDao.getAllSortedByName();
+              var player = players[0];
               if (player != null) {
                 Navigator.of(context).pushNamed(
                   '/playerdetail',
-                  arguments: player.first,
+                  arguments: player,
                 );
               } else {
                 Navigator.of(context).pushNamed('/mockdashboard');
